@@ -1,0 +1,13 @@
+node_modules
+public/bower_components
+public/index.html
+public/**/*-styles.html
+public/index-inline.css
+npm-debug.log
+*.log
+.DS_Store
+temp
+dist
+.github/
+.vscode/
+predix-scripts/

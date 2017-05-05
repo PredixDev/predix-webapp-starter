@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>KPI Bar Test</title>
+  <script src="../public/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../public/bower_components/web-component-tester/browser.js"></script>
+
+  <!-- Import the element to test -->
+  <link rel="import" href="../public/elements/kpi-bar/kpi-bar.html">
+
+</head>
+<body>
+
+  <test-fixture id="basic">
+    <template>
+       <kpi-bar></kpi-bar>
+    </template>
+  </test-fixture>
+
+  <script>
+    document.addEventListener('WebComponentsReady', function() {
+      suite('kpi-bar tests', function() {
+
+        var kpiBar, summaryData;
+
+        setup(function() {
+          kpiBar = fixture('basic');
+          summaryData = {
+            "kpis":[
+              {"value":"0.049","label":"Output (avg)","uom":"m/s"},
+              {"value":"2.75","label":"crank-frame-compressionratio (avg)","uom":null},
+              {"value":"60.0","label":"Reliability","uom":"%"},
+              {"value":"85.0","label":"Availability","uom":"%"}
+            ],
+            "overall":{
+              "title":"KPI Health",
+              "subtitle":"compressor-2017",
+              "percentage":85
+            }
+          };
+          kpiBar.datapoints = summaryData.kpis;
+          kpiBar.overallLabel = summaryData.overall.title;
+          kpiBar.overallValue = summaryData.overall.percentage;
+          kpiBar.overallMax = 100;
+          kpiBar.kpiBarWrapperState = "kpi-bar-wrapper-datareceived";
+        });
+
+        test('kpi-bar object should be of type "kpi-bar"', function() {
+          assert(kpiBar.is === 'kpi-bar', 'kpi-bar object has incorrect type: ' + kpiBar.is);
+        });
+
+        test('There should be 4 KPI datapoint elements', function() {
+          kpiBar.$.kpiDatapoints.render();
+          var kpiDatapoints = Polymer.dom(kpiBar.root).querySelectorAll('kpi-datapoint');
+          assert(kpiDatapoints.length === 4, 'Incorrect number of KPI Datapoints: ' + kpiDatapoints.length);
+        });
+
+        test('The first KPI datapoint element should have a value of 0.049', function() {
+          kpiBar.$.kpiDatapoints.render();
+          var kpiDatapoints = Polymer.dom(kpiBar.root).querySelectorAll('kpi-datapoint');
+          var kpiDatapoint1 = kpiDatapoints[0];
+          var value = kpiDatapoint1.querySelector('span.kpi-datapoint-value').innerHTML;
+          assert(value === '0.049', 'Incorrect value for 1st KPI Datapoint: ' + value);
+        });
+
+        test('The first KPI datapoint element should have a label of "Output (avg)"', function() {
+          kpiBar.$.kpiDatapoints.render();
+          var kpiDatapoints = Polymer.dom(kpiBar.root).querySelectorAll('kpi-datapoint');
+          var kpiDatapoint1 = kpiDatapoints[0];
+          var label = kpiDatapoint1.querySelector('div.kpi-datapoint-label').innerHTML;
+          assert(label === 'Output (avg)', 'Incorrect label for 1st KPI Datapoint: ' + label);
+        });
+
+        test('There should be 20 active bars in the bar meter', function() {
+          kpiBar.$.kpiDatapoints.render();
+          var kpiMeterBars = kpiBar.querySelectorAll('div.kpi-bar-meter-bar-wrapper');
+          assert(kpiMeterBars.length === 20, 'Incorrect number of meters in Bars: ' + kpiMeterBars.length);
+        });
+
+        test('The 18th content bar in bar meter should not have 100% width', function() {
+          kpiBar.$.kpiDatapoints.render();
+          var kpiMeterBars = kpiBar.querySelectorAll('div.kpi-bar-meter-bar-wrapper');
+          var kpiBar18 = kpiMeterBars[17];
+          var kpiBarContent = kpiBar18.querySelector('div.kpi-bar-meter-bar-content');
+          assert(kpiBarContent.style.width !== '100%', 'Incorrect number of meters in Bars: ' + kpiBarContent.style.width);
+        });
+
+      });
+    });
+  </script>
+</body>
+</html>

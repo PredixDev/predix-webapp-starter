@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>seed-test-01</title>
+  <script src="../public/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../public/bower_components/web-component-tester/browser.js"></script>
+  <script src="../public/bower_components/es6-promise/es6-promise.js"></script>
+
+  <!-- Import the element to test -->
+  <link rel="import" href="../public/elements/seed-table/seed-table.html">
+
+</head>
+<body>
+
+  <test-fixture id="basic">
+    <template>
+       <seed-table></seed-table>
+    </template>
+  </test-fixture>
+
+  <script>
+
+  document.addEventListener('WebComponentsReady', function() {
+
+      suite('seed-table tests', function() {
+
+        var seedTable, rmdData, dummyRow;
+
+        setup(function() {
+          seedTable = fixture('basic');
+					dummyRow = {deltaThreshold: 2.345432, deltaThresholdColor: 'GREEN', deltaThresholdLevel: 'HIGH'};
+          rmdData = {
+						"tableData": [{
+							"tag": "crank-frame-compressionratio",
+							"tagUri": "/tag/crank-frame-compressionratio",
+							"tag_isKpi": true,
+							"tag_isPM": true,
+							"alertStatus": false,
+							"alertStatusType": null,
+							"currentValue": 2.7387545914849944,
+							"unit": null,
+							"lastTagReading": 1489103997210,
+							"thresholdMin": 2.5,
+							"thresholdMax": 3.0,
+							"deltaThreshold": 8.708180283833517,
+							"deltaThresholdColor": "GREEN",
+							"deltaThresholdLevel": "HIGH"
+						}, {
+							"tag": "crank-frame-dischargepressure",
+							"tagUri": "/tag/crank-frame-dischargepressure",
+							"tag_isKpi": true,
+							"tag_isPM": true,
+							"alertStatus": false,
+							"alertStatusType": null,
+							"currentValue": 16.767715215208693,
+							"unit": "psi",
+							"lastTagReading": 1489103997210,
+							"thresholdMin": 0.0,
+							"thresholdMax": 23.0,
+							"deltaThreshold": 27.09689036865786,
+							"deltaThresholdColor": "GREEN",
+							"deltaThresholdLevel": "HIGH"
+						}, {
+							"tag": "crank-frame-suctionpressure",
+							"tagUri": "/tag/crank-frame-suctionpressure",
+							"tag_isKpi": false,
+							"tag_isPM": true,
+							"alertStatus": false,
+							"alertStatusType": null,
+							"currentValue": 0.0435274216737174,
+							"unit": "psi",
+							"lastTagReading": 1489103997210,
+							"thresholdMin": 0.0,
+							"thresholdMax": 0.21,
+							"deltaThreshold": 20.72734365415114,
+							"deltaThresholdColor": "GREEN",
+							"deltaThresholdLevel": "LOW"
+						}]
+					};
+
+        });
+
+        test('seed-table object should be of type "seed-table"', function() {
+          assert(seedTable.is === 'seed-table', 'seed-table object has incorrect type: ' + seedTable.is);
+        });
+
+        test('set rmdData formats rows correctly', function() {
+					seedTable.rmdData = rmdData;
+					// seedTable._formatRmdDataForTable(rmdData);
+					expect(seedTable.seedTableData.length).to.equal(3);
+					var aRow = seedTable.seedTableData[0];
+					var rmdRow = rmdData.tableData[0];
+					expect(aRow.tag).to.equal(seedTable._getMeterHtml(rmdRow));
+					expect(aRow.alertStatus).to.equal(seedTable._getAlertHtml(rmdRow));
+					expect(aRow.currentValue).to.equal('2.739');
+					expect(aRow.unit).to.equal(rmdRow.unit);
+					expect(aRow.lastTagReading).to.equal('2017-03-09 15:59:57 -0800');
+					expect(aRow.thresholdMin).to.equal(rmdRow.thresholdMin);
+					expect(aRow.thresholdMax).to.equal(rmdRow.thresholdMax);
+					expect(aRow.deltaThreshold).to.equal(seedTable._getDeltaHtml(rmdRow));
+        });
+
+				test('set rmdData sets pagination and header correctly', function() {
+					seedTable.rmdData = rmdData;
+					expect(seedTable.showPagination).to.be.false;
+					expect(seedTable.headerText).to.equal('Asset Performance');
+				});
+
+				test('_getAlertHtml sets correct color when alertStatus is true', function() {
+					var html = seedTable._getAlertHtml({alertStatus: true});
+					expect(html).to.include('red');
+					expect(html).to.include('fa-exclamation-triangle')
+				});
+
+				test('_getAlertHtml sets correct color when alertStatus is false', function() {
+					var html = seedTable._getAlertHtml({});
+					expect(html).to.include('green');
+					expect(html).to.include('fa-circle');
+				});
+
+				test('_getDeltaHtml - high, red', function() {
+					dummyRow.deltaThresholdColor = 'RED';
+					var html = seedTable._getDeltaHtml(dummyRow);
+					expect(html).to.include('RED');
+					expect(html).to.include('fa-caret-up');
+					expect(html).to.include('2.35%')
+				});
+
+				test('_getDeltaHtml - low, red', function() {
+					dummyRow.deltaThresholdColor = 'RED';
+					dummyRow.deltaThresholdLevel = 'LOW';
+					var html = seedTable._getDeltaHtml(dummyRow);
+					expect(html).to.include('RED');
+					expect(html).to.include('fa-caret-down');
+					expect(html).to.include('2.35%')
+				});
+
+				test('_getDeltaHtml - high, green', function() {
+					var html = seedTable._getDeltaHtml(dummyRow);
+					expect(html).to.include('GREEN');
+					expect(html).to.include('fa-caret-up');
+					expect(html).to.include('2.35%')
+				});
+
+				test('_getDeltaHtml - low, green', function() {
+					dummyRow.deltaThresholdLevel = 'LOW';
+					var html = seedTable._getDeltaHtml(dummyRow);
+					expect(html).to.include('GREEN');
+					expect(html).to.include('fa-caret-down');
+					expect(html).to.include('2.35%')
+				});
+
+				test('_getMeterHtml - neither KPI nor Machine', function() {
+					var html = seedTable._getMeterHtml({});
+					expect(html).to.not.include('KPI');
+					expect(html).to.not.include('Machine');
+				});
+
+				test('_getMeterHtml - KPI', function() {
+					var html = seedTable._getMeterHtml({tag_isKpi: true});
+					expect(html).to.include('KPI');
+					expect(html).to.not.include('Machine');
+				});
+
+				test('_getMeterHtml - Machine', function() {
+					var html = seedTable._getMeterHtml({tag_isPM: true});
+					expect(html).to.not.include('KPI');
+					expect(html).to.include('Machine');
+				});
+
+				test('_getMeterHtml - KPI and Machine', function() {
+					var html = seedTable._getMeterHtml({tag_isKpi: true, tag_isPM: true});
+					expect(html).to.include('KPI');
+					expect(html).to.include('Machine');
+				});				
+   
+      });
+
+  });
+  </script>
+</body>
+</html>

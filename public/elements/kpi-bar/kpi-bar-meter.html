@@ -1,0 +1,68 @@
+<!-- import polymer -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!-- import page level css -->
+<link rel="import" href="kpi-datapoint-styles.html">
+
+<dom-module id="kpi-bar-meter">
+  <template>
+    <style include="kpi-datapoint-styles"></style>
+    <div class="kpi-datapoint-wrapper kpi-datapoint-bar-meter-wrapper">
+      <div class="kpi-datapoint-label">[[label]]</div>
+      <div class="kpi-datapoint-value-units">
+        <div class="kpi-bar-meter-value">[[percentage]]<span hidden$="{{!_showPercentSign}}" class="kpi-datapoint-units">%</span></div>
+        <div class="kpi-bar-meter-wrapper">
+          <template id="kpiBarMeterBarWrappers" is="dom-repeat" items="[[bars]]">
+            <div class="kpi-bar-meter-bar-wrapper">
+              <div class="kpi-bar-meter-bar-content" style="width: [[item.width]]%">
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </template>
+  <script>
+  Polymer({
+    is: 'kpi-bar-meter',
+    properties: {
+      label: {
+        type: String,
+        value: ''
+      },
+      bars: [],
+      percentage: {
+        type: Number,
+        observer: 'percentChanged'
+      },
+      _showPercentSign: {
+        type: Boolean,
+        value: false
+      }
+    },
+
+    ready: function(){
+    },
+
+    percentChanged: function(){
+      var barsExact = (this.percentage / 100) * 20;
+      var barsComplete = Math.floor(barsExact);
+      var partialBar = (barsExact % 5) / 5;
+      var barsOff = 20 - barsComplete - Math.ceil(partialBar);
+      var barsToDraw = [];
+      for (var i=0; i < barsComplete; i++) {
+        barsToDraw.push({ width: '100'});
+      };
+      if (partialBar > 0) {
+        barsToDraw.push({ width: partialBar * 100 + ''});
+      };
+      for (var j=0; j < barsOff; j++) {
+        barsToDraw.push({ width: '0'});
+      }
+      this.bars = barsToDraw;
+      this._showPercentSign = !!this.percentage;
+    }
+
+  });
+  </script>
+</dom-module>

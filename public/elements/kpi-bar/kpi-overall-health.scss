@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+.kpi-overall-health-wrapper {
+  position: var(--px-overall-health-wrapper-position, relative);
+  background-color: var(--kpi-overall-health-wrapper-background-color, #2886af);
+  display: var(--kpi-overall-health-wrapper-display, inline-block);
+  border-radius: var(--kpi-overall-health-wrapper-border-radius, 5px);
+  flex: var(--kpi-overall-health-flex, 1);
+  float: left;
+  box-sizing: border-box;
+  height: var(--kpi-overall-health-wrapper, 80px);
+  margin-right: 2px;
+}
+
+.kpi-overall-health-wrapper:hover {
+  background-color: var(--kpi-overall-health-wrapper-background-color-hover, #eee);
+}
+
+.kpi-overall-health-wrapper:hover * {
+  color: var(--kpi-overall-health-wrapper-color-hover, #2886af);
+}
+
+.kpi-overall-health-label {
+  white-space: nowrap;
+  text-align: center;
+  margin: 10px auto 5px auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: var(--kpi-overall-health-wrapper-width, 80%);
+  height: var(--kpi-overall-health-wrapper, 15px);
+  color: var(--kpi-overall-health-label-color, #fff);
+  font-size: var(--kpi-dagtapoint-label-font-size, 14px);
+  font-weight: bold;
+}
+
+.kpi-overall-health-value-units {
+  text-align: center;
+  margin: 0px auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: var(--kpi-overall-health-value-units-width, 100%);
+  height: var(--kpi-overall-health-value-units-height, 55px);
+  color: var(--kpi-overall-health-value-units-color, #fff);
+}
+
+.kpi-overall-health-value {
+  font-size: var(--kpi-overall-health-value-font-size, 40px);
+  font-weight: var(--kpi-overall-health-value-font-weight, normal);
+}
+
+.kpi-bar-meter-wrapper {
+  display: inline-block;
+  height: 100%;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.kpi-bar-meter-value {
+  display: inline-block;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.kpi-bar-meter-bar-wrapper {
+  display: inline-block;
+  width: 6px;
+  height: 60%;
+  background-color: #ccc;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.kpi-bar-meter-bar-content {
+  height: 100%;
+  background-color: var(--kpi-overall-health-bar-meter-color, #0f0);
+}
+
+.kpi-overall-health-value {
+  display: inline-block;
+  font-size: var(--kpi-overall-health-bar-meter-value-size, 16px);
+  color: var(--kpi-overall-health-bar-meter-value-color, #fff);
+  margin-top: 5px;
+  margin-bottom: 5px;
+  height: 14px;
+}

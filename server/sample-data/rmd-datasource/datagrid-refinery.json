@@ -1,0 +1,82 @@
+{
+	"tableData": [{
+		"tag": "crank-frame-compressionratio",
+		"tagUri": "/tag/crank-frame-compressionratio",
+		"tag_isKpi": true,
+		"tag_isPM": true,
+		"alertStatus": false,
+		"alertStatusType": null,
+		"currentValue": 2.8296469609264805,
+		"unit": null,
+		"lastTagReading": 1489786617310,
+		"asset": "Bently Compressor",
+		"assetUri": "/asset/compressor-2015"
+	}, {
+		"tag": "crank-frame-dischargepressure",
+		"tagUri": "/tag/crank-frame-dischargepressure",
+		"tag_isKpi": true,
+		"tag_isPM": true,
+		"alertStatus": false,
+		"alertStatusType": null,
+		"currentValue": 7.2320851255672505,
+		"unit": "psi",
+		"lastTagReading": 1489786617310,
+		"asset": "Bently Compressor",
+		"assetUri": "/asset/compressor-2015"
+	}, {
+		"tag": "crank-frame-velocity",
+		"tagUri": "/tag/crank-frame-velocity",
+		"tag_isKpi": true,
+		"tag_isPM": true,
+		"alertStatus": false,
+		"alertStatusType": null,
+		"currentValue": 0.025494921193207055,
+		"unit": "m/s",
+		"lastTagReading": 1489786617310,
+		"asset": "Bently Compressor",
+		"assetUri": "/asset/compressor-2015"
+	}],
+	"columns": [{
+		"field": "asset",
+		"type": "string",
+		"inputType": "text",
+		"inputSize": 25.0,
+		"label": "Asset",
+		"uom": null
+	}, {
+		"field": "tag",
+		"type": "string",
+		"inputType": "text",
+		"inputSize": 20.0,
+		"label": "Tag",
+		"uom": null
+	}, {
+		"field": "alertStatus",
+		"type": "number",
+		"inputType": "text",
+		"inputSize": 20.0,
+		"label": "Alert Status",
+		"uom": null
+	}, {
+		"field": "currentValue",
+		"type": "number",
+		"inputType": "text",
+		"inputSize": 10.0,
+		"label": "Current Reading",
+		"uom": null
+	}, {
+		"field": "unit",
+		"type": "number",
+		"inputType": "text",
+		"inputSize": 10.0,
+		"label": "Units",
+		"uom": null
+	}, {
+		"field": "lastTagReading",
+		"type": "datetime",
+		"inputType": "text",
+		"inputSize": 10.0,
+		"label": "Last Tag Reading",
+		"uom": null
+	}]
+}

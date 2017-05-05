@@ -1,0 +1,32 @@
+<!-- import polymer -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="seed-footer-styles.html">
+
+<dom-module id='seed-footer'>
+  <template>
+    <style include="seed-footer-styles"></style>
+    <div class="flex flex--justify footer__container">
+      <div>
+        <p>Powered by <predix-logo class="flex__item footer__logo"></predix-logo></p>
+      </div>
+
+      <div style="margin-left: auto;">
+        <ul class="list-inline">
+          <template is="dom-repeat" items=[[footerLinks]]>
+          <li><a class="footer__link" href="[[item.href]]">[[item.label]]</a></li>
+          </template>
+          <span class="footer__copy">&copy;2017 GE Digital</span>
+        </ul>
+      </div>
+    <div>
+  </template>
+  <script>
+  Polymer({
+    is: 'seed-footer',
+    properties: {
+      footerLinks: []
+    }
+  });
+  </script>
+</dom-module>

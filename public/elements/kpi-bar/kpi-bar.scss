@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+:host {
+  font-family: "GE Inspira Sans", sans-serif, default;
+}
+
+.kpi-bar-wrapper {
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+  min-width: 810px;
+  background-color: var(--kpi-bar-wrapper-background-color, #2886af);
+  height: var(--kpi-bar-wrapper-height, 85px);
+}
+
+.kpi-bar-wrapper-datareceived {
+  background-color: transparent;
+}
+
+.kpi-bar-wrapper-waiting {
+  background-color: #2886af;
+}

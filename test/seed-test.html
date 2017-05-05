@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>seed-test-01</title>
+  <script src="../public/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../public/bower_components/web-component-tester/browser.js"></script>
+
+  <!-- Import the element to test -->
+  <link rel="import" href="../public/elements/seed-app/seed-app.html">
+
+</head>
+<body>
+
+  <test-fixture id="basic">
+    <template>
+       <seed-app></seed-app>
+    </template>
+  </test-fixture>
+
+  <script>
+  console.log('starting tests');
+  document.addEventListener('WebComponentsReady', function() {
+      var server;
+      var fakeUserInfo = '{"user_name": "FromServer"}';
+
+      setup(function(){
+        server = sinon.fakeServer.create();
+        server.respondWith('GET', '/userinfo', [200, {"Content-Type": "application/json"}, fakeUserInfo]);
+        server.autoRespond = true;
+      });
+
+      teardown(function() {
+        server.restore();
+      });
+
+      suite('seed-app initial DOM tests', function() {
+
+        var home;
+        var seedAppFixture;
+
+        setup(function() {
+          seedAppFixture = fixture('basic');
+        });
+
+        test('seed-app object should be of type "seed-app"', function() {
+          assert(seedAppFixture.is === 'seed-app', 'seed-app object has incorrect type: ' + seedAppFixture.is);
+        });
+
+        test('navItems object should be of type Array', function() {
+          var navItems = seedAppFixture.properties.navItems.value();
+          assert(Array.isArray(navItems), 'navItems object has incorrect type: ' + typeof navItems);
+        });
+
+        test('footerLinks object should be of type Array', function() {
+          var footerLinks = seedAppFixture.properties.footerLinks.value();
+          assert(Array.isArray(footerLinks), 'footerLinks object has incorrect type: ' + typeof footerLinks);
+        });
+
+        test('routesActive property should be defined', function() {
+          var routesActive = seedAppFixture.properties.routesActive;
+          assert(typeof routesActive === 'object', 'routesActive boolean has is undefined/null');
+        });
+
+        test('global property should be defined', function() {
+          var globalObject = seedAppFixture.properties.global.value();
+          assert(globalObject instanceof Object, 'global object has is undefined/null');
+        });
+
+        test('pathPrefix property should be defined', function() {
+          var pathPrefix = seedAppFixture.properties.pathPrefix;
+          assert(pathPrefix instanceof Object, 'pathPrefix object has is undefined/null');
+        });
+
+        // Test cases for seed-app DOM structure upon initial load
+        // Elements are tested for presence and correct count
+
+        test('There should be a header element', function() {
+          var header = Polymer.dom(seedAppFixture.root).querySelector('header');
+          assert(header !== null, 'header element was not found');
+        });
+
+        test('There should be a px-app-nav element', function() {
+          var pxAppNav = Polymer.dom(seedAppFixture.root).querySelector('px-app-nav');
+          assert(pxAppNav !== null, 'px-app-nav element was not found');
+        });
+
+        test('There should be an app-location element', function() {
+          var appLocation = Polymer.dom(seedAppFixture.root).querySelector('app-location');
+          assert(appLocation !== null, 'app-location element was not found');
+        });
+
+        test('There should be a main element', function() {
+          var main = Polymer.dom(seedAppFixture.root).querySelector('main');
+          assert(main !== null, 'main element was not found');
+        });
+
+        test('There should be a seed-footer element', function() {
+          var seedFooter = Polymer.dom(seedAppFixture.root).querySelector('seed-footer');
+          assert(seedFooter !== null && typeof seedFooter !== 'undefined', 'seed-footer element was not found');
+        });
+
+        test('There should be a px-login component in the header', function() {
+          var loginEl = Polymer.dom(seedAppFixture.root).querySelector('header px-login');
+          assert(loginEl !== null && typeof loginEl !== 'undefined', 'px-login component not found in header');
+        });
+
+        // Test cases for correct configuration of seed-app Polymer Object
+
+        test('Fixture element should contain a header which has a GE logo', function() {
+          var seedHeader = Polymer.dom(seedAppFixture.root).querySelector('header ge-svg-logo');
+          assert(seedHeader !== null, '"header ge-svg-logo" path was not found');
+        });
+
+        test('Menu item for rmd page should be configured correctly', function() {
+          var rmd = Polymer.dom(seedAppFixture.root).querySelector('px-view[element-href="/elements/views/rmd-view.html"]');
+          assert(rmd !== null, 'rmd page menu navigation menu item was not found');
+        });
+
+      });
+  });
+  </script>
+
+</body>
+</html>

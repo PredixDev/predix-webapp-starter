@@ -1,0 +1,22 @@
+---
+applications:
+  - name: predix-webapp-starter
+    memory: 128M
+    timeout: 180
+    buildpack: nodejs_buildpack
+    command: node server/app.js
+    path: dist
+#services:
+ # - your-name-uaa
+ # - your-name-time-series
+ # - your-name-asset
+env:
+    node_env: cloud
+    uaa_service_label : predix-uaa
+    # Add these values for authentication in the cloud
+    #base64ClientCredential: dWFhLWNsaWVudC1pZDp1YWEtY2xpZW50LWlkLXNlY3JldA==
+    #loginBase64ClientCredential: bG9naW5fY2xpZW50X2lkOnNlY3JldA==
+    # Use a full wss:// URL for actual web socket server. use /livestream for mock data.
+    websocketServerURL: /livestream
+    #rmdDatasourceURL: {URL of your RMD datasource microservice}
+    rmdDocsURL: "https://raw.githubusercontent.com/PredixDev/predix-rmd-ref-app/master/README.md"

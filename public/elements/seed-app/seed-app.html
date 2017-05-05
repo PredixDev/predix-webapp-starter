@@ -1,0 +1,206 @@
+<!-- import polymer -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!-- import page level css -->
+<link rel="import" href="seed-app-styles.html">
+
+<!-- app route -->
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<!-- px components -->
+<link rel="import" href="../../bower_components/px-app-nav/px-app-nav.html">
+<link rel="import" href="../../bower_components/px-view/px-view.html">
+<link rel="import" href="../../bower_components/px-login/px-login.html">
+<!-- seed app components -->
+<link rel="import" href="../ge-svg-logo/ge-svg-logo.html">
+<link rel="import" href="../predix-logo/predix-logo.html">
+<link rel="import" href="../seed-footer/seed-footer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<!-- importing font awesome and iron icon here, to fix icon flickering problem when loading asynchronously. -->
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/px-polymer-font-awesome/px-polymer-font-awesome.html">
+
+<dom-module id="seed-app">
+  <template>
+
+    <!-- apply imported seed app style module -->
+    <style include="seed-app-styles"></style>
+
+    <header role="banner">
+      <div class="viewport flex flex--justify flex--middle">
+        <h3>
+          <ge-svg-logo class="u-mr--"></ge-svg-logo> [[appHeader]]
+        </h3>
+        <div>
+          <px-login style="margin-left: auto;"></px-login>
+        </div>
+      </div>
+    </header>
+
+    <div class="viewport">
+
+      <div class="content-wrapper">
+        <px-app-nav
+          class="navbar"
+          nav-items="[[navItems]]"
+          path-prefix="[[pathPrefix]]">
+        </px-app-nav>
+
+        <main class="u-pt-- u-pr-- u-pl--" role="main">
+
+          <!-- app-location captures url and assigns _route value -->
+          <app-location
+            id="carbonLocation"
+            route="{{_route}}"
+            use-hash-as-path>
+          </app-location>
+
+          <!-- main /rmd route and view -->
+          <app-route
+            route="[[_route]]"
+            pattern="/rmd"
+            active="{{_rmdActive}}">
+          </app-route>
+          <px-view id="rmdPxView"
+            active="[[_rmdActive]]"
+            element-href="/elements/views/rmd-view.html"
+            load-async="true">
+          </px-view>
+
+          <!-- about route and view -->
+          <app-route
+            route="[[_route]]"
+            pattern="/about"
+            active="{{_aboutActive}}">
+          </app-route>
+          <px-view
+            active="[[_aboutActive]]"
+            element-href="/elements/views/about-view.html">
+          </px-view>
+
+          <!-- /simple-asset route and view -->
+          <app-route
+            route="[[_route]]"
+            pattern="/simple-asset"
+            active="{{_simple-assetActive}}">
+          </app-route>
+          <px-view
+            active="[[_simple-assetActive]]"
+            element-href="/elements/views/simple-asset-view.html">
+         </px-view>
+
+        </main>
+
+      </div>
+    </div>
+
+    <seed-footer footer-links='[[footerLinks]]'></seed-footer>
+    <iron-ajax id="configAjaxEl" url="/config" auto></iron-ajax>
+  </template>
+  <script>
+    Polymer({
+      is: 'seed-app',
+
+      properties: {
+
+        appHeader: {
+          type: String
+        },
+
+        routesActive: {
+          type: Boolean,
+          value: false
+        },
+
+        //Global application object
+        global: {
+          type: Object,
+          value: function() {
+            return {
+              version: '1.0',
+              name: 'Predix UI Seed - RMD Reference App'
+            }
+          }
+        },
+
+        // Links to appear in the main navigation - px-app-nav component
+        // See http://fontawesome.io/icons/ for available icons
+        navItems: {
+          type: Array,
+          value: function() {
+            return [
+              {
+                "label": "Asset Monitoring",
+                "path": "/rmd",
+                "icon": "fa-line-chart"
+              },
+              {
+                "label": "About",
+                "path": "/about",
+                "icon": "fa-info-circle"
+              }
+              //Uncomment this block to show the Simple Asset navigation item on the menu.
+              /* // asset-nav-item
+              ,{
+                "label": "Simple Asset",
+                "path": "/simple-asset",
+                "icon": "fa-sitemap"
+              }
+              // end asset-nav-item */
+            ]
+          }
+        },
+
+        footerLinks: {
+          type: Array,
+          value: function() {
+            return [{
+              "label": "Learn More",
+              "href": "https://www.predix.io/resources/tutorials",
+              "target": "_blank"
+            }
+          ]
+          }
+        },
+
+        // Sets app default base URL for client-side routing
+        pathPrefix: {
+          type: String,
+          value: '#'
+        }
+      },
+
+      observers: ['_routeChanged(_route)'],
+
+      ready: function(){
+        this._checkForDefaultRoute();
+        this.$.configAjaxEl.addEventListener('response', function(evt) {
+          // We're getting some global config from the server.
+          // console.log('config', evt.detail.response);
+          this.appHeader = evt.detail.response.appHeader;
+          this.$.rmdPxView.elementData = evt.detail.response;
+        }.bind(this));
+      },
+
+      _checkForDefaultRoute: function() {
+        // set default route to /rmd
+        var l = window.location;
+        if((l.hash === "#/" || l.hash === "") && l.pathname === "/") {
+          l.hash = "/rmd";
+        }
+      },
+
+      _routeChanged: function(newRoute) {
+        console.log('new route:', newRoute);
+        if (newRoute.path !== '/rmd') {
+          var tsChart = document.querySelector('rmd-view timeseries-chart');
+          if (tsChart) {
+            tsChart.closeWebSocket();
+          }
+        }
+      }
+
+    });
+  </script>
+</dom-module>

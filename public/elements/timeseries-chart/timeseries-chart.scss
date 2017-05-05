@@ -1,0 +1,17 @@
+// Settings
+
+// Generic
+
+// Base
+@import 'px-flexbox-design/_base.flexbox.scss';
+
+// Meta
+
+// Objects
+@import "px-buttons-design/_objects.buttons.scss";
+
+// Trumps
+$inuit-enable-paddings : true;
+$inuit-enable-paddings--tiny : true;
+@import "px-spacing-design/_trumps.spacing.scss";
+@import "px-widths-responsive-design/_trumps.widths-responsive.scss";

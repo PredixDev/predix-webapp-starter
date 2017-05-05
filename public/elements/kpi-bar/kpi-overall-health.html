@@ -1,0 +1,63 @@
+<!-- import polymer -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!-- import page level css -->
+<link rel="import" href="kpi-overall-health-styles.html">
+
+<dom-module id="kpi-overall-health">
+  <template>
+    <style include="kpi-overall-health-styles"></style>
+    <div class="kpi-overall-health-wrapper">
+      <div class="kpi-overall-health-label">[[label]]</div>
+      <div class="kpi-overall-health-value-units">
+        <div class="kpi-ovarall-health-value">[[percentage]]</div>
+        <div class="kpi-bar-meter-wrapper">
+          <template is="dom-repeat" items="[[bars]]">
+            <div class="kpi-bar-meter-bar-wrapper">
+              <div class="kpi-bar-meter-bar-content" style="width: [[item.width]]%">
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </template>
+  <script>
+  Polymer({
+    is: 'kpi-overall-health',
+    properties: {
+      label: {
+        type: String,
+        value: ''
+      },
+      bars: [],
+      percentage: {
+        type: Number,
+        observer: 'percentChanged'
+      }
+    },
+
+    ready: function(){
+    },
+
+    percentChanged: function(){
+      var barsExact = (this.percentage / 100) * 20;
+      var barsComplete = Math.floor(barsExact);
+      var partialBar = (barsExact % 5) / 5;
+      var barsOff = 20 - barsComplete - Math.ceil(partialBar);
+      var barsToDraw = [];
+      for (var i=0; i < barsComplete; i++) {
+        barsToDraw.push({ width: '100'});
+      };
+      if (partialBar > 0) {
+        barsToDraw.push({ width: partialBar * 100 + ''});
+      };
+      for (var j=0; j < barsOff; j++) {
+        barsToDraw.push({ width: '0'});
+      }
+      this.bars = barsToDraw;
+    }
+
+  });
+  </script>
+</dom-module>

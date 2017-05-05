@@ -1,0 +1,193 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/px-dropdown/px-dropdown.html">
+<link rel="import" href="../../bower_components/px-dropdown/px-dropdown-content.html">
+<link rel="import" href="../asset-browser/asset-browser.html">
+<link rel="import" href="../seed-table/seed-table.html">
+<link rel="import" href="../kpi-bar/kpi-bar.html">
+
+<dom-module id="rmd-view">
+  <style>
+  :host {
+    --iron-icon-width: 16px;
+    --iron-icon-height: 16px;
+  }
+  </style>
+  <template>
+    <asset-browser id="assetBrowser"
+      asset-model="{{rmdAssetModel}}"
+      opened-asset="{{openedAsset}}"
+      asset-query-url="/api/predix-asset/asset"
+      asset-group-query-url="/api/predix-asset/group">
+    </asset-browser>
+
+    <kpi-bar datapoints="[[kpiDatapoints]]"
+      overall-label="[[kpiOverallLabel]]"
+      overall-value="[[kpiOverallValue]]"
+      overall-max="[[kpiOverallMax]]"
+      kpi-bar-wrapper-state="[[kpiBarWrapperState]]">
+    </kpi-bar>
+    <iron-ajax id="kpiBarAjaxEl"></iron-ajax>
+
+    <!-- If the RMD datasource is not enabled, you can pass in an asset directly. -->
+    <!--<seed-table asset-data="{{openedAsset}}" show-asset-only="true"></seed-table>-->
+
+    <!-- If RMD datasource is enabled, call that and pass data to the table. -->
+    <seed-table id="seedTable" rmd-data="{{rmdTableData}}"></seed-table>
+    <iron-ajax id="datatableAjaxEl"></iron-ajax>
+
+    <timeseries-chart id="tsChart" ws-url="[[wsUrl]]"
+      tags="{{displayTags}}" hidden$="{{!showTimeseriesChart}}"></timeseries-chart>
+
+    <px-dropdown id="refreshFrequencyDropdown"
+      display-value="Refresh Frequency"
+      style="position: absolute; top: 18px; right: 50px; width: 150px; padding-right: 5px">
+      <px-dropdown-content extend-dropdown='true' extend-dropdown-by='25' max-cont-character-width='10'
+        items='[{"key":"0","val":"No Refresh"},{"key":"3","val":"Every 3 sec"},{"key":"15","val":"Every 15 sec"},{"key":"60","val":"Every 60 sec"}]'>
+      </px-dropdown-content>
+    </px-dropdown>
+
+    <div id="refreshTableBtn"
+      style="text-align: center; line-height: 26px; width: 28px; height: 28px; position: absolute; top: 18px; right: 20px; border: 1px solid #999; border-radius: 4px;">
+      <iron-icon icon="fa:fa-refresh" style="margin-left: 2px; margin-top: 1px"></iron-icon>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'rmd-view',
+      properties: {
+        rmdAssetModel: {
+          type: Object,
+          observer: '_assetModelChanged'
+        },
+        openedAsset: {
+          type: Object,
+          observer: '_openedAssetChanged'
+        },
+        rmdTableData: {
+          type: Object
+        },
+        displayTags: {
+          type: Array
+        },
+        showTimeseriesChart: {
+          type: Boolean,
+          value: false
+        },
+        wsUrl: {
+          type: String
+        },
+        kpiBarWrapperState: {
+          type: String
+        }
+      },
+
+      _formatTagsForDisplay: function(assetTag) {
+        var tags = []
+        Object.keys(assetTag).forEach(function(key) {
+          var tag = {
+            key: assetTag[key].timeseriesDatasource.tag,
+            val: assetTag[key].label,
+            unit: 'psi'
+          }
+          if (tag.key.indexOf('Temperature')>-1) {
+            tag.unit = 'F';
+          } else if (tag.key.indexOf('Ratio')>-1) {
+            tag.unit = '';
+          } else if (tag.key.indexOf('Velocity')>-1) {
+            tag.unit = 'm/s'
+          }
+          tags.push(tag);
+        });
+        return tags;
+      },
+      _openedAssetChanged: function(newVal) {
+        console.log('asset opened:', newVal);
+        this.$.datatableAjaxEl.url = "/api/datagrid" + newVal.uri;
+        this.$.kpiBarAjaxEl.url = this.$.datatableAjaxEl.url + '/summary';
+        this.$.datatableAjaxEl.generateRequest();
+        if (newVal.assetTag) {
+          this.displayTags = this._formatTagsForDisplay(newVal.assetTag);
+        }
+        this.showTimeseriesChart = newVal.uri.indexOf('asset') >= 0;
+      },
+      _assetModelChanged: function(newVal) {
+        console.log('asset model changed:', newVal);
+      },
+
+      // We'll load the timeseries-chart asynchronously, since it's pretty heavy.
+      _loadFragment: function(elementId, fragmentPath) {
+        if (Polymer.isInstance(this.$[elementId])) {
+          return;
+        }
+        Polymer.Base.importHref(fragmentPath, null, function() {
+          console.log('failed to load:', fragmentPath);
+        }, true);
+      },
+
+      ready: function(){
+        this._loadFragment('tsChart', '/elements/timeseries-chart/timeseries-chart.html');
+        // set copy of 'this' for callback function use below
+        var that = this;
+        // initialize refresh interval
+        this.refreshTimerInterval = 0;
+        this.wsUrl = document.querySelector('#rmdPxView').elementData.wsUrl;
+
+        this.$.kpiBarAjaxEl.addEventListener('response', function(evt) {
+          var data = evt.detail.response;
+          if (Array.isArray(data)) {
+            data = data[0];
+          }
+          var kpis = data.kpis, overall = data.overall;
+          this.kpiDatapoints = kpis;
+          this.kpiOverallLabel = overall.title;
+          this.kpiOverallValue = overall.percentage;
+          this.kpiOverallMax ="100";
+          this.kpiBarWrapperState = 'kpi-bar-wrapper-datareceived';
+        }.bind(this));
+
+        this.$.datatableAjaxEl.addEventListener('response', function(evt) {
+          this.rmdTableData = evt.detail.response;
+          this.$.kpiBarWrapperState = 'kpi-bar-wrapper-waiting';
+          this.$.kpiBarAjaxEl.generateRequest();
+
+        }.bind(this));
+
+        // Set refresh  button behavior
+        this.$.refreshTableBtn.addEventListener('click', function() {
+          console.log('sending request for rmdData');
+          that.$.datatableAjaxEl.generateRequest();
+        });
+
+        // Set refresh dropdown behavior
+        this.$.refreshFrequencyDropdown.addEventListener('px-dropdown-value-changed', function(evt){
+          var interval = 0;
+          switch (evt.detail.key) {
+            case '3':
+              interval = 3000;  // every 3 seconds
+              break;
+              case '15':
+                interval = 15000;  // every 3 seconds
+                break;
+            case '60':
+              interval = 60000;  // every 60 seconds
+              break;
+          }
+          clearInterval(that.refreshTimerInterval);
+
+          // If no refresh selected, clear any existing interval
+          if (interval === 0) {
+            that.refreshTimerInterval = 0;
+          }
+          // else set interval according to user selection
+          else {
+            that.refreshTimerInterval = setInterval(function() {
+              console.log('sending request for rmdData');
+              that.$.datatableAjaxEl.generateRequest();
+            }, interval);
+          }
+        });
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,545 @@
+[
+  {
+    "uri": "/tag/c5-c6-isomerization-reactor-output",
+    "name": "Octane Number",
+    "description": "C5/C6 isomerization process",
+    "dataType": "number",
+    "tagType": "Continuous",
+    "defaultTag": []
+  },
+  {
+    "uri": "/tag/crank-frame-compressionratio",
+    "name": "crank-frame-compressionratio",
+    "description": "Crank Frame Compression Ratio",
+    "dataType": "number",
+    "tagType": "Continuous",
+    "defaultTag": []
+  },
+  {
+    "uri": "/tag/crank-frame-dischargepressure",
+    "name": "crank-frame-dischargepressure",
+    "description": "Crank Frame Discharge Pressure",
+    "dataType": "number",
+    "tagType": "Continuous",
+    "uom": "psi",
+    "defaultTag": []
+  },
+  {
+    "uri": "/tag/crank-frame-maxpressure",
+    "name": "crank-frame-maxpressure",
+    "description": "Crank Frame Max Pressure",
+    "dataType": "number",
+    "tagType": "Continuous",
+    "uom": "psi",
+    "defaultTag": []
+  },
+  {
+    "uri": "/tag/crank-frame-suctionpressure",
+    "name": "crank-frame-suctionpressure",
+    "description": "Crank Frame Suction Pressure",
+    "dataType": "number",
+    "tagType": "Continuous",
+    "uom": "psi",
+    "defaultTag": []
+  },
+  {
+    "uri": "/tag/crank-frame-temperature",
+    "name": "crank-frame-temperature",
+    "description": "Crank Frame Temperature",
+    "dataType": "number",
+    "tagType": "Continuous",
+    "uom": "F",
+    "defaultTag": []
+  },
+  {
+    "uri": "/tag/crank-frame-velocity",
+    "name": "crank-frame-velocity",
+    "description": "Crank Frame Velocity",
+    "dataType": "number",
+    "tagType": "Continuous",
+    "uom": "m/s",
+    "defaultTag": []
+  },
+  {
+    "uri": "/tag/summary-output-mbd",
+    "name": "summary-output-mbd",
+    "description": "C5/C6 isomerization process summary output in mbd",
+    "dataType": "number",
+    "tagType": "Continuous",
+    "uom": "mb/d",
+    "defaultTag": []
+  },
+  {
+    "parent": "/group/root",
+    "description": "Predix Energy",
+    "uri": "/group/enterprise-predix",
+    "level": "enterprise",
+    "name": "Predix Energy"
+  },
+  {
+    "parent": "/group/enterprise-predix",
+    "description": "Richmond Refinery",
+    "uri": "/group/plant-richmond-refinery",
+    "level": "plant",
+    "name": "Richmond Refinery 1"
+  },
+  {
+    "description": "Alert Status",
+    "uri": "/classification/alert-status",
+    "name": "/classification/alert-status",
+    "obsolete": false,
+    "attributes": {
+      "alertStatus": {
+        "enumeration": [],
+        "value": []
+      },
+      "alertType": {
+        "enumeration": [],
+        "value": [
+          "Calculated"
+        ]
+      },
+      "alertLevel": {
+        "enumeration": [],
+        "value": []
+      },
+      "alertLevelValue": {
+        "enumeration": [],
+        "value": []
+      },
+      "alertTime": {
+        "enumeration": [],
+        "value": []
+      },
+      "deltaThresholdColor": {
+        "enumeration": [],
+        "value": []
+      },
+      "deltaThresholdDirection": {
+        "enumeration": [],
+        "value": []
+      },
+      "deltaThresholdLevel": {
+        "enumeration": [],
+        "value": []
+      },
+      "deltaThreshold": {
+        "enumeration": [],
+        "value": []
+      },
+      "sourceType": {
+        "enumeration": [],
+        "value": []
+      },
+      "fieldSourceUri": {
+        "enumeration": [],
+        "value": []
+      }
+    },
+    "tags": []
+  },
+  {
+    "description": "Device",
+    "uri": "/classification/device",
+    "name": "device",
+    "obsolete": false,
+    "attributes": {
+      "deviceType": {
+        "enumeration": [],
+        "value": []
+      },
+      "deviceName": {
+        "enumeration": [],
+        "value": []
+      },
+      "deviceId": {
+        "enumeration": [],
+        "value": []
+      }
+    },
+    "tags": []
+  },
+  {
+    "description": "Field",
+    "uri": "/classification/field",
+    "name": "field",
+    "obsolete": false,
+    "attributes": {
+      "fieldId": {
+        "enumeration": [],
+        "value": []
+      },
+      "fieldType": {
+        "enumeration": [],
+        "value": []
+      }
+    },
+    "tags": []
+  },
+  {
+    "description": "Field Source Info",
+    "uri": "/classification/fieldSourceInfo",
+    "name": "/classification/fieldSourceInfo",
+    "obsolete": false,
+    "attributes": {
+      "sourceType": {
+        "enumeration": [],
+        "value": []
+      },
+      "sourceName": {
+        "enumeration": [],
+        "value": []
+      },
+      "sourcePropertyName": {
+        "enumeration": [],
+        "value": []
+      },
+      "timePropertyName": {
+        "enumeration": [],
+        "value": []
+      },
+      "timePropertyUnit": {
+        "enumeration": [],
+        "value": []
+      },
+      "defaultOsacbmDataType": {
+        "enumeration": [],
+        "value": []
+      },
+      "queryDetail": {
+        "enumeration": [],
+        "value": []
+      },
+      "updateDetail": {
+        "enumeration": [],
+        "value": []
+      },
+      "fieldId": {
+        "enumeration": [],
+        "value": []
+      }
+    },
+    "tags": []
+  },
+  {
+    "parent": "/classification/GasTurbine",
+    "description": "Gas Turbine",
+    "uri": "/classification/GasTurbineLate2014",
+    "name": "/classification/GasTurbineLate2014",
+    "obsolete": false,
+    "tags": []
+  },
+  {
+    "parent": "/classification/GE_COMPRESSOR_CYLINDER",
+    "description": "/classification/GE_COMPRESSOR_CYLINDER",
+    "uri": "/classification/GE_COMPRESSOR_CYLINDER",
+    "name": "/classification/GE_COMPRESSOR_CYLINDER",
+    "obsolete": false,
+    "tags": []
+  },
+  {
+    "complexType": "Asset",
+    "uri": "/asset/1",
+    "name": "my sample asset",
+    "assetTag": {
+      "pressure": {
+        "complexType": "AssetTag",
+        "tagUri": "/pressure",
+        "outputMinimum": 0,
+        "outputMaximum": 0,
+        "hiAlarmThreshold": 0,
+        "loAlarmThreshold": 0
+      }
+    }
+  },
+  {
+    "complexType": "Asset",
+    "uri": "/asset/compressor-2017",
+    "classificationUri": "/classification/GE_COMPRESSOR_CYLINDER",
+    "assetId": "compressor-2017",
+    "description": "Reciprocating Compressor",
+    "group": "/group/plant-richmond-refinery",
+    "assetTag": {
+      "crank-frame-compressionratio": {
+        "complexType": "AssetTag",
+        "label": "Compression Ratio",
+        "tagUri": "/tag/crank-frame-compressionratio",
+        "hiAlarmThreshold": 3,
+        "loAlarmThreshold": 2.5,
+        "isKpi": true,
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "Compressor-2017:CompressionRatio"
+        },
+        "edgeDatasource": {
+          "complexType": "EdgeDatasource",
+          "nodeName": "Compressor-2017:CompressionRatio",
+          "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+        }
+      },
+      "crank-frame-dischargepressure": {
+        "complexType": "AssetTag",
+        "label": "Discharge Pressure",
+        "tagUri": "/tag/crank-frame-dischargepressure",
+        "hiAlarmThreshold": 23,
+        "loAlarmThreshold": 0,
+        "isKpi": true,
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "Compressor-2017:DischargePressure"
+        },
+        "edgeDatasource": {
+          "complexType": "EdgeDatasource",
+          "nodeName": "Compressor-2017:DischargePressure",
+          "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+        },
+        "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure"
+      },
+      "crank-frame-suctionpressure": {
+        "complexType": "AssetTag",
+        "label": "Suction Pressure",
+        "tagUri": "/tag/crank-frame-suctionpressure",
+        "hiAlarmThreshold": 0.21,
+        "loAlarmThreshold": 0,
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "Compressor-2017:SuctionPressure"
+        },
+        "edgeDatasource": {
+          "complexType": "EdgeDatasource",
+          "nodeName": "Compressor-2017:SuctionPressure",
+          "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+        }
+      },
+      "crank-frame-maxpressure": {
+        "complexType": "AssetTag",
+        "label": "Max Pressure",
+        "tagUri": "/tag/crank-frame-maxpressure",
+        "hiAlarmThreshold": 26,
+        "loAlarmThreshold": 22,
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "Compressor-2017:MaximumPressure"
+        },
+        "edgeDatasource": {
+          "complexType": "EdgeDatasource",
+          "nodeName": "Compressor-2017:MaximumPressure",
+          "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+        }
+      },
+      "crank-frame-velocity": {
+        "complexType": "AssetTag",
+        "label": "Velocity",
+        "tagUri": "/tag/crank-frame-velocity",
+        "hiAlarmThreshold": 0.07,
+        "loAlarmThreshold": 0,
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "Compressor-2017:Velocity"
+        },
+        "edgeDatasource": {
+          "complexType": "EdgeDatasource",
+          "nodeName": "Compressor-2017:Velocity",
+          "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+        }
+      },
+      "crank-frame-temperature": {
+        "complexType": "AssetTag",
+        "label": "Temperature",
+        "tagUri": "/tag/crank-frame-temperature",
+        "hiAlarmThreshold": 80,
+        "loAlarmThreshold": 65,
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "Compressor-2017:Temperature"
+        },
+        "edgeDatasource": {
+          "complexType": "EdgeDatasource",
+          "nodeName": "Compressor-2017:Temperature",
+          "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+        }
+      }
+    },
+    "attributes": {
+      "machineControllerId": {
+        "complexType": "Attribute",
+        "type": "string",
+        "enumeration": [],
+        "value": [
+          "/asset/Bently.Nevada.3500.Rack1"
+        ]
+      },
+      "summaryTag": {
+        "complexType": "Attribute",
+        "type": "string",
+        "enumeration": [],
+        "value": [
+          "crank-frame-dischargepressure",
+          "crank-frame-compressionratio"
+        ]
+      }
+    }
+  },
+  {
+    "complexType": "Asset",
+    "uri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure",
+    "classificationUri": "/classification/alert-status",
+    "assetId": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure",
+    "attributes": {
+      "alertStatus": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": [
+          "false"
+        ]
+      },
+      "alertType": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": [
+          "Analytic"
+        ]
+      },
+      "alertLevel": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": []
+      },
+      "alertLevelValue": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": []
+      },
+      "alertTime": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": []
+      },
+      "deltaThresholdColor": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": []
+      },
+      "deltaThresholdDirection": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": []
+      },
+      "deltaThresholdLevel": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": []
+      },
+      "deltaThreshold": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": []
+      },
+      "sourceType": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": [
+          "PredixTimeseries"
+        ]
+      },
+      "fieldSourceUri": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": []
+      }
+    }
+  },
+  {
+    "complexType": "Asset",
+    "uri": "/asset/plant-richmond-refinery-summary",
+    "description": "Summary for Richmond Plant",
+    "obsolete": false,
+    "empty": false,
+    "assetId": "plant-richmond-refinery-summary",
+    "propagateState": false,
+    "group": "/asset/plant-richmond-refinery-summary/group",
+    "attributes": {
+      "summary": {
+        "complexType": "Attribute",
+        "enumeration": [],
+        "value": [
+          "/group/plant-richmond-refinery"
+        ]
+      },
+      "summaryTag": {
+        "complexType": "Attribute",
+        "type": "string",
+        "enumeration": [],
+        "value": [
+          "summary-output-mbd",
+          "crank-frame-dischargepressure"
+        ]
+      }
+    },
+    "assetTag": {
+      "isomerization-reactor-output1": {
+        "complexType": "AssetTag",
+        "label": "Isomerization Reactor Output",
+        "tagUri": "/tag/c5-c6-isomerization-reactor-output",
+        "isKpi": true,
+        "isManual": false,
+        "hiAlarmThreshold": 100,
+        "loAlarmThreshold": 72,
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "isomerization-reactor-output1"
+        }
+      },
+      "crank-frame-dischargepressure": {
+        "complexType": "AssetTag",
+        "label": "Discharge Pressure",
+        "tagUri": "/tag/crank-frame-dischargepressure",
+        "hiAlarmThreshold": 23,
+        "loAlarmThreshold": 0,
+        "isKpi": true,
+        "isManual": false,
+        "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure",
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "Compressor-2017:DischargePressure"
+        },
+        "edgeDatasource": {
+          "complexType": "EdgeDatasource",
+          "nodeName": "Compressor-2017:DischargePressure",
+          "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+        }
+      },
+      "summary-output-mbd": {
+        "complexType": "AssetTag",
+        "label": "Summary Output",
+        "tagUri": "/tag/summary-output-mbd",
+        "hiAlarmThreshold": 23,
+        "loAlarmThreshold": 0,
+        "isKpi": true,
+        "isManual": false,
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "Compressor-2017:summary-output"
+        }
+      },
+      "crank-frame-compressionratio": {
+        "complexType": "AssetTag",
+        "label": "Compression Ratio",
+        "tagUri": "/tag/crank-frame-compressionratio",
+        "hiAlarmThreshold": 3,
+        "loAlarmThreshold": 2.5,
+        "isKpi": true,
+        "isManual": false,
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "Compressor-2017:CompressionRatio"
+        },
+        "edgeDatasource": {
+          "complexType": "EdgeDatasource",
+          "nodeName": "Compressor-2017:CompressionRatio",
+          "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+        }
+      }
+    }
+  }
+]

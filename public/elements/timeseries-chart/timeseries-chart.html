@@ -1,0 +1,340 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/px-vis-timeseries/px-vis-timeseries.html">
+<link rel="import" href="../../bower_components/px-card/px-card.html">
+<link rel="import" href="../../bower_components/px-rangepicker/px-rangepicker.html">
+<!-- Since this is loading asynchronously, we're not loading px-dropdown here for now. 
+      it's already loaded by rmd-view. -->
+<link rel="import" href="timeseries-chart-styles.html">
+
+<script src="../../bower_components/moment/min/moment.min.js"></script>
+
+<!--
+This component allows users to select timeseries tag(s) for display on a chart.
+An array of tags should be passed in.
+Component will query for new data when tags or dates are changed.  
+-->
+<dom-module id="timeseries-chart">
+    <template>
+      <style include="timeseries-chart-styles"></style>
+      <px-card>
+        <div class="u-pt flex flex--row flex--justify">
+          <div class="u-1/4-desk u-1/1-palm">
+            <div class="u-pr">
+              <px-dropdown id="tagDropdown" checkbox-mode="{{!liveDataMode}}" display-value="Select Tags">
+                <px-dropdown-content items="{{tags}}" checkbox-mode="{{!liveDataMode}}"></px-dropdown-content>
+              </px-dropdown>
+            </div>
+          </div>
+          <div class="u-1/4-desk u-1/1-palm"><button id="toggleChartBtn" class="btn">Show Live Data</button></div>
+          <div class="u-1/2-desk u-1/1-palm">
+            <px-rangepicker id="tsRangepicker" range="{{selectedRange}}" hidden$="{{liveDataMode}}"></px-rangepicker>
+            <div id="chartMessage" class="u-pt--" hidden$="{{!liveDataMode}}"></div>
+          </div>
+        </div>
+        <div style="height: 400px;">
+          <h4 style="margin-bottom: -40px">[[modeLabel]]</h4>
+          <px-vis-timeseries id="tsChart"
+              chart-data="{{tsChartData}}"
+              chart-extents='{"x":["dynamic","dynamic"],"y":["dynamic","dynamic"]}'
+              register-config='{"truncationLength": 25}'
+              series-config="{{tsSeriesConfig}}"
+              clean-on-detached>
+          </px-vis-timeseries>
+        </div>
+      </px-card>
+      <iron-ajax id="tsAjaxEl" content-type="application/json"></iron-ajax>
+    </template>
+    <script>
+    Polymer({
+      is: 'timeseries-chart',
+      properties: {
+        headerText: {
+          type: String,
+          value: 'Parameter Comparison'
+        },
+        // These are tag objects for display.
+        // [{key: "tag1", val: "Tag 1"}, {key: "tag2", val: "Tag 2", checked: true}]
+        tags: {
+          type: Array
+        },
+        tsChartData: {
+          type: Array
+        },
+        tsSeriesConfig: {
+          type: Object
+        },
+        selectedRange: {
+          type: Object
+        },
+        wsUrl: {
+          type: String
+        },
+        liveDataMode: {
+          type: Boolean,
+          value: false
+        },
+        modeLabel: {
+          value: "Historical Data"
+        },
+        _socket: {
+          type: Object
+        }
+      },
+      observers: ['_tagsOrRangeChanged(tags.*, selectedRange)', '_setModeLabel(liveDataMode)'],
+
+      ready: function() {
+        this.selectedRange = this._getDefaultRange(1);
+
+        this.$.toggleChartBtn.addEventListener('tap', function(evt) {
+          this.liveDataMode = !this.liveDataMode;
+          if (this.liveDataMode) {
+            this.$.toggleChartBtn.innerText ='Show Historical Data';
+            this._showLiveSeries(this._getFirstSelectedTag(this.tags));
+          } else {
+            this.closeWebSocket();
+            this.$.toggleChartBtn.innerText = 'Show Live Data';
+            this.$.tagDropdown.displayValue = 'Select Tags';
+            this._tagsOrRangeChanged(this.tags, this.selectedRange);
+          }
+        }.bind(this));
+        
+        this.$.tsAjaxEl.addEventListener('response', function(evt) {
+          console.log('ts data', evt.detail.response);
+          if (evt.detail.response.tags) {
+            this._formatDataForChart(evt.detail.response.tags);
+          }
+        }.bind(this));
+
+        this.$.tagDropdown.addEventListener('px-dropdown-value-changed', function(evt) {
+          if (evt.detail.key && evt.detail.key !== "") {
+            console.log('new single tag selected:', evt.detail);
+            this._showLiveSeries(evt.detail.key);
+          }
+        }.bind(this));
+      },
+
+      _getFirstSelectedTag: function(tags) {
+        for (var i = 0; i < tags.length; i++) {
+          var t = tags[i];
+          if (t.checked) {
+            return t.key;
+          }
+        }
+        return tags[0] ? tags[0].key : null;  // default to first, if none checked.
+      },
+
+      _buildSeriesConfig: function(tsTags, displayTags) {               
+        function getDisplayTag(tsTag) {
+          var dt = {};
+          for(var i=0; i<displayTags.length; i++) {
+            dt = displayTags[i];
+            if (tsTag.name === dt.key) {
+              break;
+            }
+          }
+          // console.log('display tag', dt);
+          return dt;
+        }
+
+        var config = {};
+        tsTags.forEach(function(tag, index) {
+          var displayTag = getDisplayTag(tag);
+          var seriesKey = "series" + index;
+          var yKey = "y" + index;
+          var xKey = "x" + index;
+          config[seriesKey] = {
+            type: "line",
+            name: displayTag.val,
+            // This seems like it should work, but causes an error.
+            // x: xKey,
+            x: "x0",
+            y: yKey,
+            yAxisUnit: displayTag.unit,
+            axis: {
+              id: "axis" + index,
+              side: (index % 2 === 0) ? "left" : "right",
+              number: index
+            }
+          }
+        });
+        console.log('series config', config);
+        return config;
+      },
+
+      _formatDataForChart: function(tags) {
+        var chartData = [], seriesConfig = {};
+        tags.forEach(function(tag, i) {
+          var yKey = "y" + i;
+          var xKey = "x" + i;
+          tag.results[0].values.forEach(function(val) {
+            var point = {};
+            // This seems like it should work, but causes an error.
+            // point[xKey] = val[0];
+            point.x0 = val[0]
+            point[yKey] = val[1];
+            chartData.push(point);
+          })
+        });
+        // console.log('formatted chartData:', chartData);
+        this.$.tsChart.notifyResize();  // force the chart to redraw
+        this.tsSeriesConfig = {};
+        this.tsSeriesConfig = this._buildSeriesConfig(tags, this.tags);
+        this.tsChartData = chartData;
+      },
+
+      _tagsOrRangeChanged: function(newTags, newRange) {
+        // console.log('_tagsOrRangeChanged', newTags, newRange);
+          this.debounce('fetch', function() {
+          if (this.liveDataMode) {
+            this._showLiveSeries(this._getFirstSelectedTag(newTags.value));
+            return;
+          }          
+          if (newRange && newTags) {
+            this._fetchTimeseriesData(newTags.base || newTags, newRange);
+          }
+        }, 100);
+      },
+
+      // Expects an array of objects from px-dropdown, and a range object from px-rangepicker
+      // [{key: "tag1", val: "Tag 1"}, {key: "tag2", val: "Tag 2", checked: true}]
+      // {"from":"2016-01-01T00:00:00.000Z","to":"2016-07-01T11:00:00.000Z"}
+      _fetchTimeseriesData: function(tags, range) {
+        var agg = [{
+          "type": "avg",
+          "sampling": {
+            "unit": "s",
+            "value": "30"
+          }
+        }];
+        var query = {
+          "cache_time": 0,
+          start: moment(range.from).valueOf(),
+          end: moment(range.to).valueOf(),
+          tags: []
+        };
+        tags.forEach(function(t) {
+          if (t.checked) {
+            query.tags.push({
+              name: t.key,
+              aggregations: agg
+            });
+          }
+        });
+        if (query.tags.length === 0) {  // default, if none were selected yet
+          query.tags.push({
+            name: this._getFirstSelectedTag(tags),
+            aggregations: agg
+          });
+        }
+        // {cache_time: 0, tags: [{name: "Compressor-2015:DischargePressure","aggregations":[{"type":"avg","sampling":{"unit":"s","value":"30"}}]}], start: 1489001400000, end:1489603772723}
+        console.log('fetching timeseries data', tags, range);
+        this.set('tsChartData', []);
+        this.set('tsSeriesConfig', {});
+        this.$.tsAjaxEl.url = '/api/predix-timeseries/v1/datapoints';
+        this.$.tsAjaxEl.method = 'POST';
+        this.$.tsAjaxEl.body = query;
+        this.$.tsAjaxEl.generateRequest();
+      },
+
+      _getDefaultRange: function(weeks) {
+        var from = moment().subtract(weeks, 'week'),
+          to = moment();
+        return {"from":from.toISOString(),"to":to.toISOString()};
+      },
+
+      _showLiveSeries: function(tag) {
+        this.tsSeriesConfig = {};
+        this.tsSeriesConfig = this._buildSeriesConfig([{name: tag}], this.tags);
+        this.tsChartData = [];
+        this.$.tsChart.notifyResize();
+        this._openWebSocket(tag);
+      },
+
+      _openWebSocket: function(tag) {
+        var wsUrl = this._buildWsUrl() + '/' + tag;
+        console.log('opening websocket: ' + wsUrl);
+        var self = this;
+        if (this.socket && this.socket.readyState !== WebSocket.CLOSED) {
+          this.socket.close();
+        }
+        this.$.chartMessage.innerText="Waiting for live data...";
+        try {
+          this.socket = new WebSocket(wsUrl);
+          self.intervalId = setInterval(function() {
+            if (self.socket.readyState === WebSocket.OPEN) {
+              self.socket.send('ping'); // keep the connection alive
+            }
+          }, 20000);
+
+        } catch (err) {
+          console.error('Error opening web socket. ', err);
+          self.$.chartMessage.innerText="Error fetching live data.";
+          clearInterval(this.intervalId);
+        }
+
+        if (this.socket) {
+          this.socket.onerror = function (error) {
+            console.error('WebSocket Error: ', error);
+            self.$.chartMessage.innerText="Error fetching live data.";
+          };
+
+          this.socket.onmessage = function (evt) {
+            self.$.chartMessage.innerText="";
+            // console.log('message from WebSocket: ' + evt.data);
+            if (evt.data === 'SUCCESS') {
+              return; // ignore the response from the 'ping'.
+            }
+            var rawPoint = JSON.parse(evt.data).datapoints[0];
+            if (self.tsChartData.length > 99) {
+              self.shift('tsChartData');
+            }
+            self.push('tsChartData', {"x0": rawPoint[0], "y0": rawPoint[1]});
+          };
+
+          this.socket.onclose = function (evt) {
+            // self.$.chartMessage.innerText="";
+            console.log('websocket closed. code: ' + evt.code);
+            // console.log('reason: ' + evt.reason);
+          };
+        }
+      },
+
+      closeWebSocket: function() {
+        if (this.socket && this.socket.readyState !== WebSocket.CLOSED) {
+          this.socket.close();
+        }
+        clearInterval(this.intervalId);
+      },
+
+      // if this component is hidden, close the web socket.
+      attributeChanged: function(name, type) {
+        // console.log('attribute changed', name, type);
+        this.debounce('hidden', function() {
+          if (name === 'hidden' && this.getAttribute(name) === '') {
+            console.log('component hidden.');
+            this.closeWebSocket();
+          }
+        }, 500);
+      },
+
+      _buildWsUrl: function() {
+        console.log('_buildWsUrl', this.wsUrl);
+        if (this.wsUrl && this.wsUrl.indexOf('wss://') === 0) {
+          // looks like there's a real web socket server running in the cloud.
+          return this.wsUrl + '/livestream';
+        } else if ('http:' === window.location.protocol) {
+          // assume we're running locally with mock web socket server
+          return 'ws://localhost:5000' + this.wsUrl;
+        } else { // running in cloud, using mock web socket server
+          return 'wss://' + window.location.host + this.wsUrl;
+        }
+      },
+
+      _setModeLabel: function(liveMode) {
+        this.modeLabel = liveMode ? "Live Data" : "Historical Data";
+      }
+
+    });
+    </script>
+</dom-module>

@@ -1,0 +1,123 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/px-data-table/px-data-table.html">
+<link rel="import" href="../../bower_components/px-data-table/px-data-table-column.html">
+<link rel="import" href="../../bower_components/px-card/px-card.html">
+
+<script src="../../bower_components/moment/min/moment.min.js"></script>
+<!--
+  This table wraps the px-data-table, and displays data from one of two sources:
+  1. Simple asset data - shows only tag name and thresholds
+  2. RMD data - shows a combination of asset & time series data from the RMD datasource service.
+-->
+<dom-module id="seed-table">
+    <template>
+      <px-card id="tableCard" style="padding-top: 15px">
+        <px-data-table table-data="{{seedTableData}}" hide-pagination-control="[[!showPagination]]">
+          <px-data-table-column name="tag" type="html"></px-data-table-column>
+          <px-data-table-column name="alertStatus" label="Alert Status" type="html" hide="[[showAssetOnly]]"></px-data-table-column>
+          <px-data-table-column name="deltaThreshold" label="Delta to Threshold" type="html" hide="[[showAssetOnly]]"></px-data-table-column>
+          <px-data-table-column name="lastTagReading" label="Last Meter Reading" hide="[[showAssetOnly]]"></px-data-table-column>
+          <px-data-table-column name="currentValue" label="Current Value" hide="[[showAssetOnly]]"></px-data-table-column>
+          <px-data-table-column name="unit" label="Units" hide="[[showAssetOnly]]"></px-data-table-column>
+          <px-data-table-column name="thresholdMin" label="Threshold Min"></px-data-table-column>
+          <px-data-table-column name="thresholdMax" label="Threshold Max"></px-data-table-column>
+        </px-data-table>
+      </px-card>
+    </template>
+    <script>
+    Polymer({
+      is: 'seed-table',
+      properties: {
+        assetData: {
+          type: Object,
+          observer: '_formatAssetDataForTable'
+        },
+        rmdData: {
+          type: Object,
+          observer: '_formatRmdDataForTable'
+        },
+        seedTableData: {
+          type: Object
+        },
+        headerText: {
+          type: String
+        },
+        showPagination: {
+          type: Boolean,
+          value: false
+        },
+        showAssetOnly: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      _formatRmdDataForTable: function(rmdData) {
+        var rows = [], row, description, self = this;
+        rmdData.tableData.forEach(function(sensor) {
+          row = {
+            "tag": self._getMeterHtml(sensor),
+            "alertStatus": self._getAlertHtml(sensor),
+            "currentValue": (typeof sensor.currentValue === "number") ? parseFloat(sensor.currentValue).toFixed(3): '',
+            "unit": sensor.unit,
+            "lastTagReading": moment(sensor.lastTagReading).format('YYYY-MM-DD HH:mm:ss ZZ'),
+            "thresholdMin": sensor.thresholdMin,
+            "thresholdMax": sensor.thresholdMax,
+            "deltaThreshold": self._getDeltaHtml(sensor)
+          }
+          rows.push(row);
+        });
+        this.showPagination = rows.length > 10;
+        this.seedTableData = rows;
+        this.headerText = "Asset Performance";
+      },
+
+      _getAlertHtml: function(row) {
+        var color = row.alertStatus ? 'red' : 'green';
+        var iconClass = row.alertStatus ? 'fa-exclamation-triangle' : 'fa-circle';
+        return '<div style="color:' + color + ';"><iron-icon icon="fa:' + iconClass + '"></iron-icon></div>';
+      },
+
+      _getDeltaHtml: function(row) {
+        var html,
+          val = (typeof row.deltaThreshold === "number") ? row.deltaThreshold.toFixed(2) + '%' : '',
+          divStyle = 'color: ' + row.deltaThresholdColor,
+          iconClass = row.deltaThresholdLevel === 'HIGH' ? 'fa-caret-up' : 'fa-caret-down',
+          html = '<div style="' + divStyle + '"><iron-icon icon="fa:' + iconClass + '"></iron-icon> ' + val + '</div>'
+        return html;
+      },
+
+      _getMeterHtml: function(row) {
+        var html = '<div class="style-scope aha-table">' + row.tag;
+        if (row.tag_isKpi) {
+          html += ' <iron-icon title="KPI" icon="fa:fa-bar-chart"></iron-icon>'
+        }
+        if (row.tag_isPM) {
+          html += ' <iron-icon title="Predix Machine" icon="fa:fa-line-chart"></iron-icon>'
+        }
+        html += '</div>';
+        return html;
+      },
+
+      _formatAssetDataForTable: function(anAsset) {
+        var sensor, row, rows = [], description;
+        var assetTags = anAsset.assetTag;
+        for (var property in assetTags) {
+          if (assetTags.hasOwnProperty(property)) {
+            sensor = assetTags[property]
+            row = {
+              "tag": sensor.tagUri,
+              "thresholdMin": sensor.loAlarmThreshold,
+              "thresholdMax": sensor.hiAlarmThreshold
+            }
+            rows.push(row);
+          }
+        }
+        this.seedTableData = rows;
+        this.headerText = "Asset details";
+        this.showPagination = rows.length > 10;
+      }
+
+    });
+    </script>
+</dom-module>

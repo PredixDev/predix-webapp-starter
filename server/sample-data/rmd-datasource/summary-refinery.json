@@ -1,0 +1,24 @@
+{
+	"kpis": [{
+		"value": "10.0",
+		"label": "Output (avg)",
+		"uom": "mb/d"
+	}, {
+		"value": "10.0",
+		"label": "Octane Number (avg)",
+		"uom": null
+	}, {
+		"value": "60.0",
+		"label": "Reliability",
+		"uom": "%"
+	}, {
+		"value": "100.0",
+		"label": "Availability",
+		"uom": "%"
+	}],
+	"overall": {
+		"title": "KPI Health",
+		"subtitle": "plant-richmond-refinery",
+		"percentage": 100.0
+	}
+}

@@ -1,0 +1,64 @@
+{
+  "name": "predix-webapp-starter",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "author": {
+    "name": "Predix Adoption",
+    "email": "predix.adoption@ge.com"
+  },
+  "scripts": {
+    "start": "node server/app.js",
+    "test": "node_modules/mocha/bin/mocha test/server"
+  },
+  "keywords": [
+    "predix-ui-seed", "predix-seed", "predix-webapp-starter"
+  ],
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-clean": "^0.3.2",
+    "gulp-ejs": "^1.2.2",
+    "gulp-filter": "^5.0.0",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-inline-source": "^2.1.0",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-nodemon": "^2.0.6",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-sass": "^2.1.1",
+    "gulp-sequence": "^0.4.6",
+    "gulp-style-modules": "^0.1.0",
+    "merge-stream": "^1.0.0",
+    "mocha": "^3.2.0",
+    "node-sass": "^3.8.0",
+    "node-sass-import-once": "^1.2.0",
+    "open": "0.0.4",
+    "polymer-build": "^0.9.1",
+    "postcss": "^5.0.21",
+    "postcss-cli": "^2.5.2",
+    "request": "^2.58.0",
+    "run-sequence": "^1.2.2",
+    "sass-import-modules": "^2.1.0",
+    "sinon": "^1.17.7"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
+    "connect-redis": "^3.2.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-http-proxy": "^0.10.0",
+    "express-session": "^1.14.1",
+    "https-proxy-agent": "^1.0.0",
+    "json-server": "^0.8.10",
+    "passport": "^0.3.2",
+    "passport-oauth2-middleware": "^1.0.2",
+    "passport-predix-oauth": "^0.1.2",
+    "url": "^0.11.0",
+    "ws": "^2.2.1"
+  }
+}

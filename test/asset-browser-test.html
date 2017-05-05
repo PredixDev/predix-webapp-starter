@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>seed-test-01</title>
+  <script src="../public/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../public/bower_components/web-component-tester/browser.js"></script>
+  <script src="../public/bower_components/es6-promise/es6-promise.js"></script>
+
+  <!-- Import the element to test -->
+  <link rel="import" href="../public/elements/asset-browser/asset-browser.html">
+
+</head>
+<body>
+
+  <test-fixture id="basic">
+    <template>
+       <asset-browser></asset-browser>
+    </template>
+  </test-fixture>
+
+  <script>
+
+  console.log('starting asset-browser tests');
+  document.addEventListener('WebComponentsReady', function() {
+      var server;
+
+      setup(function(){
+        server = sinon.fakeServer.create();
+        // server.respondWith('GET', '/userinfo', [200, {"Content-Type": "application/json"}, fakeUserInfo]);
+        server.autoRespond = true;
+      });
+
+      teardown(function() {
+        server.restore();
+      });
+
+      suite('asset-browser type and _transformEntityForDisplay tests', function() {
+
+        var assetBrowser, assetEntity, groupEntity;
+
+        setup(function() {
+          assetBrowser = fixture('basic');
+          assetEntity = {
+            description: 'coffee mug',
+            uri: '/asset/mug-123',
+            group: '/group/mugs'
+          };
+          groupEntity = {
+            description: 'kitchen cabinet',
+            uri: '/group/cabinet-1',
+            parent: '/group/kitchen'
+          }
+        });
+
+        test('asset-browser object should be of type "asset-browser"', function() {
+          assert(assetBrowser.is === 'asset-browser', 'asset-browser object has incorrect type: ' + assetBrowser.is);
+        });
+
+        test('_transformEntityForDisplay sets correct properties for top level asset', function() {
+          var output = assetBrowser._transformEntityForDisplay(assetEntity);
+          expect(output.name).to.equal(assetEntity.description);
+          expect(output.id).to.equal(assetEntity.uri);
+          expect(output.parentId).to.equal(assetEntity.group);
+          expect(output.isOpenable).to.be.true;
+        });
+
+        test('_transformEntityForDisplay sets correct properties for low level asset', function() {
+          assetEntity.parent = '/asset/mug-set-1';
+          assetEntity.group = undefined;
+          var output = assetBrowser._transformEntityForDisplay(assetEntity);
+          expect(output.name).to.equal(assetEntity.description);
+          expect(output.id).to.equal(assetEntity.uri);
+          expect(output.parentId).to.equal(assetEntity.parent);
+          expect(output.isOpenable).to.be.true;
+        });
+
+        test('_transformEntityForDisplay sets correct properties for high level group', function() {
+          var output = assetBrowser._transformEntityForDisplay(groupEntity);
+          expect(output.name).to.equal(groupEntity.description);
+          expect(output.id).to.equal(groupEntity.uri);
+          expect(output.parentId).to.equal(groupEntity.parent);
+          expect(output.isOpenable).to.be.false;
+        });
+
+        test('_transformEntityForDisplay sets correct properties for bottom level group', function() {
+          groupEntity.uri = '/group/plant/kitchen-23';
+          var output = assetBrowser._transformEntityForDisplay(groupEntity);
+          expect(output.name).to.equal(groupEntity.description);
+          expect(output.id).to.equal(groupEntity.uri);
+          expect(output.parentId).to.equal(groupEntity.parent);
+          expect(output.isOpenable).to.be.true;
+        });        
+      });
+
+      suite('asset-browser _buildAssetModel tests', function() {
+        var assetBrowser, assetGroups, assetCompressor;
+
+        setup(function() {
+          assetBrowser = fixture('basic');
+          assetGroups =
+          [
+            {
+              "parent": "/group/root",
+              "description": "Predix Energy",
+              "uri": "/group/enterprise-predix"
+            },
+            {
+              "parent": "/group/enterprise-predix",
+              "description": "Richmond Refinery",
+              "uri": "/group/plant-richmond-refinery"
+            }
+          ];
+          assetCompressor = [
+            {
+              "group": "/group/plant-richmond-refinery",
+              "description": "Test Compressor",
+              "uri": "/asset/test-compressor"
+            },
+            {
+              "parent": "/asset/test-compressor",
+              "description": "Discharge Valve",
+              "uri": "/asset/discharge-valve-123"
+            }
+          ];
+          server = sinon.fakeServer.create();
+          server.respondWith('GET', '/api/predix-asset/group', [200, {"Content-Type": "application/json"}, JSON.stringify(assetGroups)]);
+              // server.respondWith('GET', '/api/predix-asset/asset', [200, {"Content-Type": "application/json"}, assetCompressor]);
+          
+        });
+
+        test('returns empty array if no assets are passed in', function() {
+          var output = [];
+          assetBrowser._buildAssetModel('/group/root', [], output);
+          expect(output.length).to.equal(0);
+        })
+
+        test('builds correct asset model with groups only', function() {
+          assetGroups.forEach(function(a) {
+            assetBrowser._transformEntityForDisplay(a);
+          });
+          var output = [];
+          assetBrowser._buildAssetModel('/group/root', assetGroups, output, '/group/plant-richmond-refinery');
+          expect(output.length).to.equal(1);
+          expect(output[0].description).to.equal('Predix Energy');
+          expect(output[0].selectedAsset).to.be.undefined;
+          expect(output[0].children.length).to.equal(1);
+          expect(output[0].children[0].description).to.equal('Richmond Refinery');
+          expect(output[0].children[0].selectedAsset).to.be.true;
+          expect(output[0].children[0].children.length).to.equal(0);
+        });
+
+        test('builds correct asset model with assets only', function() {
+          assetCompressor.forEach(function(a) {
+            assetBrowser._transformEntityForDisplay(a);
+          });
+          var output = [];
+          assetBrowser._buildAssetModel('/group/plant-richmond-refinery', assetCompressor, output);
+          expect(output.length).to.equal(1);
+          expect(output[0].description).to.equal('Test Compressor');
+          expect(output[0].children.length).to.equal(1);
+          expect(output[0].children[0].description).to.equal('Discharge Valve');
+          expect(output[0].children[0].children.length).to.equal(0);
+        });
+
+        test('builds correct asset model with groups and assets', function() {
+          var allAssets = assetGroups.concat(assetCompressor);
+          allAssets.forEach(function(a) {
+            assetBrowser._transformEntityForDisplay(a);
+          });
+          var output = [];
+          assetBrowser._buildAssetModel('/group/root', allAssets, output, '/asset/discharge-valve-123');
+          expect(output.length).to.equal(1);
+          expect(output[0].description).to.equal('Predix Energy');
+          expect(output[0].children[0].description).to.equal('Richmond Refinery');
+          expect(output[0].children[0].children[0].description).to.equal('Test Compressor');
+          expect(output[0].children[0].children[0].children[0].description).to.equal('Discharge Valve');
+        });
+
+        test('does not include entities with no group or parent', function() {
+          var noParent = [{'description': 'bad'}];
+          var output = [];
+          assetBrowser._buildAssetModel('/group/root', noParent, output);
+          expect(output.length).to.equal(0);
+        });
+      });
+  });
+  </script>
+
+</body>
+</html>

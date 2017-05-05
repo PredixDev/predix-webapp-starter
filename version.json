@@ -1,0 +1,11 @@
+{
+  "name": "Predix WebApp Starter",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "local-setup": "https://github.build.ge.com/adoption/local-setup#develop",
+    "predix-scripts": "https://github.build.ge.com/adoption/predix-scripts#develop",
+    "predix-webapp-starter": "https://github.build.ge.com/adoption/predix-webapp-starter.git#develop"
+  },
+  "author": "gedesigntech"
+}

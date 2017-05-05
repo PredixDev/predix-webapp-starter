@@ -1,0 +1,103 @@
+@charset "UTF-8";
+
+.kpi-datapoint-wrapper {
+  position: var(--px-datapoint-wrapper-position, relative);
+  background-color: var(--kpi-datapoint-wrapper-background-color, #2886af);
+  display: var(--kpi-datapoint-wrapper-display, inline-block);
+  border-radius: var(--kpi-datapoint-wrapper-border-radius, 5px);
+  width: var(--kpi-datapoint-wrapper-width, 16.3%);
+  height: var(--kpi-datapoint-wrapper, 80px);
+}
+
+.kpi-datapoint-bar-meter-wrapper {
+  width: var(--kpi-datapoint-bar-meter-wrapper-width, 33.2%);
+}
+
+.kpi-datapoint-wrapper:hover {
+  background-color: var(--kpi-datapoint-wrapper-background-color-hover, #eee);
+}
+
+.kpi-datapoint-wrapper:hover * {
+  color: var(--kpi-datapoint-wrapper-color-hover, #2886af);
+}
+
+.kpi-datapoint-label {
+  white-space: nowrap;
+  text-align: center;
+  margin: 10px auto 5px auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: var(--kpi-datapoint-wrapper-width, 80%);
+  height: var(--kpi-datapoint-wrapper, 15px);
+  color: var(--kpi-datapoint-label-color, #fff);
+  font-size: var(--kpi-dagtapoint-label-font-size, 14px);
+  font-weight: bold;
+}
+
+.kpi-datapoint-value-units {
+  text-align: center;
+  margin: 0px auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: var(--kpi-datapoint-value-units-width, 100%);
+  height: var(--kpi-datapoint-value-units-height, 55px);
+  color: var(--kpi-datapoint-value-units-color, #fff);
+}
+
+.kpi-datapoint-value {
+  font-size: var(--kpi-datapoint-value-font-size, 40px);
+  font-weight: var(--kpi-datapoint-value-font-weight, normal);
+}
+
+.kpi-datapoint-units {
+  color: var(--kpi-datapoint-units-color, #fff);
+  font-size: var(--kpi-datapoint-units-font-size, 20px);
+  font-weight: var(--kpi-datapoint-units-font-weight, normal);
+  vertical-align: baseline;
+  margin-top: 20px;
+}
+
+.kpi-datapoint-health {
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  border-radius: 5px;
+  top: 4px;
+  right: 4px;
+}
+
+.kpi-datapoint-health-good {
+  background-color: #0b0;
+}
+
+.kpi-datapoint-health-bad {
+  background-color: #d55;
+}
+
+.kpi-bar-meter-wrapper {
+  display: inline-block;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.kpi-bar-meter-bar-wrapper {
+  display: inline-block;
+  width: 4px;
+  height: 50%;
+  background-color: #ccc;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.kpi-bar-meter-bar-content {
+  height: 100%;
+  background-color: var(--kpi-datapoint-bar-meter-color, #0f0);
+}
+
+.kpi-bar-meter-value {
+  display: inline-block;
+  font-size: var(--kpi-datapoint-bar-meter-value-size, 40px);
+  color: var(--kpi-datapoint-bar-meter-value-color, #fff);
+  margin-right: 10px;
+}

@@ -1,0 +1,24 @@
+[{
+	"kpis": [{
+		"value": "0.049",
+		"label": "Output (avg)",
+		"uom": "m/s"
+	}, {
+		"value": "2.75",
+		"label": "crank-frame-compressionratio (avg)",
+		"uom": null
+	}, {
+		"value": "60.0",
+		"label": "Reliability",
+		"uom": "%"
+	}, {
+		"value": "85.0",
+		"label": "Availability",
+		"uom": "%"
+	}],
+	"overall": {
+		"title": "KPI Health",
+		"subtitle": "compressor-2017",
+		"percentage": 85.0
+	}
+}]
