@@ -42,7 +42,7 @@ SKIP_SETUP=false
 #ASSET_MODEL="-amrmd predix-ui-seed/server/sample-data/predix-asset/asset-model-metadata.json predix-ui-seed/server/sample-data/predix-asset/asset-model.json"
 SCRIPT="-script build-basic-app.sh -script-readargs build-basic-app-readargs.sh"
 QUICKSTART_ARGS="-ps $SCRIPT"
-IZON_SH="https://github.build.ge.com/raw/adoption/izon/$BRANCH/izon.sh"
+IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/$BRANCH/izon.sh"
 VERSION_JSON="version.json"
 PREDIX_SCRIPTS=predix-scripts
 REPO_NAME=predix-ui-see
@@ -52,7 +52,7 @@ TOOLS="Cloud Foundry CLI, Git, Node.js"
 TOOLS_SWITCHES="--cf --git --nodejs"
 
 local_read_args $@
-VERSION_JSON_URL=https://github.build.ge.com/raw/adoption/$REPO_NAME/$BRANCH/version.json
+VERSION_JSON_URL=https://raw.githubusercontent.com/PredixDev/$REPO_NAME/$BRANCH/version.json
 
 
 function check_internet() {

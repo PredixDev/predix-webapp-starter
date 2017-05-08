@@ -1,6 +1,6 @@
 {
   "name": "predix-webapp-starter",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "private": true,
   "engines": {
     "node": ">=0.10.0"
@@ -14,7 +14,9 @@
     "test": "node_modules/mocha/bin/mocha test/server"
   },
   "keywords": [
-    "predix-ui-seed", "predix-seed", "predix-webapp-starter"
+    "predix-ui-seed",
+    "predix-seed",
+    "predix-webapp-starter"
   ],
   "devDependencies": {
     "chai": "^3.5.0",

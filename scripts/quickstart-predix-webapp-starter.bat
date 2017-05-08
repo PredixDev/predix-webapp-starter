@@ -124,7 +124,7 @@ GOTO :eof
   xcopy /y !CURRENTDIR!\version.json %TEMP%
   CALL %TEMP%\izon.bat READ_DEPENDENCY local-setup LOCAL_SETUP_URL LOCAL_SETUP_BRANCH %TEMP%
   ECHO "LOCAL_SETUP_BRANCH=!LOCAL_SETUP_BRANCH!"
-  SET SETUP_WINDOWS=https://github.build.ge.com/raw/adoption/local-setup/!LOCAL_SETUP_BRANCH!/setup-windows.bat
+  SET SETUP_WINDOWS=https://raw.githubusercontent.com/PredixDev/local-setup/!LOCAL_SETUP_BRANCH!/setup-windows.bat
   rem SET SETUP_WINDOWS=https://raw.githubusercontent.com/PredixDev/local-setup/!LOCAL_SETUP_BRANCH!/setup-windows.bat
 
   ECHO !SETUP_WINDOWS!
