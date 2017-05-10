@@ -119,6 +119,10 @@ The simplest way to push the Starter application to a cloud environment is by mo
 
 Ask questions and file tickets on <a href="https://www.predix.io/community" target="_blank">https://www.predix.io/community</a>.
 
+This application also serves as the UI for the Predix RMD Reference App.  For more information:
+- [Predix RMD Reference App Dev Guide](https://www.predix.io/resources/tutorials/journey.html#1610)
+- [predix-rmd-ref-app Github repo](https://github.com/predixdev/predix-rmd-ref-app)
+
 # Copyright
 Copyright &copy; 2015, 2016, 2017 GE Global Research. All rights reserved.
 

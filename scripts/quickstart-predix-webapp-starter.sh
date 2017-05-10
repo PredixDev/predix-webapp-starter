@@ -42,16 +42,16 @@ SKIP_SETUP=false
 #ASSET_MODEL="-amrmd predix-ui-seed/server/sample-data/predix-asset/asset-model-metadata.json predix-ui-seed/server/sample-data/predix-asset/asset-model.json"
 SCRIPT="-script build-basic-app.sh -script-readargs build-basic-app-readargs.sh"
 QUICKSTART_ARGS="-ps $SCRIPT"
-IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/$BRANCH/izon.sh"
 VERSION_JSON="version.json"
 PREDIX_SCRIPTS=predix-scripts
-REPO_NAME="predix-webapp-starter"
+REPO_NAME=predix-webapp-starter
 VERSION_JSON="version.json"
 APP_NAME="Predix UI Polymer Starter"
 TOOLS="Cloud Foundry CLI, Git, Node.js"
 TOOLS_SWITCHES="--cf --git --nodejs"
 
 local_read_args $@
+IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/$BRANCH/izon.sh"
 VERSION_JSON_URL=https://raw.githubusercontent.com/PredixDev/$REPO_NAME/$BRANCH/version.json
 
 
@@ -78,31 +78,12 @@ function init() {
   fi
 
   check_internet
-  #if needed, get the version.json that resolves dependent repos from another github repo
-  if [ ! -f "$VERSION_JSON" ]; then
-    if [[ $currentDir == *"$REPO_NAME" ]]; then
-      if [[ ! -f manifest.yml ]]; then
-        echo 'We noticed you are in a directory named $REPO_NAME but the usual contents are not here, please rename the dir or do a git clone of the whole repo.  If you rename the dir, the script will get the repo.'
-        exit 1
-      fi
-    fi
-    echo $VERSION_JSON_URL
-    curl -s -O $VERSION_JSON_URL
-  fi
 
   #get the script that reads version.json
   eval "$(curl -s -L $IZON_SH)"
-  #get the url and branch of the requested repo from the version.json
-  __readDependency "local-setup" LOCAL_SETUP_URL LOCAL_SETUP_BRANCH
-  #get the predix-scripts url and branch from the version.json
-  __readDependency $PREDIX_SCRIPTS PREDIX_SCRIPTS_URL PREDIX_SCRIPTS_BRANCH
-  if [ ! -d "$PREDIX_SCRIPTS" ]; then
-    echo "Cloning predix script repo ..."
-    git clone --depth 1 --branch $PREDIX_SCRIPTS_BRANCH $PREDIX_SCRIPTS_URL
-  else
-      echo "Predix scripts repo found reusing it..."
-  fi
-  source $PREDIX_SCRIPTS/bash/scripts/local-setup-funcs.sh
+
+  getVersionFile
+  getLocalSetupFuncs
 }
 
 if [[ $PRINT_USAGE == 1 ]]; then
@@ -117,8 +98,13 @@ else
   fi
 fi
 
+getPredixScripts
+#clone the repo itself if running from oneclick script
+getCurrentRepo
+
 echo "quickstart_args=$QUICKSTART_ARGS"
 source $PREDIX_SCRIPTS/bash/quickstart.sh $QUICKSTART_ARGS
 
 
 __append_new_line_log "Successfully completed $APP_NAME installation!" "$quickstartLogDir"
+__append_new_line_log "" "$quickstartLogDir"
