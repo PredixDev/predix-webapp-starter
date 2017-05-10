@@ -7,11 +7,11 @@ The Predix WebApp Starter ("Starter") is a web application starter kit aimed to 
 
 As its name indicates the Starter is built on [Polymer](http://www.polymer-project.org).  Based on the [Web Component API](https://developer.mozilla.org/en-US/docs/Web/Web_Components), Polymer is a component framework that prefers the browser's native capabilities over HTML and JavaScript enhancements, wherever possible.  And where there are differences in currently available features, polyfills are provided towards consistent cross-browser behavior.  By adopting the Polymer strategy the Starter ensures high consistency of application behavior across browsers, and the best chances of compatibility with future browser versions.
 
-Most of the frontend components provided in the Starter are from [Predix UI Components](http://predixdev.github.io/predix-ui/), which are also built on Polymer.  These re-usable UI building blocks have been researched and designed to address the most common UI patterns.  Both built upon Polymer, the Starter and Px Components work together out-of-the-box.  Px Components can be used independently, or in combination with one another and with the Starter.  This achieves consistent behavior, look-and-feel, and high code re-use.
+Most of the frontend components provided in the Starter are from [Predix UI Components](https://www.predix-ui.com), which are also built on Polymer.  These re-usable UI building blocks have been researched and designed to address the most common UI patterns.  Both built upon Polymer, the Starter and Px Components work together out-of-the-box.  Px Components can be used independently, or in combination with one another and with the Starter.  This achieves consistent behavior, look-and-feel, and high code re-use.
 
 The backend of the Starter is implemented as a NodeJS/Express web server.  It presently includes a minimal set of public modules and a couple of Predix-specific modules (for session and proxy concerns, for example).  Similar to the frontend, it is also straightforwardly customizable, even replaceable by another server application, if so desired.  [NodeJS](http://nodejs.org) is a server-side application framework based on JavaScript.  It enjoys strong growth and huge adoption in the server applications community.
 
-The features offered by the Starter are from open-source component projects, many of which are actively discussed and contributed to.  This provides developers with available documentation and help in using such components for their projects.
+Many features offered by the Starter are from open-source component projects, many of which are actively discussed and contributed to.  This provides developers with available documentation and help in using such components for their projects.
 
 ## Getting Started
 
@@ -65,53 +65,53 @@ The simplest way to push the Starter application to a cloud environment is by mo
 
 1. Update manifest.yml
 
-	Change the name field in your manifest.yml.  
-	Uncomment the services section, and change the names to match your service instances.
-	Uncomment the two base64ClientCredential environment variables and enter the correct values for your UAA clients.
-	```
-	---
-	applications:
-	  - name: my-predix-starter
-	    memory: 64M
-	    buildpack: nodejs_buildpack
-	    command: node server/app.js
-	#services:
-	 # - <your-name>-secure-uaa-instance
-	 # - <your-name>-timeseries-instance
-	 # - <your-name>-asset-instance
-	env:
-	    node_env: cloud
-	    uaa_service_label : predix-uaa
-	    # Add these values for authentication in the cloud
-	    #base64ClientCredential: dWFhLWNsaWVudC1pZDp1YWEtY2xpZW50LWlkLXNlY3JldA==
-		#loginBase64ClientCredential: bG9naW5fY2xpZW50X2lkOnNlY3JldA==
-	```
+    Change the name field in your manifest.yml.  
+    Uncomment the services section, and change the names to match your service instances.
+    Uncomment the two base64ClientCredential environment variables and enter the correct values for your UAA clients.
+    ```
+    ---
+    applications:
+      - name: my-predix-starter
+        memory: 64M
+        buildpack: nodejs_buildpack
+        command: node server/app.js
+    #services:
+     # - <your-name>-secure-uaa-instance
+     # - <your-name>-timeseries-instance
+     # - <your-name>-asset-instance
+    env:
+        node_env: cloud
+        uaa_service_label : predix-uaa
+        # Add these values for authentication in the cloud
+        #base64ClientCredential: dWFhLWNsaWVudC1pZDp1YWEtY2xpZW50LWlkLXNlY3JldA==
+        #loginBase64ClientCredential: bG9naW5fY2xpZW50X2lkOnNlY3JldA==
+    ```
 
 2. Push to the cloud.
 
-	```
-	cf push
-	```
+    ```
+    cf push
+    ```
 
 3. Access the cloud deployment of your Starter application
 
   The output of the **cf push** command includes the URL to which your application was deployed.  Below is an example:
 
-	```
-	Showing health and status for app my-predix-starter in org my-org / space dev as developer@gmail.com...
-	OK
+    ```
+    Showing health and status for app my-predix-starter in org my-org / space dev as developer@gmail.com...
+    OK
 
-	requested state: started
-	instances: 1/1
-	usage: 128M x 1 instances
-	urls: my-predix-starter.run.aws-usw02-pr.ice.predix.io
-	last uploaded: Mon Apr 17 18:35:03 UTC 2017
-	stack: cflinuxfs2
-	buildpack: nodejs_buildpack
+    requested state: started
+    instances: 1/1
+    usage: 128M x 1 instances
+    urls: my-predix-starter.run.aws-usw02-pr.ice.predix.io
+    last uploaded: Mon Apr 17 18:35:03 UTC 2017
+    stack: cflinuxfs2
+    buildpack: nodejs_buildpack
 
-		state     since                    cpu    memory          disk          details
-	#0   running   2017-04-17 11:35:40 AM   0.0%   63.5M of 128M   90.9M of 1G
-	```  
+        state     since                    cpu    memory          disk          details
+    #0   running   2017-04-17 11:35:40 AM   0.0%   63.5M of 128M   90.9M of 1G
+    ```  
 
   Access your Starter application by adding "https://" to the beginning of the URL, and loading that URL in a web browser.
 

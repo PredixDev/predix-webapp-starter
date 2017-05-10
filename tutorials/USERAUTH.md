@@ -1,23 +1,23 @@
 # Tutorial : User Authentication with UAA
 
 ## Introduction
-Web applications almost always involve controlling access to information and features.  For this reason one commonly needed feature is that of authentication.  Requiring login prior to accessing restricted features is just a necessary part of securing a web application.
+Web applications often involve securing access to information.  For this reason one commonly needed feature is that of user authentication.  Requiring login to access restricted portions is an essential feature of a secure web application.
 
-This tutorial shows how to enable authentication for an instance of the Predix Web App Starter.  Specifically, we use the Predix UAA service that has its own user interface.  With an unauthenticated browser session, accessing any restricted page of the application should cause the user to be redirected to the UAA login page.  Upon successful login the user is redirected back to the application.  From there the user is able to access the application's restricted pages and information.  This authenticated session lasts until the user logs out.  
+This tutorial shows how to enable authentication for the Predix Web App Starter.  Specifically, we use the Predix UAA service, which has its own user interface, for authentication.  Accessing any restricted page of the application with a browser in unauthenticated state should trigger redirection to the UAA login user interface.  Upon successful login the browser is redirected back to the application.  From there the user is able to access the application's restricted information.  This authenticated session lasts until the user logs out or the session expires.  
 
-We first show how to require authentication for all routes and pages of the application. Then we show how to make specific Express routes require authentication.
+We first show how to require authentication for all routes and pages of the application. Then we show how to make specific routes require authentication.
 
-If you prefer a video version (on which this written version is based) one is available [**here**](https://youtu.be/AiJ2IFJoTHg?list=PLibNgo_CBeuujvRV26_uLTksm1ezh7oGd).
+If you prefer a video version (on which this written version is based), one is available [**here**](https://youtu.be/AiJ2IFJoTHg?list=PLibNgo_CBeuujvRV26_uLTksm1ezh7oGd).
 
 ### Pre-Requisites
-This tutorial requires a running UAA service instance.  Please refer to this [**tutorial**](https://www.predix.io/resources/tutorials/tutorial-details.html?tutorial_id=1544&tag=1605&journey=Build%20a%20basic%20application&resources=1580,1569,1523,1544,1547,1549,1556,1553,1570) for information on creating an instance and a set of valid credentials.  UAA instance creation will involve the following values:
+This tutorial requires an existing UAA instance.  Please refer to this [**page**](https://www.predix.io/resources/tutorials/tutorial-details.html?tutorial_id=1544&tag=1605&journey=Build%20a%20basic%20application&resources=1580,1569,1523,1544,1547,1549,1556,1553,1570) for information on creating an instance and selecting a set of credentials.  This step produces the following values:
 
 - URL
 - clientId
 - secret
 - username / password (credentials) 
     
-Save these values for use in the configuration steps below.
+Save these values for use in the later configuration steps below.
 
 This tutorial also requires knowledge of and practical experience with the Predix Web App Starter (this project).  You should have been able to install, minimally configure, and deploy the app prior to performing this tutorial.  Please refer to the README document of this project for this requirement.
 
@@ -128,7 +128,7 @@ Perform the same steps above to verify that authentication is working.
 
 ## Conclusion
 
-This document has shown how to add Authentication to an instance of the Predix Web App Starter, and apply the feature to all routes or specific routes only.  It has also shown how to apply the feature in both local and cloud deployments.
+This document has shown how to add UAA authentication to an instance of the Predix Web App Starter, and apply the feature to all routes or specific routes only.  It has also shown how to apply the feature in both local and cloud deployments.
 
 ## Support and Further Information
 
