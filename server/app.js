@@ -25,14 +25,12 @@ var httpServer = http.createServer(app);
 /**********************************************************************
        SETTING UP EXRESS SERVER
 ***********************************************************************/
+console.log('************ Environment: '+node_env+'******************');
 
 app.set('trust proxy', 1);
 
 // if running locally, we need to set up the proxy from local config file:
 var node_env = process.env.node_env || 'development';
-
-console.log('************ Environment: '+node_env+'******************');
-
 if (node_env === 'development') {
   var devConfig = require('./localConfig.json')[node_env];
 	proxy.setServiceConfig(config.buildVcapObjectFromLocalConfig(devConfig));

@@ -47,8 +47,8 @@ PREDIX_SCRIPTS=predix-scripts
 REPO_NAME=predix-webapp-starter
 VERSION_JSON="version.json"
 APP_NAME="Predix UI Polymer Starter"
-TOOLS="Cloud Foundry CLI, Git, Node.js"
-TOOLS_SWITCHES="--cf --git --nodejs"
+TOOLS="Cloud Foundry CLI, Git, Node.js, Predix CLI"
+TOOLS_SWITCHES="--cf --git --nodejs --predixcli"
 
 local_read_args $@
 IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/$BRANCH/izon.sh"
