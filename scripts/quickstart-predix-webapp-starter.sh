@@ -46,6 +46,7 @@ VERSION_JSON="version.json"
 PREDIX_SCRIPTS=predix-scripts
 REPO_NAME=predix-webapp-starter
 VERSION_JSON="version.json"
+APP_DIR="webapp-starter"
 APP_NAME="Predix UI Polymer Starter"
 TOOLS="Cloud Foundry CLI, Git, Node.js, Predix CLI"
 TOOLS_SWITCHES="--cf --git --nodejs --predixcli"
@@ -75,6 +76,10 @@ function init() {
   if [[ $currentDir == *"scripts" ]]; then
     echo 'Please launch the script from the root dir of the project'
     exit 1
+  fi
+  if [[ ! $currentDir == *"$REPO_NAME" ]]; then
+    mkdir -p $APP_DIR
+    cd $APP_DIR
   fi
 
   check_internet
