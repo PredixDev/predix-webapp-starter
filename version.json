@@ -1,6 +1,6 @@
 {
   "name": "Predix WebApp Starter",
-  "version": "1.0.21",
+  "version": "1.0.24",
   "private": true,
   "dependencies": {
     "local-setup": "https://github.com/PredixDev/local-setup#1.0.11",
