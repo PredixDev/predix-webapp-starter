@@ -38,5 +38,9 @@
     "px-buttons-design": "^1.1.7",
     "marked-element": "^1.3.1",
     "px-dark-theme": "^1.0.10"
+  },
+  "resolutions": {
+    "px-datetime-common": "^0.7.0",
+    "app-localize-behavior": "^0.10.2"
   }
 }
