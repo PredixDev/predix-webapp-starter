@@ -41,6 +41,7 @@
   },
   "resolutions": {
     "px-datetime-common": "^0.7.0",
-    "app-localize-behavior": "^0.10.2"
+    "app-localize-behavior": "^0.10.2",
+    "iron-ajax": "^2.0.0"
   }
 }
