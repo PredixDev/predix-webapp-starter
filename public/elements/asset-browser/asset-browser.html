@@ -75,6 +75,7 @@
           if (!asset.parentId) {
             // if asset has no parent, it will never show on the context browser
             allAssets.splice(i, 1);
+            i--; //need to move the index back after splicing.
             this._buildAssetModel(parentId, allAssets, level, selectedAssetId);
           }
           if (asset.id === selectedAssetId) {
@@ -84,6 +85,7 @@
             asset.children = asset.children || [];
             level.push(asset);
             allAssets.splice(i, 1);
+            i--; //need to move the index back after splicing.
             // console.log('allAssets remaining', allAssets.length);
             // recursive call
             this._buildAssetModel(asset.id, allAssets, asset.children, selectedAssetId);
