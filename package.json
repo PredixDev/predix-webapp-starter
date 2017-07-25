@@ -60,7 +60,6 @@
     "passport": "^0.3.2",
     "passport-oauth2-middleware": "^1.0.2",
     "passport-predix-oauth": "^0.1.2",
-    "url": "^0.11.0",
     "ws": "^2.2.1"
   }
 }
