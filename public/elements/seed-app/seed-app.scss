@@ -23,6 +23,8 @@ $viewport-margin: 0; // defaults to auto
 // Objects
 $inuit-enable-btn--bare     : true;
 
+// Need this font path for some reason, to prevent 404 errors in console.
+$fa-font-path: '../../bower_components/font-awesome/fonts';
 @import "px-buttons-design/_objects.buttons.scss";
 
 $inuit-enable-layout--small : true;

@@ -4,7 +4,8 @@
   "fragments": [
     "public/elements/views/about-view.html",
     "public/elements/views/rmd-view.html",
-    "public/elements/timeseries-chart/timeseries-chart.html"
+    "public/elements/timeseries-chart/timeseries-chart.html",
+    "public/elements/views/simple-asset-view.html"
   ],
   "sources": [
     "public/elements/**/*",
