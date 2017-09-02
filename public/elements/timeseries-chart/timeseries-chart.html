@@ -15,37 +15,33 @@ An array of tags should be passed in.
 Component will query for new data when tags or dates are changed.  
 -->
 <dom-module id="timeseries-chart">
-    <template>
-      <style include="timeseries-chart-styles"></style>
-      <px-card>
-        <div class="u-pt flex flex--row flex--justify">
-          <div class="u-1/4-desk u-1/1-palm">
-            <div class="u-pr">
-              <px-dropdown id="tagDropdown" checkbox-mode="{{!liveDataMode}}" display-value="Select Tags">
-                <px-dropdown-content items="{{tags}}" checkbox-mode="{{!liveDataMode}}"></px-dropdown-content>
-              </px-dropdown>
-            </div>
-          </div>
-          <div class="u-1/4-desk u-1/1-palm"><button id="toggleChartBtn" class="btn">Show Live Data</button></div>
-          <div class="u-1/2-desk u-1/1-palm">
-            <px-rangepicker id="tsRangepicker" range="{{selectedRange}}" hidden$="{{liveDataMode}}"></px-rangepicker>
-            <div id="chartMessage" class="u-pt--" hidden$="{{!liveDataMode}}"></div>
+  <template>
+    <style include="timeseries-chart-styles"></style>
+    <px-card header-text="Sensor Data" icon="px-fea:analysis">
+      <div class="u-pt flex flex--row flex--justify">
+        <div class="u-1/4-desk u-1/1-palm">
+          <div class="u-pr">
+            <px-dropdown id="tagDropdown" multi="{{!liveDataMode}}" selected="{{selectedTag}}" selected-values='{{selectedTags}}' display-value="Select Tags"
+              items="{{tags}}" disable-clear>
+            </px-dropdown>
           </div>
         </div>
-        <div style="height: 400px;">
-          <h4 style="margin-bottom: -40px">[[modeLabel]]</h4>
-          <px-vis-timeseries id="tsChart"
-              chart-data="{{tsChartData}}"
-              chart-extents='{"x":["dynamic","dynamic"],"y":["dynamic","dynamic"]}'
-              register-config='{"truncationLength": 25}'
-              series-config="{{tsSeriesConfig}}"
-              clean-on-detached>
-          </px-vis-timeseries>
+        <div class="u-1/4-desk u-1/1-palm"><button on-tap="_toggleMode" class="btn">Show [[_computeModeLabel(liveDataMode,'invert')]]</button></div>
+        <div class="u-1/2-desk u-1/1-palm">
+          <px-rangepicker id="tsRangepicker" range="{{selectedRange}}" hidden$="{{liveDataMode}}"></px-rangepicker>
+          <div id="chartMessage" class="u-pt--" hidden$="{{!liveDataMode}}"></div>
         </div>
-      </px-card>
-      <iron-ajax id="tsAjaxEl" content-type="application/json"></iron-ajax>
-    </template>
-    <script>
+      </div>
+      <div style="height:400px; padding-top:15px;">
+        <h4 style="margin-bottom: -30px">[[_computeModeLabel(liveDataMode)]]</h4>
+        <px-vis-timeseries id="tsChart" chart-data="{{tsChartData}}" chart-extents='{"x":["dynamic","dynamic"],"y":["dynamic","dynamic"]}'
+          register-config='{"truncationLength": 25}' series-config="{{tsSeriesConfig}}" clean-on-detached>
+        </px-vis-timeseries>
+      </div>
+    </px-card>
+    <iron-ajax id="tsAjaxEl" content-type="application/json"></iron-ajax>
+  </template>
+  <script>
     Polymer({
       is: 'timeseries-chart',
       properties: {
@@ -53,8 +49,8 @@ Component will query for new data when tags or dates are changed.
           type: String,
           value: 'Parameter Comparison'
         },
-        // These are tag objects for display.
-        // [{key: "tag1", val: "Tag 1"}, {key: "tag2", val: "Tag 2", checked: true}]
+        // These are tag objects for display.  key is the actual Time Series tag name.
+        // [{key: "tag1", val: "Tag 1", unit: "psi"}, {key: "tag2", val: "Tag 2", checked: true}]
         tags: {
           type: Array
         },
@@ -67,67 +63,85 @@ Component will query for new data when tags or dates are changed.
         selectedRange: {
           type: Object
         },
+        selectedTag: {
+          type: String,
+          observer: '_showLiveSeries'
+        },
+        selectedTags: {
+          type: Array
+        },
         wsUrl: {
           type: String
         },
         liveDataMode: {
           type: Boolean,
-          value: false
-        },
-        modeLabel: {
-          value: "Historical Data"
+          value: false,
+          observer: '_setMode'
         },
         _socket: {
           type: Object
         }
       },
-      observers: ['_tagsOrRangeChanged(tags.*, selectedRange)', '_setModeLabel(liveDataMode)'],
+      observers: [
+        '_tagsOrRangeChanged(selectedTags.*, selectedRange)',
+        '_setDefaultTag(tags)'
+      ],
 
-      ready: function() {
-        this.selectedRange = this._getDefaultRange(1);
+      ready: function () {
 
-        this.$.toggleChartBtn.addEventListener('tap', function(evt) {
-          this.liveDataMode = !this.liveDataMode;
-          if (this.liveDataMode) {
-            this.$.toggleChartBtn.innerText ='Show Historical Data';
-            this._showLiveSeries(this._getFirstSelectedTag(this.tags));
-          } else {
-            this.closeWebSocket();
-            this.$.toggleChartBtn.innerText = 'Show Live Data';
-            this.$.tagDropdown.displayValue = 'Select Tags';
-            this._tagsOrRangeChanged(this.tags, this.selectedRange);
-          }
-        }.bind(this));
-        
-        this.$.tsAjaxEl.addEventListener('response', function(evt) {
+        this.$.tsAjaxEl.addEventListener('response', function (evt) {
           console.log('ts data', evt.detail.response);
           if (evt.detail.response.tags) {
             this._formatDataForChart(evt.detail.response.tags);
           }
         }.bind(this));
 
-        this.$.tagDropdown.addEventListener('px-dropdown-value-changed', function(evt) {
-          if (evt.detail.key && evt.detail.key !== "") {
-            console.log('new single tag selected:', evt.detail);
-            this._showLiveSeries(evt.detail.key);
-          }
-        }.bind(this));
       },
 
-      _getFirstSelectedTag: function(tags) {
-        for (var i = 0; i < tags.length; i++) {
-          var t = tags[i];
-          if (t.checked) {
-            return t.key;
-          }
+      _setDefaultTag(newVal) {
+        // console.log('_setDefaultTag', newVal);
+        var tagDropdown = this.$.tagDropdown;
+        if (tagDropdown.selectedValues && tagDropdown.selectedValues.length < 1 && newVal && newVal.length > 0) {
+          tagDropdown.selectedValues = [newVal[0].key]
         }
-        return tags[0] ? tags[0].key : null;  // default to first, if none checked.
+        // console.log('selectedValues: ', this.$.tagDropdown.selectedValues);
       },
 
-      _buildSeriesConfig: function(tsTags, displayTags) {               
+      _setMode: function (isLiveMode) {
+        if (isLiveMode === true) {
+          var selectedValues = this.$.tagDropdown.selectedValues;
+          var selectedTsTag = (selectedValues && selectedValues.length > 0) ? selectedValues[0] : this.tags[0].key; 
+          for (var i = 0; i < this.tags.length; i++) {
+            if (selectedTsTag === this.tags[i].key) {
+              this.selectedTag = this.tags[i];
+              break;
+            }
+          }
+          this._showLiveSeries(selectedTsTag);
+        } else {
+          this.closeWebSocket();
+          this._tagsOrRangeChanged(this.selectedTags, this.selectedRange);
+        }
+      },
+
+      _toggleMode: function () {
+        this.liveDataMode = !this.liveDataMode;
+        console.log('_toggleMode. liveDataMode is now ', this.liveDataMode);
+      },
+
+      _computeModeLabel: function (liveDataMode, inv) {
+        if (inv === "invert") {
+          return this.liveDataMode ? "Historical Data" : "Live Data";
+        }
+        else {
+          return this.liveDataMode ? "Live Data" : "Historical Data";
+        }
+      },
+
+      _buildSeriesConfig: function (tsTags, displayTags) {
         function getDisplayTag(tsTag) {
           var dt = {};
-          for(var i=0; i<displayTags.length; i++) {
+          for (var i = 0; i < displayTags.length; i++) {
             dt = displayTags[i];
             if (tsTag.name === dt.key) {
               break;
@@ -138,7 +152,7 @@ Component will query for new data when tags or dates are changed.
         }
 
         var config = {};
-        tsTags.forEach(function(tag, index) {
+        tsTags.forEach(function (tag, index) {
           var displayTag = getDisplayTag(tag);
           var seriesKey = "series" + index;
           var yKey = "y" + index;
@@ -162,12 +176,12 @@ Component will query for new data when tags or dates are changed.
         return config;
       },
 
-      _formatDataForChart: function(tags) {
+      _formatDataForChart: function (tags) {
         var chartData = [], seriesConfig = {};
-        tags.forEach(function(tag, i) {
+        tags.forEach(function (tag, i) {
           var yKey = "y" + i;
           var xKey = "x" + i;
-          tag.results[0].values.forEach(function(val) {
+          tag.results[0].values.forEach(function (val) {
             var point = {};
             // This seems like it should work, but causes an error.
             // point[xKey] = val[0];
@@ -177,19 +191,14 @@ Component will query for new data when tags or dates are changed.
           })
         });
         // console.log('formatted chartData:', chartData);
-        this.$.tsChart.notifyResize();  // force the chart to redraw
-        this.tsSeriesConfig = {};
+        // this.$.tsChart.notifyResize();  // force the chart to redraw
+        // this.tsSeriesConfig = {};
         this.tsSeriesConfig = this._buildSeriesConfig(tags, this.tags);
         this.tsChartData = chartData;
       },
 
-      _tagsOrRangeChanged: function(newTags, newRange) {
-        // console.log('_tagsOrRangeChanged', newTags, newRange);
-          this.debounce('fetch', function() {
-          if (this.liveDataMode) {
-            this._showLiveSeries(this._getFirstSelectedTag(newTags.value));
-            return;
-          }          
+      _tagsOrRangeChanged: function (newTags, newRange) {
+        this.debounce('fetch', function () {
           if (newRange && newTags) {
             this._fetchTimeseriesData(newTags.base || newTags, newRange);
           }
@@ -199,7 +208,7 @@ Component will query for new data when tags or dates are changed.
       // Expects an array of objects from px-dropdown, and a range object from px-rangepicker
       // [{key: "tag1", val: "Tag 1"}, {key: "tag2", val: "Tag 2", checked: true}]
       // {"from":"2016-01-01T00:00:00.000Z","to":"2016-07-01T11:00:00.000Z"}
-      _fetchTimeseriesData: function(tags, range) {
+      _fetchTimeseriesData: function (tags, range) {
         var agg = [{
           "type": "avg",
           "sampling": {
@@ -213,20 +222,12 @@ Component will query for new data when tags or dates are changed.
           end: moment(range.to).valueOf(),
           tags: []
         };
-        tags.forEach(function(t) {
-          if (t.checked) {
-            query.tags.push({
-              name: t.key,
-              aggregations: agg
-            });
-          }
-        });
-        if (query.tags.length === 0) {  // default, if none were selected yet
+        this.selectedTags.forEach(function (t) {
           query.tags.push({
-            name: this._getFirstSelectedTag(tags),
+            name: t,
             aggregations: agg
           });
-        }
+        });
         // {cache_time: 0, tags: [{name: "Compressor-2015:DischargePressure","aggregations":[{"type":"avg","sampling":{"unit":"s","value":"30"}}]}], start: 1489001400000, end:1489603772723}
         console.log('fetching timeseries data', tags, range);
         this.set('tsChartData', []);
@@ -237,31 +238,28 @@ Component will query for new data when tags or dates are changed.
         this.$.tsAjaxEl.generateRequest();
       },
 
-      _getDefaultRange: function(weeks) {
-        var from = moment().subtract(weeks, 'week'),
-          to = moment();
-        return {"from":from.toISOString(),"to":to.toISOString()};
+      _showLiveSeries: function (tag) {
+        if (tag) {
+          this.debounce('showlive', function() {
+            this.tsSeriesConfig = this._buildSeriesConfig([{ name: tag }], this.tags);
+            this.tsChartData = [];
+            this.$.tsChart.notifyResize();
+            this._openWebSocket(tag);
+          }, 100);
+        }
       },
 
-      _showLiveSeries: function(tag) {
-        this.tsSeriesConfig = {};
-        this.tsSeriesConfig = this._buildSeriesConfig([{name: tag}], this.tags);
-        this.tsChartData = [];
-        this.$.tsChart.notifyResize();
-        this._openWebSocket(tag);
-      },
-
-      _openWebSocket: function(tag) {
+      _openWebSocket: function (tag) {
         var wsUrl = this._buildWsUrl() + '/' + tag;
         console.log('opening websocket: ' + wsUrl);
         var self = this;
         if (this.socket && this.socket.readyState !== WebSocket.CLOSED) {
           this.socket.close();
         }
-        this.$.chartMessage.innerText="Waiting for live data...";
+        this.$.chartMessage.innerText = "Waiting for live data...";
         try {
           this.socket = new WebSocket(wsUrl);
-          self.intervalId = setInterval(function() {
+          self.intervalId = setInterval(function () {
             if (self.socket.readyState === WebSocket.OPEN) {
               self.socket.send('ping'); // keep the connection alive
             }
@@ -269,18 +267,18 @@ Component will query for new data when tags or dates are changed.
 
         } catch (err) {
           console.error('Error opening web socket. ', err);
-          self.$.chartMessage.innerText="Error fetching live data.";
+          self.$.chartMessage.innerText = "Error fetching live data.";
           clearInterval(this.intervalId);
         }
 
         if (this.socket) {
           this.socket.onerror = function (error) {
             console.error('WebSocket Error: ', error);
-            self.$.chartMessage.innerText="Error fetching live data.";
+            self.$.chartMessage.innerText = "Error fetching live data.";
           };
 
           this.socket.onmessage = function (evt) {
-            self.$.chartMessage.innerText="";
+            self.$.chartMessage.innerText = "";
             // console.log('message from WebSocket: ' + evt.data);
             if (evt.data === 'SUCCESS') {
               return; // ignore the response from the 'ping'.
@@ -289,7 +287,7 @@ Component will query for new data when tags or dates are changed.
             if (self.tsChartData.length > 99) {
               self.shift('tsChartData');
             }
-            self.push('tsChartData', {"x0": rawPoint[0], "y0": rawPoint[1]});
+            self.push('tsChartData', { "x0": rawPoint[0], "y0": rawPoint[1] });
           };
 
           this.socket.onclose = function (evt) {
@@ -300,7 +298,7 @@ Component will query for new data when tags or dates are changed.
         }
       },
 
-      closeWebSocket: function() {
+      closeWebSocket: function () {
         if (this.socket && this.socket.readyState !== WebSocket.CLOSED) {
           this.socket.close();
         }
@@ -308,9 +306,9 @@ Component will query for new data when tags or dates are changed.
       },
 
       // if this component is hidden, close the web socket.
-      attributeChanged: function(name, type) {
+      attributeChanged: function (name, type) {
         // console.log('attribute changed', name, type);
-        this.debounce('hidden', function() {
+        this.debounce('hidden', function () {
           if (name === 'hidden' && this.getAttribute(name) === '') {
             console.log('component hidden.');
             this.closeWebSocket();
@@ -318,7 +316,7 @@ Component will query for new data when tags or dates are changed.
         }, 500);
       },
 
-      _buildWsUrl: function() {
+      _buildWsUrl: function () {
         console.log('_buildWsUrl', this.wsUrl);
         if (this.wsUrl && this.wsUrl.indexOf('wss://') === 0) {
           // looks like there's a real web socket server running in the cloud.
@@ -329,12 +327,8 @@ Component will query for new data when tags or dates are changed.
         } else { // running in cloud, using mock web socket server
           return 'wss://' + window.location.host + this.wsUrl;
         }
-      },
-
-      _setModeLabel: function(liveMode) {
-        this.modeLabel = liveMode ? "Live Data" : "Historical Data";
       }
 
     });
-    </script>
+  </script>
 </dom-module>

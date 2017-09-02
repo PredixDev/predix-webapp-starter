@@ -8,6 +8,7 @@ npm-debug.log
 .DS_Store
 temp
 dist
+build
 .github/
 .vscode/
 predix-scripts/

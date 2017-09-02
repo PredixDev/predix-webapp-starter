@@ -19,6 +19,12 @@
     // Fade splash screen, then remove
     var splashEl = document.getElementById('splash');
     splashEl.parentNode.removeChild(splashEl);
+
+    // set some global variables for px-vis webworkers.
+    window.Px = window.Px || {};
+    window.Px.vis = window.Px.vis || {};
+    window.Px.vis.workerUrl = '../../bower_components/px-vis/px-vis-worker.js';
+    window.Px.vis.workerD3Url = '../../bower_components/pxd3/d3.min.js';
   };
 
   // load webcomponents polyfills

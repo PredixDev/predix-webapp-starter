@@ -1,22 +1,37 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/px-context-browser/px-context-browser.html">
+<link rel="import" href="../../bower_components/px-context-browser/px-context-browser-trigger.html">
+<link rel="import" href="../../bower_components/px-breadcrumbs/px-breadcrumbs.html">
 <script src="../../bower_components/es6-promise/es6-promise.js"></script>
+<link rel="import" href="../seed-app/seed-app-styles.html">
 
 <dom-module id="asset-browser">
-    <template>
-        <px-context-browser id="assetBrowser" 
-          opened-item-name="Select Asset"
-          browser-context="{{assetModel}}">Asset Monitoring</px-context-browser>
-        <!-- Fetch the whole asset model at once, using these two queries.
+  <template>
+    <style include="seed-app-styles">
+       :host {
+        height: 60px;
+        display: flex;
+        background: white;
+        flex-direction: row;
+        align-items: center;
+      }
+    </style>
+    <div class="flex flex--row" style="position:relative">
+      <px-context-browser-trigger trigger="{{openTrigger}}"></px-context-browser-trigger>
+      <px-context-browser id="contextBrowser" open-trigger="[[openTrigger]]" items="{{assetModel.data}}" selected-route="{{selectedRoute}}"
+        keys="{{keys}}"></px-context-browser>
+      <px-breadcrumbs style="width:500px" class="flex__item" items="{{assetModel.data}}" keys="{{keys}}" selected-route="{{selectedRoute}}"></px-breadcrumbs>
+    </div>
+    <!-- Fetch the whole asset model at once, using these two queries.
             (Our asset model has only groups and assets.)
             This way, we can pre-select an asset deep in the tree. 
             This component assumes that every entity has a "parent" or "group" attribute.
             -->
-        <iron-ajax id="groupAjaxEl" url="{{assetGroupQueryUrl}}"></iron-ajax>
-        <iron-ajax id="assetAjaxEl" url="{{assetQueryUrl}}"></iron-ajax>
-    </template>
-    <script>
+    <iron-ajax id="groupAjaxEl" url="{{assetGroupQueryUrl}}"></iron-ajax>
+    <iron-ajax id="assetAjaxEl" url="{{assetQueryUrl}}"></iron-ajax>
+  </template>
+  <script>
     Polymer({
       is: 'asset-browser',
       properties: {
@@ -26,51 +41,47 @@
         },
         openedAsset: {
           type: Object,
-          notify: true        
+          notify: true
         },
         assetQueryUrl: {
           type: String
         },
         assetGroupQueryUrl: {
           type: String
-        }
-      },
-
-      ready: function() {
-        this._fetchAssetModel();
-        this.$.assetBrowser.handlers = this._getContextBrowserHandlers();
-      },
-
-      _getContextBrowserHandlers: function() {
-        var self = this;
-        return {
-          itemOpenHandler: function(asset) {
-            // console.log('opened.', asset);
-            self.openedAsset = asset;
-          },
-          getChildren: function(asset) {
-            return new Promise(function(resolve, reject) {
-              resolve({data: asset.children, meta: {parentId: asset.id}});
-            });
+        },
+        keys: {
+          type: Object,
+          value: function () {
+            return { "label": "label", "id": "id", "children": "children" };
+          }
+        },
+        selectedRoute: {
+          type: Array,
+          value: function () {
+            return ['/group/enterprise-predix','/group/plant-richmond-refinery','/asset/compressor-2017'];
           }
         }
       },
 
-      _fetchFromUrl: function(ajaxElement) {
-        return new Promise(function(resolve, reject) {
-          ajaxElement.addEventListener('response', function(evt) {
+      ready: function () {
+        this._fetchAssetModel();
+      },
+
+      _fetchFromUrl: function (ajaxElement) {
+        return new Promise(function (resolve, reject) {
+          ajaxElement.addEventListener('response', function (evt) {
             resolve(evt.detail.response)
           });
-          ajaxElement.addEventListener('error', function(evt) {
+          ajaxElement.addEventListener('error', function (evt) {
             reject('Error fetching data. ', evt);
           });
           ajaxElement.generateRequest();
         })
       },
 
-      // build asset heirarchy from flat array
-      _buildAssetModel: function(parentId, allAssets, level, selectedAssetId) {
-        for (var i=0; i<allAssets.length; i++) {
+      // build asset hierarchy from flat array
+      _buildAssetModel: function (parentId, allAssets, level, selectedAssetId) {
+        for (var i = 0; i < allAssets.length; i++) {
           var asset = allAssets[i];
           if (!asset.parentId) {
             // if asset has no parent, it will never show on the context browser
@@ -93,16 +104,16 @@
         };
       },
 
-      _fetchAssetModel: function() {
+      _fetchAssetModel: function () {
         var self = this;
         var allAssets = [];
-        var newAssetModel = {data: []};
-        var assetBrowser = this.$.assetBrowser;
+        var newAssetModel = { data: [] };
+        var contextBrowser = this.$.contextBrowser;
         // TODO: show spinner
         // call two functions that return promises
-        Promise.all([self._fetchFromUrl(self.$.groupAjaxEl), self._fetchFromUrl(self.$.assetAjaxEl)]).then(function(resultSets) {
-          resultSets.forEach(function(items) {
-            items.forEach(function(i) {
+        Promise.all([self._fetchFromUrl(self.$.groupAjaxEl), self._fetchFromUrl(self.$.assetAjaxEl)]).then(function (resultSets) {
+          resultSets.forEach(function (items) {
+            items.forEach(function (i) {
               allAssets.push(self._transformEntityForDisplay(i));
             });
           });
@@ -110,8 +121,8 @@
           self._buildAssetModel('/group/root', allAssets, newAssetModel.data, '/asset/compressor-2017');
 
           self.assetModel = newAssetModel;
-          self.openedAsset = self.$.assetBrowser.selectedItem;
-        }).catch(function(error) {
+          self.openedAsset = contextBrowser.selected;
+        }).catch(function (error) {
           console.error('Fail!', error);
         });
       },
@@ -120,7 +131,7 @@
       * this method transforms asset entity into an object format consumable by px-context-browser component
       */
       _transformEntityForDisplay: function (entity) {
-        entity.name = entity.description;
+        entity.label = entity.description;
         entity.id = entity.uri;
         entity.parentId = entity.parent || entity.group;
         // we can only open plants or assets:
@@ -130,5 +141,5 @@
       }
 
     });
-    </script>
+  </script>
 </dom-module>

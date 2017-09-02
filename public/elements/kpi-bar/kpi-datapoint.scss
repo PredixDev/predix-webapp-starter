@@ -2,9 +2,8 @@
 
 .kpi-datapoint-wrapper {
   position: var(--px-datapoint-wrapper-position, relative);
-  background-color: var(--kpi-datapoint-wrapper-background-color, #2886af);
+  background-color: var(--kpi-datapoint-wrapper-background-color, #23343F);
   display: var(--kpi-datapoint-wrapper-display, inline-block);
-  border-radius: var(--kpi-datapoint-wrapper-border-radius, 5px);
   width: var(--kpi-datapoint-wrapper-width, 16.3%);
   height: var(--kpi-datapoint-wrapper, 80px);
 }
@@ -18,7 +17,7 @@
 }
 
 .kpi-datapoint-wrapper:hover * {
-  color: var(--kpi-datapoint-wrapper-color-hover, #2886af);
+  color: var(--kpi-datapoint-wrapper-color-hover, #23343F);
 }
 
 .kpi-datapoint-label {

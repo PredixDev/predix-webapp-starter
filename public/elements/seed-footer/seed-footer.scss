@@ -1,7 +1,6 @@
 // Settings
 @import "px-colors-design/_settings.colors.scss";
 @import "px-defaults-design/_settings.defaults.scss";
-@import "px-typography-design/_base.typography.scss";
 
 // Generic
 @import "px-helpers-design/_generic.helpers.scss";
@@ -20,11 +19,7 @@ $viewport-margin: 2rem; // defaults to auto
 @import "px-mixins-design/_tools.mixins.scss";
 
 $inuit-webfont-path: '/bower_components/px-typography-design/type';
-$predix-font-family : "GE Inspira Sans", sans-serif !default;
-
-:host {
-  font-family: $predix-font-family;
-}
+@import "px-typography-design/_base.typography.scss";
 
 $px-page-link-color: $gray5;
 

@@ -13,5 +13,11 @@
     "public/seed*",
     "!public/elements/dev-guide/**"
   ],
-  "extraDependencies": []
+  "builds": [
+    {
+      "name": "es5-basic",
+      "js": {"compile": true, "minify": true},
+      "bundle": true
+    }
+  ]
 }

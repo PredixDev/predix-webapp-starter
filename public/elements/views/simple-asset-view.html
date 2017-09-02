@@ -6,7 +6,7 @@
 <dom-module id="simple-asset-view">
   <template>
 
-    <px-card header-text="Asset Details" icon="fa-sitemap">
+    <px-card header-text="Asset Details" icon="px-nav:hierarchy">
       <h3>{{assetDescription}}</h3>
       <px-data-table table-data="{{assetTableData}}">
       </px-data-table>
@@ -63,7 +63,8 @@
           if (assetTags.hasOwnProperty(property)) {
             sensor = assetTags[property];
             delete sensor.complexType;
-            delete sensor.tagDatasource;
+            delete sensor.edgeDatasource;
+            delete sensor.timeseriesDatasource
             sensors.push(sensor);
           }
         }

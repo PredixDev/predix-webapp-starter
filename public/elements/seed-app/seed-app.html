@@ -6,7 +6,7 @@
 
 <!-- app route -->
 <link rel="import" href="../../bower_components/app-route/app-location.html">
-<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/px-app-helpers/px-app-route/px-app-route.html">
 <!-- px components -->
 <link rel="import" href="../../bower_components/px-app-nav/px-app-nav.html">
 <link rel="import" href="../../bower_components/px-view/px-view.html">
@@ -18,14 +18,23 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <!-- importing font awesome and iron icon here, to fix icon flickering problem when loading asynchronously. -->
-<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../../bower_components/px-polymer-font-awesome/px-polymer-font-awesome.html">
+<link rel="import" href="../../bower_components/px-icon-set/px-icon.html">
+<link rel="import" href="../../bower_components/px-icon-set/px-icon-set.html">
 
 <dom-module id="seed-app">
   <template>
 
     <!-- apply imported seed app style module -->
-    <style include="seed-app-styles"></style>
+    <style include="seed-app-styles">
+      :root {
+        --px-app-nav-background-color: #1B2A33;
+        --px-app-nav-link-selected-color: #364C59;
+      }
+
+      px-login {
+        --px-btn-bare-color: #b7c3cd;
+      }
+    </style>
 
     <header role="banner">
       <div class="viewport flex flex--justify flex--middle">
@@ -41,55 +50,25 @@
     <div class="viewport">
 
       <div class="content-wrapper">
+        <app-location
+          route="{{route}}"
+          use-hash-as-path>
+        </app-location>
+        <px-app-route
+          route="{{route}}"
+          use-hash-as-path
+          update-nav-route
+          nav-route="{{navRoute}}">
+        </px-app-route>
         <px-app-nav
           class="navbar"
-          nav-items="[[navItems]]"
-          path-prefix="[[pathPrefix]]">
+          items="{{navItems}}"
+          selected-route="{{navRoute}}"
+          vertical>
         </px-app-nav>
 
-        <main class="u-pt-- u-pr-- u-pl--" role="main">
-
-          <!-- app-location captures url and assigns _route value -->
-          <app-location
-            id="carbonLocation"
-            route="{{_route}}"
-            use-hash-as-path>
-          </app-location>
-
-          <!-- main /rmd route and view -->
-          <app-route
-            route="[[_route]]"
-            pattern="/rmd"
-            active="{{_rmdActive}}">
-          </app-route>
-          <px-view id="rmdPxView"
-            active="[[_rmdActive]]"
-            element-href="/elements/views/rmd-view.html"
-            load-async="true">
-          </px-view>
-
-          <!-- about route and view -->
-          <app-route
-            route="[[_route]]"
-            pattern="/about"
-            active="{{_aboutActive}}">
-          </app-route>
-          <px-view
-            active="[[_aboutActive]]"
-            element-href="/elements/views/about-view.html">
-          </px-view>
-
-          <!-- /simple-asset route and view -->
-          <app-route
-            route="[[_route]]"
-            pattern="/simple-asset"
-            active="{{_simple-assetActive}}">
-          </app-route>
-          <px-view
-            active="[[_simple-assetActive]]"
-            element-href="/elements/views/simple-asset-view.html">
-         </px-view>
-
+        <main role="main">
+          <px-view id="view" element-href="{{getHref(navRoute)}}" active load-async></px-view>
         </main>
 
       </div>
@@ -108,18 +87,13 @@
           type: String
         },
 
-        routesActive: {
-          type: Boolean,
-          value: false
-        },
-
         //Global application object
         global: {
           type: Object,
           value: function() {
             return {
               version: '1.0',
-              name: 'Predix UI Seed - RMD Reference App'
+              name: 'Predix Web App Starter - RMD Reference App'
             }
           }
         },
@@ -132,24 +106,29 @@
             return [
               {
                 "label": "Asset Monitoring",
-                "path": "/rmd",
-                "icon": "fa-line-chart"
+                "id": "rmd",
+                "icon": "px-fea:analytics"
               },
               {
                 "label": "About",
-                "path": "/about",
-                "icon": "fa-info-circle"
+                "id": "about",
+                "icon": "px-com:message"
               }
               //Uncomment this block to show the Simple Asset navigation item on the menu.
               /* // asset-nav-item
               ,{
                 "label": "Simple Asset",
-                "path": "/simple-asset",
-                "icon": "fa-sitemap"
+                "id": "simple-asset",
+                "icon": "px-fea:asset"
               }
               // end asset-nav-item */
             ]
           }
+        },
+
+        navRoute: {
+          type: Array,
+          value: ['rmd']
         },
 
         footerLinks: {
@@ -162,43 +141,20 @@
             }
           ]
           }
-        },
-
-        // Sets app default base URL for client-side routing
-        pathPrefix: {
-          type: String,
-          value: '#'
         }
       },
 
-      observers: ['_routeChanged(_route)'],
-
       ready: function(){
-        this._checkForDefaultRoute();
         this.$.configAjaxEl.addEventListener('response', function(evt) {
           // We're getting some global config from the server.
           // console.log('config', evt.detail.response);
           this.appHeader = evt.detail.response.appHeader;
-          this.$.rmdPxView.elementData = evt.detail.response;
+          this.$.view.elementData = evt.detail.response;
         }.bind(this));
       },
 
-      _checkForDefaultRoute: function() {
-        // set default route to /rmd
-        var l = window.location;
-        if((l.hash === "#/" || l.hash === "") && l.pathname === "/") {
-          l.hash = "/rmd";
-        }
-      },
-
-      _routeChanged: function(newRoute) {
-        console.log('new route:', newRoute);
-        if (newRoute.path !== '/rmd') {
-          var tsChart = document.querySelector('rmd-view timeseries-chart');
-          if (tsChart) {
-            tsChart.closeWebSocket();
-          }
-        }
+      getHref: function(navRoute) {
+        return '/elements/views/' + navRoute[0] + '-view.html';
       }
 
     });

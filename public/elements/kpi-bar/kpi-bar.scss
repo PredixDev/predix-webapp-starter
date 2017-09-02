@@ -9,8 +9,8 @@
   width: 100%;
   margin: 0 auto;
   min-width: 810px;
-  background-color: var(--kpi-bar-wrapper-background-color, #2886af);
-  height: var(--kpi-bar-wrapper-height, 85px);
+  background-color: var(--kpi-bar-wrapper-background-color, #121F26);
+  height: var(--kpi-bar-wrapper-height, 80px);
 }
 
 .kpi-bar-wrapper-datareceived {
@@ -18,5 +18,5 @@
 }
 
 .kpi-bar-wrapper-waiting {
-  background-color: #2886af;
+  background-color: #121F26;
 }

@@ -53,30 +53,30 @@ The Predix WebApp Starter presently uses the following technologies backed by in
 
 #### User Interface
 ##### Web Components
-"A set of web platform APIs that allow you to create new custom, reusable, encapsulated HTML tags to use in web pages and web apps".  More information on http://www.webcomponents.org.
+"A set of web platform APIs that allow you to create new custom, reusable, encapsulated HTML tags to use in web pages and web apps".  More information on <a href="http://www.webcomponents.org" target="_blank">http://www.webcomponents.org</a>.
 
 
 ##### Polymer
-"Polymer is a JavaScript library that helps you create custom reusable HTML elements, and use them to build performant, maintainable apps. Polymer helps developers build modern Progressive Web Apps, taking full advantage of cutting-edge features like Web Components, Service Workers and HTTP/2."  More information on http://www.polymer-project.org.
+"Polymer is a JavaScript library that helps you create custom reusable HTML elements, and use them to build performant, maintainable apps. Polymer helps developers build modern Progressive Web Apps, taking full advantage of cutting-edge features like Web Components, Service Workers and HTTP/2."  More information on <a href="http://www.polymer-project.org" target="_blank">http://www.polymer-project.org</a>.
 
 
 ##### Predix UI Components
-"Predix UI Components are a set of user interface pieces that can be quickly snapped together to build an application. Predix Web Components give you the basic building blocks of an Industrial IOT web app, freeing up your time to spend on more important development tasks. Polymer is not required for Predix UI Components, but they do work well together."  More information on http://www.predix-ui.com.
+"Predix UI Components are a set of user interface pieces that can be quickly snapped together to build an application. Predix Web Components give you the basic building blocks of an Industrial IOT web app, freeing up your time to spend on more important development tasks. Polymer is not required for Predix UI Components, but they do work well together."  More information on <a href="http://www.predix-ui.com" target="_blank">http://www.predix-ui.com</a>.
 
 
 #### Middleware and Services
 ##### NodeJS, ExpressJS and other Popular Node Modules
-"Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world."  More information on http://www.nodejs.org.
+"Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world."  More information on <a href="http://www.nodejs.org" target="_blank">http://www.nodejs.org</a>.
 
-Express is the most popular web server that runs in the Node.js environment.  More information on http://expressjs.com.
+Express is the most popular web server that runs in the Node.js environment.  More information on <a href="http://expressjs.com" target="_blank">http://expressjs.com</a>.
 
 
 ##### Predix™ Services
-"Predix helps you develop, deploy, and operate industrial apps at the edge and in the cloud. Securely connect machines, data, and analytics to improve operational efficiency."  Predix offers a catalog of applications and data services geared towards the Industrial Internet space.  More information on http://www.predix.io.
+"Predix helps you develop, deploy, and operate industrial apps at the edge and in the cloud. Securely connect machines, data, and analytics to improve operational efficiency."  Predix offers a catalog of applications and data services geared towards the Industrial Internet space.  More information on <a href="http://www.predix.io" target="_blank">http://www.predix.io</a>.
 
 
 ##### Custom Microservices
-Microservices created by other developers can be straightforwardly integrated with the Starter.  Microservice architecture promotes encapsulation, specialization and loose coupling in implementing well-defined business capabilities.  More information on [Microservice Templates](https://www.predix.io/resources/tutorials/journey.html#2041).
+Microservices created by other developers can be straightforwardly integrated with the Starter.  Microservice architecture promotes encapsulation, specialization and loose coupling in implementing well-defined business capabilities.  More information on <a href="https://www.predix.io/resources/tutorials/journey.html#2041" target="_blank">Microservice Templates</a>.
 
 While the Starter makes use of the above technology stack, it remains flexible with alternatives.  For example, the User Interface layer can (and has been shown to) work with a Python-based web server instead of the NodeJS server.  It is also agnostic on technology implementations for Predix™ Services and Custom Microservices.
 
@@ -115,10 +115,10 @@ Below are more detailed diagrams for each of the main runtime process blocks men
 ### Reference Applications
 
 #### What is a Reference Application?
-A reference application is a complete example of a secure, scalable application that you can use as a model for your applications.  A reference app includes many features such as Predix services, custom microservices, security, session storage, user interface, and more.  The Predix WebApp Starter acts as the user interface component of the RMD Reference App.  For more information on the RMD Reference app, see the github repository: https://github.com/predixdev/predix-rmd-ref-app
+A reference application is a complete example of a secure, scalable application that you can use as a model for your applications.  A reference app includes many features such as Predix services, custom microservices, security, session storage, user interface, and more.  The Predix WebApp Starter acts as the user interface component of the RMD Reference App.  For more information on the RMD Reference app, see the github repository: <a href="https://github.com/predixdev/predix-rmd-ref-app" target="_blank">https://github.com/predixdev/predix-rmd-ref-app</a>.
 
 ### Learn More
-* [RMD Reference App tutorials](https://www.predix.io/resources/tutorials/journey.html#1610)
-* [Predix WebApp Starter tutorials](https://www.predix.io/resources/tutorials/journey.html#2100)
-* [Predix Toolkit (US West)](https://predix-toolkit.run.aws-usw02-pr.ice.predix.io/)
-* [Predix.io forum](https://forum.predix.io)
+* <a href="https://www.predix.io/resources/tutorials/journey.html#1610" target="_blank">RMD Reference App tutorials</a>
+* <a href="https://www.predix.io/resources/tutorials/journey.html#2100" target="_blank">Predix WebApp Starter tutorials</a>
+* <a href="https://predix-toolkit.run.aws-usw02-pr.ice.predix.io/" target="_blank">Predix Toolkit (US West)</a>
+* <a href="https://forum.predix.io" target="_blank">Predix.io forum</a>
