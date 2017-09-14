@@ -172,7 +172,17 @@ var addClientTokenMiddleware = function(req, res, next) {
 	}
 };
 
-router.use('/', addClientTokenMiddleware);
+router.use(['/'], addClientTokenMiddleware);
+
+// Adds user authorization token from passport to request
+var addAccessTokenMiddleware = function (req, res, next) {
+	if (req.session) {
+		req.headers['Authorization'] = 'bearer ' + req.session.passport.user.ticket.access_token;
+		next();
+	} else {
+		next(res.sendStatus(403).send('Forbidden'));
+	}
+};
 
 // TODO: Support for multiple instances of the same service.
 var setProxyRoutes = function() {
@@ -217,5 +227,6 @@ module.exports = {
 	setUaaConfig: setUaaConfig,
 	customProxyMiddleware: customProxyMiddleware,
 	addClientTokenMiddleware: addClientTokenMiddleware,
+	addAccessTokenMiddleware: addAccessTokenMiddleware,
 	expressProxy: expressProxy
 };
