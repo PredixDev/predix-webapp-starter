@@ -6,12 +6,24 @@
 
 <dom-module id="about-view">
   <template>
+    <style>
+      div.markdown-html > h1 {
+        font-weight: normal;
+        font-size: 2.6667rem;
+        color: rgb(9, 129, 156);
+      }
+      div.markdown-html > h2 {
+        margin-top: 0;
+        font-size: 1.86667rem;
+        font-weight: normal;
+      }
+      px-card {
+        background: white;
+        color: rgb(44, 64, 76);
+        --px-card-header-color: black;
+      }
+    </style>
     <px-card id="myCard" header-text="About this application">
-      <style is="custom-style">
-        div.markdown-html > h2 {
-          margin-top: 0;
-        }
-      </style>
       <div>
         <marked-element id="aboutContentMarkdown" markdown="">
           <div class="markdown-html"></div>

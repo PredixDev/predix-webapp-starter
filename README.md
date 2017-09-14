@@ -131,3 +131,6 @@ GE Global Research. The software may be used and/or copied only
 with the written permission of GE Global Research or in accordance
 with the terms and conditions stipulated in the agreement/contract
 under which the software has been supplied.
+
+[![Analytics](https://ga-beacon.appspot.com/UA-82773213-1/predix-webapp-starter/readme?pixel)](https://github.com/PredixDev)
+

@@ -4,8 +4,13 @@
 <link rel="import" href="../../bower_components/px-card/px-card.html">
 <link rel="import" href="../../bower_components/px-icon-set/px-icon-set.html">
 <link rel="import" href="../../bower_components/px-icon-set/px-icon.html">
+<link rel="import" href="../../bower_components/px-theme/px-theme-styles.html">
 
 <script src="../../bower_components/moment/min/moment.min.js"></script>
+
+<!-- over ride the app's dark theme, and use the light theme here. -->
+<link rel="import" href="../../bower_components/px-theme/px-theme-styles.html">
+
 <!--
   This table wraps the px-data-table, and displays data from one of two sources:
   1. Simple asset data - shows only tag name and thresholds
@@ -13,6 +18,7 @@
 -->
 <dom-module id="seed-table">
     <template>
+      <style include="px-theme-styles" is="custom-style"></style>
       <px-card id="tableCard" header-text="Asset Status" icon="px-fea:asset" style="padding-bottom: 2rem">
         <px-data-table table-data="{{seedTableData}}" hide-pagination-control="[[!showPagination]]">
           <px-data-table-column name="tag" type="html"></px-data-table-column>

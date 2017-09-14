@@ -5,19 +5,16 @@
 <link rel="import" href="../../bower_components/px-breadcrumbs/px-breadcrumbs.html">
 <script src="../../bower_components/es6-promise/es6-promise.js"></script>
 <link rel="import" href="../seed-app/seed-app-styles.html">
-
+  
 <dom-module id="asset-browser">
   <template>
     <style include="seed-app-styles">
        :host {
-        height: 60px;
         display: flex;
-        background: white;
-        flex-direction: row;
-        align-items: center;
+        background: rgb(18,31,38);
       }
     </style>
-    <div class="flex flex--row" style="position:relative">
+    <div class="flex flex--row u-pl" style="position:relative">
       <px-context-browser-trigger trigger="{{openTrigger}}"></px-context-browser-trigger>
       <px-context-browser id="contextBrowser" open-trigger="[[openTrigger]]" items="{{assetModel.data}}" selected-route="{{selectedRoute}}"
         keys="{{keys}}"></px-context-browser>

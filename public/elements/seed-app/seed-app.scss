@@ -33,41 +33,14 @@ $inuit-enable-layout--full  : true;
 
 @import "../../seed-theme.scss";
 
-[role=banner], [role=contentinfo] {
-  height: calculateRem(60px);
-  background: var(--px-seed-header-background-color);
+:root {
+  --px-app-nav-background-color: $gray19;
+  --px-app-nav-link-selected-color: #364C59;
+  --px-branding-bar-background-color: rgb(8, 41, 57);
 }
 
-[role=banner] {
-  width: 100%;
-  display: block;
-  margin: auto;
-  h3 {
-    @include inuit-font-size(20px);
-    margin: 0;
-    line-height: calculateRem(60px);
-    font-weight: normal;
-    color: var(--px-seed-header-text-color, $px-page-banner-text-color);
-    display:inline-block;
-    svg {
-      margin-bottom: -.1em;
-    }
-
-  }
-
-  h3.app-title {
-    color: var(--px-seed-header-text-color, $gray4);
-  }
-
-  h3.logo {
-    color: var(--px-seed-header-text-color, $gray6);
-  }
-
-}
-
-.content-wrapper {
-  position: relative;
-  display: flex;
+px-login {
+  --px-btn-bare-color: #b7c3cd;
 }
 
 header > div.viewport {
@@ -76,7 +49,7 @@ header > div.viewport {
 
 main {
   min-height: calc(100vh - #{calculateRem(120px)});
-  margin-left: calculateRem(60px);
+  // margin-left: calculateRem(60px);
   background-color: var(--px-seed-app-main-content-area-background-color, $px-page-main-content-area-background-color);
   overflow-x: hidden;
   flex: 1;
@@ -84,21 +57,6 @@ main {
 
 px-app-nav {
   z-index: 5;
-}
-
-[role=contentinfo] {
-  @include inuit-font-size(12px);
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  color: $px-page-link-color;
-  a {
-    text-decoration: none;
-    color: $px-page-link-color;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }
 
 // Trumps
@@ -118,3 +76,4 @@ $inuit-enable-paddings--none            : true;
 
 @import "px-spacing-design/_trumps.spacing.scss";
 @import "px-widths-design/_trumps.widths.scss";
+@import "px-widths-responsive-design/_trumps.widths-responsive.scss";

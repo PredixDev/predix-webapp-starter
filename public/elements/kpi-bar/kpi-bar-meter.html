@@ -2,15 +2,12 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <!-- import page level css -->
-<link rel="import" href="kpi-datapoint-styles.html">
+<link rel="import" href="kpi-bar-styles.html">
 
 <dom-module id="kpi-bar-meter">
   <template>
-    <style include="kpi-datapoint-styles"></style>
-    <div class="kpi-datapoint-wrapper kpi-datapoint-bar-meter-wrapper">
-      <div class="kpi-datapoint-label">[[label]]</div>
-      <div class="kpi-datapoint-value-units">
-        <div class="kpi-bar-meter-value">[[percentage]]<span hidden$="{{!_showPercentSign}}" class="kpi-datapoint-units">%</span></div>
+    <style include="kpi-bar-styles"></style>
+
         <div class="kpi-bar-meter-wrapper">
           <template id="kpiBarMeterBarWrappers" is="dom-repeat" items="[[bars]]">
             <div class="kpi-bar-meter-bar-wrapper">
@@ -19,29 +16,16 @@
             </div>
           </template>
         </div>
-      </div>
-    </div>
   </template>
   <script>
   Polymer({
     is: 'kpi-bar-meter',
     properties: {
-      label: {
-        type: String,
-        value: ''
-      },
       bars: [],
       percentage: {
         type: Number,
         observer: 'percentChanged'
-      },
-      _showPercentSign: {
-        type: Boolean,
-        value: false
       }
-    },
-
-    ready: function(){
     },
 
     percentChanged: function(){
@@ -60,7 +44,6 @@
         barsToDraw.push({ width: '0'});
       }
       this.bars = barsToDraw;
-      this._showPercentSign = !!this.percentage;
     }
 
   });

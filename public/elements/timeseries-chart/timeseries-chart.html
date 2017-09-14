@@ -6,7 +6,8 @@
 <!-- Since this is loading asynchronously, we're not loading px-dropdown here for now. 
       it's already loaded by rmd-view. -->
 <link rel="import" href="timeseries-chart-styles.html">
-
+<!-- Use light theme in this component, not the app's dark theme. -->
+<link rel="import" href="../../bower_components/px-theme/px-theme-styles.html">
 <script src="../../bower_components/moment/min/moment.min.js"></script>
 
 <!--
@@ -16,9 +17,14 @@ Component will query for new data when tags or dates are changed.
 -->
 <dom-module id="timeseries-chart">
   <template>
+    <style include="px-theme-styles">
+      px-card {
+        background: white;
+      }
+    </style>
     <style include="timeseries-chart-styles"></style>
     <px-card header-text="Sensor Data" icon="px-fea:analysis">
-      <div class="u-pt flex flex--row flex--justify">
+      <div class="flex flex--row flex--justify">
         <div class="u-1/4-desk u-1/1-palm">
           <div class="u-pr">
             <px-dropdown id="tagDropdown" multi="{{!liveDataMode}}" selected="{{selectedTag}}" selected-values='{{selectedTags}}' display-value="Select Tags"
@@ -63,11 +69,11 @@ Component will query for new data when tags or dates are changed.
         selectedRange: {
           type: Object
         },
-        selectedTag: {
+        selectedTag: { // used for live data
           type: String,
           observer: '_showLiveSeries'
         },
-        selectedTags: {
+        selectedTags: { // used for historical data
           type: Array
         },
         wsUrl: {
@@ -118,8 +124,21 @@ Component will query for new data when tags or dates are changed.
             }
           }
           this._showLiveSeries(selectedTsTag);
+          this.$.tagDropdown.displayValue = this.selectedTag.val;
         } else {
           this.closeWebSocket();
+          if (this.selectedTag && !this.selectedTags) {
+            this.selectedTags = [ this.selectedTag ];
+          }
+          this.$.tagDropdown.displayValue = 'Select Tags'; //this.selectedTags[0];
+          if (this.tags) { // we don't have tags until they come back from the asset service.
+            for (var j = 0; j < this.tags.length; j++) {
+              if (this.tags[j].key === this.selectedTag.key) {
+                this.$.tagDropdown.displayValue = this.selectedTag.val;
+                break;
+              }
+            }
+          }
           this._tagsOrRangeChanged(this.selectedTags, this.selectedRange);
         }
       },

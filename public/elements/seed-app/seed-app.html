@@ -11,13 +11,11 @@
 <link rel="import" href="../../bower_components/px-app-nav/px-app-nav.html">
 <link rel="import" href="../../bower_components/px-view/px-view.html">
 <link rel="import" href="../../bower_components/px-login/px-login.html">
-<!-- seed app components -->
-<link rel="import" href="../ge-svg-logo/ge-svg-logo.html">
-<link rel="import" href="../predix-logo/predix-logo.html">
-<link rel="import" href="../seed-footer/seed-footer.html">
+<link rel="import" href="../../bower_components/px-branding-bar/px-branding-bar.html">
+<!-- google components -->
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
-<!-- importing font awesome and iron icon here, to fix icon flickering problem when loading asynchronously. -->
+<!-- importing icons here, to fix icon flickering problem when loading asynchronously. -->
 <link rel="import" href="../../bower_components/px-icon-set/px-icon.html">
 <link rel="import" href="../../bower_components/px-icon-set/px-icon-set.html">
 
@@ -25,56 +23,43 @@
   <template>
 
     <!-- apply imported seed app style module -->
-    <style include="seed-app-styles">
-      :root {
-        --px-app-nav-background-color: #1B2A33;
-        --px-app-nav-link-selected-color: #364C59;
-      }
+    <style include="seed-app-styles"></style>
 
-      px-login {
-        --px-btn-bare-color: #b7c3cd;
-      }
-    </style>
-
-    <header role="banner">
-      <div class="viewport flex flex--justify flex--middle">
-        <h3>
-          <ge-svg-logo class="u-mr--"></ge-svg-logo> [[appHeader]]
-        </h3>
-        <div>
-          <px-login style="margin-left: auto;"></px-login>
-        </div>
-      </div>
-    </header>
+    <px-branding-bar application-title="[[appHeader]]"></px-branding-bar>
 
     <div class="viewport">
+      <app-location
+        route="{{route}}"
+        use-hash-as-path>
+      </app-location>
+      <px-app-route
+        id="starterAppRoute"
+        route="{{route}}"
+        use-hash-as-path
+        update-nav-route
+        nav-route="{{navRoute}}">
+      </px-app-route>
 
-      <div class="content-wrapper">
-        <app-location
-          route="{{route}}"
-          use-hash-as-path>
-        </app-location>
-        <px-app-route
-          route="{{route}}"
-          use-hash-as-path
-          update-nav-route
-          nav-route="{{navRoute}}">
-        </px-app-route>
-        <px-app-nav
-          class="navbar"
-          items="{{navItems}}"
-          selected-route="{{navRoute}}"
-          vertical>
-        </px-app-nav>
-
-        <main role="main">
-          <px-view id="view" element-href="{{getHref(navRoute)}}" active load-async></px-view>
-        </main>
-
+      <div class="flex flex--row flex--justify">
+        <div class="u-3/4-desk u-1/1-palm">
+          <px-app-nav
+            class="navbar"
+            items="{{navItems}}"
+            selected-route="{{navRoute}}">
+          </px-app-nav>
+        </div>
+        <div class="u-1/1-palm">
+          <div class="flex flex--row flex--right">
+            <px-login class="u-pr u-pt"></px-login>
+          </div>
+        </div>
       </div>
+
+      <main role="main">
+        <px-view id="view" element-href="{{getHref(navRoute)}}" active load-async></px-view>
+      </main>
     </div>
 
-    <seed-footer footer-links='[[footerLinks]]'></seed-footer>
     <iron-ajax id="configAjaxEl" url="/config" auto></iron-ajax>
   </template>
   <script>
@@ -99,7 +84,7 @@
         },
 
         // Links to appear in the main navigation - px-app-nav component
-        // See http://fontawesome.io/icons/ for available icons
+        // See https://www.predix-ui.com/#/elements/px-icon-set for available icons
         navItems: {
           type: Array,
           value: function() {
@@ -128,23 +113,15 @@
 
         navRoute: {
           type: Array,
-          value: ['rmd']
-        },
-
-        footerLinks: {
-          type: Array,
-          value: function() {
-            return [{
-              "label": "Learn More",
-              "href": "https://www.predix.io/resources/tutorials",
-              "target": "_blank"
-            }
-          ]
-          }
         }
       },
 
       ready: function(){
+        if (!this.$.starterAppRoute.navRoute) {
+          // set default route
+          this.$.starterAppRoute.navRoute = ['rmd'];
+        }
+        // console.log('ready. route: ', this.$.starterAppRoute.navRoute);
         this.$.configAjaxEl.addEventListener('response', function(evt) {
           // We're getting some global config from the server.
           // console.log('config', evt.detail.response);
@@ -154,6 +131,7 @@
       },
 
       getHref: function(navRoute) {
+        var navRoute = this.$.starterAppRoute.navRoute || ['rmd'];
         return '/elements/views/' + navRoute[0] + '-view.html';
       }
 

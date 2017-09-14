@@ -4,21 +4,35 @@
 <link rel="import" href="../asset-browser/asset-browser.html">
 <link rel="import" href="../seed-table/seed-table.html">
 <link rel="import" href="../kpi-bar/kpi-bar.html">
+<link rel="import" href="rmd-view-styles.html">
 
 <dom-module id="rmd-view">
-  <style>
-     :host {
-      --px-data-table-padding-top: 0px;
-    }
-  </style>
   <template>
-    <asset-browser id="assetBrowser" asset-model="{{rmdAssetModel}}" opened-asset="{{openedAsset}}" asset-query-url="/api/predix-asset/asset"
-      asset-group-query-url="/api/predix-asset/group">
-    </asset-browser>
+    <style include="rmd-view-styles"></style>
 
-    <kpi-bar datapoints="[[kpiDatapoints]]" overall-label="[[kpiOverallLabel]]" overall-value="[[kpiOverallValue]]" overall-max="[[kpiOverallMax]]"
-      kpi-bar-wrapper-state="[[kpiBarWrapperState]]">
-    </kpi-bar>
+    <div>
+      <asset-browser id="assetBrowser" asset-model="{{rmdAssetModel}}" opened-asset="{{openedAsset}}" asset-query-url="/api/predix-asset/asset"
+        asset-group-query-url="/api/predix-asset/group">
+      </asset-browser>
+    </div>
+
+    <div class="flex flex--row flex--justify">
+      <div><h1 class="delta u-pl++">Dashboard</h1></div>
+      <div>
+        <div class="flex flex--row flex--right">
+          <px-dropdown class="flex u-pr u-pt" id="refreshFrequencyDropdown" display-value="Refresh Frequency" 
+            items='[{"key":"0","val":"No Refresh"},{"key":"3","val":"Every 3 sec"},{"key":"15","val":"Every 15 sec"},{"key":"60","val":"Every 60 sec"}]'>
+          </px-dropdown>
+          <px-icon style="margin-top: 4px" class="u-pr u-pt" id="refreshTableBtn" icon="px-nav:reload"></px-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="u-pb">
+      <kpi-bar datapoints="[[kpiDatapoints]]" overall-label="[[kpiOverallLabel]]" overall-value="[[kpiOverallValue]]" overall-max="[[kpiOverallMax]]"
+        kpi-bar-wrapper-state="[[kpiBarWrapperState]]">
+      </kpi-bar>
+    </div>
     <iron-ajax id="kpiBarAjaxEl"></iron-ajax>
 
     <!-- If the RMD datasource is not enabled, you can pass in an asset directly. -->
@@ -29,14 +43,6 @@
     <iron-ajax id="datatableAjaxEl"></iron-ajax>
 
     <timeseries-chart id="tsChart" ws-url="[[wsUrl]]" tags="{{displayTags}}" hidden$="{{!showTimeseriesChart}}"></timeseries-chart>
-
-    <px-dropdown id="refreshFrequencyDropdown" display-value="Refresh Frequency" style="position: absolute; top: 18px; right: 50px; padding-right: 5px"
-      items='[{"key":"0","val":"No Refresh"},{"key":"3","val":"Every 3 sec"},{"key":"15","val":"Every 15 sec"},{"key":"60","val":"Every 60 sec"}]'>
-    </px-dropdown>
-
-    <div id="refreshTableBtn" style="text-align: center; line-height: 26px; width: 28px; height: 28px; position: absolute; top: 18px; right: 20px;">
-      <px-icon icon="px-nav:reload"></px-icon>
-    </div>
   </template>
   <script>
     Polymer({
@@ -130,11 +136,15 @@
             data = data[0];
           }
           var kpis = data.kpis, overall = data.overall;
+          kpis.forEach(function(kpi) {
+            if (kpi.label && kpi.label.toLowerCase().indexOf('compressionratio') > -1) {
+              kpi.label = 'Compression Ratio (avg)';
+            }
+          });
           this.kpiDatapoints = kpis;
           this.kpiOverallLabel = overall.title;
           this.kpiOverallValue = overall.percentage;
           this.kpiOverallMax = "100";
-          this.kpiBarWrapperState = 'kpi-bar-wrapper-datareceived';
         }.bind(this));
 
         this.$.datatableAjaxEl.addEventListener('response', function (evt) {

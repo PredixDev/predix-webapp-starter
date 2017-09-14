@@ -17,7 +17,7 @@ module.exports = function(gulp) {
 
       'public/bower_components/px-typography-design',
       'public/bower_components/px-theme',
-      'public/bower_components/px-data-table',
+      'public/bower_components/px-dark-theme',
       'public/bower_components/px-vis',
       'public/bower_components/pxd3',
 

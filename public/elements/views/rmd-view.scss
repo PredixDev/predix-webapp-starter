@@ -1,0 +1,21 @@
+// Settings
+@import "px-colors-design/_settings.colors.scss";
+
+// Generic
+
+// Base
+@import 'px-flexbox-design/_base.flexbox.scss';
+@import "px-headings-design/_base.headings.scss";
+
+// Meta
+
+// Objects
+:host {
+    background: $gray16;
+}
+
+// Trumps
+$inuit-enable-paddings : true;
+$inuit-enable-paddings--huge : true;
+@import "px-spacing-design/_trumps.spacing.scss";
+@import "px-widths-responsive-design/_trumps.widths-responsive.scss";
