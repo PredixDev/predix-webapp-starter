@@ -172,9 +172,9 @@ var addClientTokenMiddleware = function(req, res, next) {
 	}
 };
 
-router.use(['/predix-api', '/api'], addClientTokenMiddleware);
+router.use(['/'], addClientTokenMiddleware);
 
-// Adds authorization token from passport to request
+// Adds user authorization token from passport to request
 var addAccessTokenMiddleware = function (req, res, next) {
 	if (req.session) {
 		req.headers['Authorization'] = 'bearer ' + req.session.passport.user.ticket.access_token;

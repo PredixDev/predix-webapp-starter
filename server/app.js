@@ -124,7 +124,7 @@ if (!config.isUaaConfigured()) {
   //   app.get('/windy/*', passport.authenticate('main', { noredirect: true}),
   //     // if calling a secure microservice, you can use this middleware to add a client token.
   //     // proxy.addClientTokenMiddleware,
-  //     // or you can use this middleware to add an access token.
+  //     // or you can use this middleware to add a user access token.
   //     // proxy.addAccessTokenMiddleware,
   //     proxy.customProxyMiddleware('/windy', windServiceURL)
   //   );
