@@ -33,7 +33,8 @@ module.exports = function(gulp) {
     var docsFiles = gulp.src(['public/docs/**/*.*']).pipe(gulp.dest(outputDir + 'public/docs'));
     var server = gulp.src(['server/**/*.*']).pipe(gulp.dest(outputDir + '/server'))
     var packageFile = gulp.src(['package.json']).pipe(gulp.dest(outputDir));
+    var imageFiles = gulp.src(['public/images/**/*.*']).pipe(gulp.dest(outputDir + 'public/images'));
 
-    return merge(server, packageFile, extraStreams, docsFiles);
+    return merge(server, packageFile, extraStreams, docsFiles, imageFiles);
   };
 };

@@ -14,6 +14,11 @@
     background: $gray16;
 }
 
+#refreshTableBtn {
+    margin-top: 4px;
+    cursor: pointer;
+}
+
 // Trumps
 $inuit-enable-paddings : true;
 $inuit-enable-paddings--huge : true;
