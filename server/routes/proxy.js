@@ -85,7 +85,6 @@ function buildDecorator(zoneId) {
 	var decorator = function(req) {
 		if (corporateProxyAgent && getProxyForUrl(req.url))
 			req.agent = corporateProxyAgent;
-		}
 		req.headers['Content-Type'] = 'application/json';
 		if (zoneId) {
 			req.headers['Predix-Zone-Id'] = zoneId;
