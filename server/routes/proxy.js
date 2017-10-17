@@ -10,6 +10,7 @@ var url = require('url');
 var express = require('express');
 var expressProxy = require('express-http-proxy');
 var HttpsProxyAgent = require('https-proxy-agent');
+var predixUaaClient = require('predix-uaa-client');
 var predixConfig = require('../predix-config');
 var router = express.Router();
 var vcapServices = {};
@@ -49,28 +50,13 @@ var setUaaConfig = function(options) {
 };
 
 var getClientToken = function(successCallback, errorCallback) {
-	var request = require('request');
-	var options = {
-		method: 'POST',
-		url: uaaURL + '/oauth/token',
-		form: {
-			'grant_type': 'client_credentials',
-			'client_id': clientId
-		},
-		headers: {
-			'Authorization': 'Basic ' + base64ClientCredential
-		}
-	};
-
-	request(options, function(err, response, body) {
-		if (!err && response.statusCode == 200) {
-			// console.log('response from getClientToken: ' + body);
-			var clientTokenResponse = JSON.parse(body);
-			successCallback(clientTokenResponse['token_type'] + ' ' + clientTokenResponse['access_token']);
-		} else if (errorCallback) {
-			errorCallback(body);
-		} else {
-			console.log('ERROR fetching client token: ' + body);
+	var clientSecret = predixConfig.getSecretFromEncodedString(base64ClientCredential);
+	predixUaaClient.getToken(uaaURL + '/oauth/token', clientId, clientSecret).then(function (token) {
+			successCallback(token.token_type + ' ' + token.access_token);
+	}).catch(function (err) {
+		console.error('ERROR fetching client token:', err);
+		if (errorCallback) {
+			errorCallback(err);
 		}
 	});
 };
