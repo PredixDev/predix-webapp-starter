@@ -141,18 +141,13 @@ var addClientTokenMiddleware = function(req, res, next) {
 	// console.log('proxy root route');
 	if (req.session) {
 		// console.log('session found.');
-		if (!req.session.clientToken) {
-			// console.log('fetching client token');
-			getClientToken(function(token) {
-				req.session.clientToken = token;
-				req.headers['Authorization'] = req.session.clientToken;
-				next();
-			}, errorHandler);
-		} else {
-			// console.log('client token found in session');
-			req.headers['Authorization'] = req.session.clientToken;
+		// console.log('fetching client token');
+		// getClientToken will returned a cached token if it's not expired
+		// or renew if it has expired.
+		getClientToken(function(token) {
+			req.headers['Authorization'] = token;
 			next();
-		}
+		}, errorHandler);
 	} else {
 		next(res.sendStatus(403).send('Forbidden'));
 	}
