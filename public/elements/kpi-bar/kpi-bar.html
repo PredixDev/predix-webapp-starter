@@ -1,10 +1,9 @@
 <!-- import polymer -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<!-- import dependent comonents -->
-<!--<link rel="import" href="kpi-datapoint.html">-->
+<!-- import dependent components -->
 <link rel="import" href="../../bower_components/px-key-value-pair/px-key-value-pair.html">
-<!--<link rel="import" href="../../bower_components/px-percent-circle/px-percent-circle.html">-->
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="kpi-bar-meter.html">
 
 <!-- import page level css -->
@@ -22,9 +21,11 @@
       </template>
       <div class="flex__item">
         <div class="flex flex--row">
-        <px-key-value-pair size="gamma" value="[[overallValue]]" key="[[overallLabel]]" uom="[[overallUom]]"></px-key-value-pair>
-        <div class="u-pl++" style="margin-top: 20px">
-          <kpi-bar-meter id="kpiBarMeter" label="[[overallLabel]]" percentage="[[overallValue]]"></kpi-bar-meter>
+          
+          <px-key-value-pair size="gamma" value="[[overallValue]]" key="[[overallLabel]]" uom="[[overallUom]]"></px-key-value-pair>
+          <div class="flex__item u-pl++" style="margin-top: 20px">
+            <kpi-bar-meter id="kpiBarMeter" label="[[overallLabel]]" percentage="[[overallValue]]"></kpi-bar-meter>
+          </div>
         </div>
       </div>
     <div>
@@ -43,7 +44,10 @@
     _overallValueChanged: function(newVal){
       // don't show the percent sign until we have data.
       this.overallUom = '%';
-    }
+    },
+    behaviors: [
+      Polymer.IronResizableBehavior
+    ]
   });
   </script>
 </dom-module>

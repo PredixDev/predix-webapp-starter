@@ -1,5 +1,6 @@
 <!-- import polymer -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 
 <!-- import page level css -->
 <link rel="import" href="kpi-bar-styles.html">
@@ -28,6 +29,19 @@
       }
     },
 
+    listeners: {
+      'iron-resize': '_onResize'
+    },
+
+    _onResize: function() {
+      // console.log('resized. width: ', this.parentElement.clientWidth);
+      if (this.parentElement.clientWidth < 200) {
+        this.style.display = 'none';
+      } else {
+        this.style.display = '';
+      }
+    },
+
     percentChanged: function(){
       var barsExact = (this.percentage / 100) * 20;
       var barsComplete = Math.floor(barsExact);
@@ -44,8 +58,11 @@
         barsToDraw.push({ width: '0'});
       }
       this.bars = barsToDraw;
-    }
+    },
 
+    behaviors: [
+      Polymer.IronResizableBehavior
+    ]
   });
   </script>
 </dom-module>
