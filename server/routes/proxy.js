@@ -10,6 +10,7 @@ var url = require('url');
 var express = require('express');
 var expressProxy = require('express-http-proxy');
 var HttpsProxyAgent = require('https-proxy-agent');
+var getProxyForUrl = require('proxy-from-env').getProxyForUrl;
 var predixConfig = require('../predix-config');
 var router = express.Router();
 var vcapServices = {};
@@ -82,9 +83,8 @@ function cleanResponseHeaders (rsp, data, req, res, cb) {
 
 function buildDecorator(zoneId) {
 	var decorator = function(req) {
-		if (corporateProxyAgent) {
+		if (corporateProxyAgent && getProxyForUrl(req.url))
 			req.agent = corporateProxyAgent;
-		}
 		req.headers['Content-Type'] = 'application/json';
 		if (zoneId) {
 			req.headers['Predix-Zone-Id'] = zoneId;
