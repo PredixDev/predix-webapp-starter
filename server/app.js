@@ -73,6 +73,8 @@ if (config.isUaaConfigured()) {
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.text());
+app.use(bodyParser.raw());
 
 /****************************************************************************
 	SET UP EXPRESS ROUTES
