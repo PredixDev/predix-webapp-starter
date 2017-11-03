@@ -138,13 +138,11 @@ settings.getClientIdFromEncodedString = function(encoded) {
 	return getValueFromEncodedString(encoded, 0);
 }
 
-// redis is strange, since the service name is not constant.
-//  could be redis-1, redis-2, etc.
 settings.getRedisCredentials = function() {
 	var vcaps = JSON.parse(process.env.VCAP_SERVICES || '{}');
 	var creds;
 	Object.keys(vcaps).forEach(function(vcap) {
-		if (vcap.indexOf('redis') > -1) {						
+		if (vcap.indexOf('predix-cache') > -1) {						
 			creds = vcaps[vcap][0].credentials; 
 		}
 	});

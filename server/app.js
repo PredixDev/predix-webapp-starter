@@ -52,7 +52,7 @@ var sessionOptions = {
 };
 var redisCreds = config.getRedisCredentials();
 if (redisCreds) {
-  console.log('Using Redis for session store.');
+  console.log('Using predix-cache for session store.');
   var RedisStore = require('connect-redis')(session);
   sessionOptions.store = new RedisStore({
     host: redisCreds.host,
