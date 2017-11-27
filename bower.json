@@ -48,6 +48,7 @@
     "px-meta-lists-design": "^1.0.1"
   },
   "resolutions": {
-    "webcomponentsjs": "^0.7.24"
+    "webcomponentsjs": "^0.7.24",
+    "px-app-helpers": "^2.0.0"
   }
 }
