@@ -10,6 +10,7 @@ var jsonServer = require('json-server'); // used for mock api responses
 var path = require('path');
 var cookieParser = require('cookie-parser'); // used for session cookie
 var bodyParser = require('body-parser');
+var request = require('request');
 var passport;  // only used if you have configured properties for UAA
 var session = require('express-session');
 var proxy = require('./routes/proxy'); // used when requesting data from real services.
@@ -21,6 +22,9 @@ var passportConfig = require('./passport-config');
 var userInfo = require('./routes/user-info');
 var app = express();
 var httpServer = http.createServer(app);
+var fs = require("fs");
+var assettemplatefile = "sample-data/predix-asset/compressor-2017.json";
+var assetclonedfile = "sample-data/predix-asset/compressor-2017-cloned.json";
 
 /**********************************************************************
        SETTING UP EXRESS SERVER
@@ -137,11 +141,11 @@ if (!config.isUaaConfigured()) {
   }
 
   //Use this route to make the entire app secure.  This forces login for any path in the entire app.
-  app.use('/', passport.authenticate('main', {
+  /*app.use('/', passport.authenticate('main', {
     noredirect: false // Redirect the user to the authentication page
   }),
     express.static(path.join(__dirname, process.env['base-dir'] ? process.env['base-dir'] : '../public'))
-  );
+  ); */
 
   //Or you can follow this pattern to create secure routes,
   // if only some portions of the app are secure.
@@ -180,6 +184,65 @@ app.get('/logout', function(req, res) {
 	req.logout();
   passportConfig.reset(); //reset auth tokens
   res.redirect(config.uaaURL + '/logout?redirect=' + config.appURL);
+});
+
+app.post('/cloneasset', proxy.addClientTokenMiddleware, function(req, res) {
+	console.log("I am in here");
+	var assetName = req.body.assetname;
+
+	console.log(assetName);
+	fs.readFileSync(path.join(__dirname, assettemplatefile), 'utf8', function (err,data) {
+  		if (err) {
+    			return console.log(err);
+  		}
+
+  		var result = data.replace(/compressor-2017/g, assetName);
+  		fs.writeFile(path.join(__dirname, assetclonedfile), result, 'utf8', function (err) {
+     			if (err) return console.log(err);
+  		});
+	});
+
+	var clonedFile = require(path.join(__dirname, assetclonedfile));
+	console.log("File replaced");
+	console.log(JSON.stringify(clonedFile));
+
+	var bodyJSON = JSON.stringify(clonedFile);
+
+	/*var request = new http.ClientRequest({
+		protocol: "http:",
+    		hostname: config.assetURL,
+    		port: 80,
+    		path: "/asset",
+    		method: "POST",
+    		headers: {
+        		"Content-Type": "application/json",
+        		"Content-Length": Buffer.byteLength(body)
+    		}
+	});
+
+	request.end(body);*/
+
+	var options = {
+		method: 'POST',
+		url: "https://predix-asset.run.aws-usw02-pr.ice.predix.io/asset",
+		headers: {
+        		"Content-Type": "application/json",
+			"predix-zone-id" : config.assetZoneId,
+			"Authorization" : req.headers['Authorization']
+		},
+		body: bodyJSON 
+	};
+
+	request(options, function(err, response, body) {
+		if (!err && (response.statusCode == 200 || response.statusCode == 204)) {
+			console.log('response from getClientToken: ' + body);
+		} else {
+			console.log('ERROR cloning asset: ' + response);
+		}
+		res.sendStatus(response.statusCode);
+ 	});
+
+	//res.send(clonedFile);
 });
 
 app.get('/favicon.ico', function (req, res) {
