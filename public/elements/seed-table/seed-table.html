@@ -5,6 +5,8 @@
 <link rel="import" href="../../bower_components/px-icon-set/px-icon-set.html">
 <link rel="import" href="../../bower_components/px-icon-set/px-icon.html">
 <link rel="import" href="../../bower_components/px-theme/px-theme-styles.html">
+<link rel="import" href="../../bower_components/px-validation/px-validation.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <script src="../../bower_components/moment/min/moment.min.js"></script>
 
@@ -19,7 +21,45 @@
 <dom-module id="seed-table">
     <template>
       <style include="px-theme-styles" is="custom-style"></style>
-      <px-card id="tableCard" header-text="Asset Status" icon="px-fea:asset" style="padding-bottom: 2rem">
+      <style>
+        #cloneAssetForm {
+          height: 35px;
+          position: absolute;
+          top: 16px;
+          right: 27px;
+          color: rgb(103, 126, 140);
+          line-height: 25px;
+          padding: 8px;
+        }
+
+        #cloneAssetNameInput {
+          width: 180px;
+          margin-left: 15px;
+          margin-right: 5px;
+        }
+
+        #copyIcon {
+          cursor: pointer;
+        }
+
+        #validationWarning {
+          position: absolute;
+          color: red;
+          top: 30px;
+          right: 27px;
+          display: none;
+        }
+      </style>
+      <px-card id="tableCard" header-text="Asset Status" icon="px-fea:asset" style="padding-bottom: 2rem; position: relative;">
+        <!-- <div id="cloneAssetForm">
+          <px-validation id="assetNameValidationEl">
+            <px-validator validation-method="isName" import="/elements/seed-table/asset-name-validator.html"></px-validator>
+          </px-validation>
+          <label id="cloneAssetLabel" for="assetNameInput" >Clone This Asset:</label>
+          <input class="text-input" id="cloneAssetNameInput" type="text" placeholder="Type new asset name..." on-keyup="isValidAssetName">
+          <px-icon id="copyIcon" icon="px-utl:copy" on-click="cloneThisAsset"></px-icon>
+          <small id="validationWarning" class="caps form-field__help validation-error">{{errorMessage}}</small>
+        </div> -->
         <px-data-table table-data="{{seedTableData}}" hide-pagination-control="[[!showPagination]]">
           <px-data-table-column name="tag" type="html"></px-data-table-column>
           <px-data-table-column name="alertStatus" label="Alert Status" type="html" hide="[[showAssetOnly]]"></px-data-table-column>
@@ -31,6 +71,14 @@
           <px-data-table-column name="thresholdMax" label="Threshold Max"></px-data-table-column>
         </px-data-table>
       </px-card>
+      <iron-ajax
+        id="assetCloneAjaxEl"
+        url="/api/cloneasset"
+        method="post"
+        content-type="application/json"
+        handle-as="json"
+        on-response="onAssetCloneResponse">
+      </iron-ajax>
     </template>
     <script>
     Polymer({
@@ -57,6 +105,20 @@
         showAssetOnly: {
           type: Boolean,
           value: false
+        },
+        /**
+         * String that displays the failedValidationErrorMessage
+         *
+         * @property errorMessage
+         * @type Sring
+         */
+        errorMessage:{
+          type: String,
+          value: ""
+        },
+        cloneAssetName: {
+          type: String,
+          value: ""
         }
       },
 
@@ -124,6 +186,39 @@
         this.seedTableData = rows;
         this.headerText = "Asset details";
         this.showPagination = rows.length > 10;
+      },
+
+      isValidAssetName : function() {
+        var validator = Polymer.dom(this.root).querySelector("#assetNameValidationEl"),
+            inputValue = Polymer.dom(this.root).querySelector('#cloneAssetNameInput').value,
+            error = validator.validate(inputValue);
+        if(inputValue && !error.passedValidation) {
+          Polymer.dom(this.root).querySelector("#validationWarning").style.display = "block";
+          Polymer.dom(this.root).querySelector("#cloneAssetNameInput").classList.add("validation-error");
+          Polymer.dom(this.root).querySelector("#cloneAssetLabel").classList.add("validation-error");
+          this.cloneAssetName = "";
+          this.set('errorMessage', error.failedValidationErrorMessage);
+        }
+        else {
+          Polymer.dom(this.root).querySelector("#validationWarning").style.display = "none";
+          Polymer.dom(this.root).querySelector("#cloneAssetNameInput").classList.remove("validation-error");
+          Polymer.dom(this.root).querySelector("#cloneAssetLabel").classList.remove("validation-error");
+          this.cloneAssetName = inputValue;
+        }
+      },
+
+      cloneThisAsset: function() {
+        if (this.cloneAssetName !== "") {
+          console.log('inside cloneThisAsset(): About to clone this asset with the name: "' + this.cloneAssetName + '"');
+          Polymer.dom(this.root).querySelector("#cloneAssetNameInput").setAttribute("disabled", "true");
+          this.$.assetCloneAjaxEl.body = '[{ "assetname" : "' + this.cloneAssetName + '"}]';
+          this.$.assetCloneAjaxEl.generateRequest();
+        }
+      },
+
+      onAssetCloneResponse: function() {
+        console.log('inside onAssetCloneResponse(): TODO: implement response handling');
+        Polymer.dom(this.root).querySelector("#cloneAssetNameInput").removeAttribute("disabled");
       }
 
     });

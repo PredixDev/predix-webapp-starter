@@ -1,0 +1,19 @@
+
+<script>
+    PxValidators = {
+    errorObject : function() {
+      return {passedValidation: false,
+      failedValidationFunctionName: '',
+      failedValidationErrorMessage: ''};
+    },
+    isName: function(value) {
+      var errObj = PxValidators.errorObject();
+      var alphaNumericExp = /^([0-9]|[a-z])+([0-9a-z]+)$/i;
+      errObj.failedValidationFunctionName = 'isName';
+      errObj.failedValidationErrorMessage = 'Enter alphanumeric text without spaces';
+      errObj.passedValidation = alphaNumericExp.test(value);
+      return errObj;
+    }
+  };
+
+</script>

@@ -141,11 +141,11 @@ if (!config.isUaaConfigured()) {
   }
 
   //Use this route to make the entire app secure.  This forces login for any path in the entire app.
-  /*app.use('/', passport.authenticate('main', {
-    noredirect: false // Redirect the user to the authentication page
-  }),
+  app.use('/', passport.authenticate('main', {
+      noredirect: false // Redirect the user to the authentication page
+    }),
     express.static(path.join(__dirname, process.env['base-dir'] ? process.env['base-dir'] : '../public'))
-  ); */
+  );
 
   //Or you can follow this pattern to create secure routes,
   // if only some portions of the app are secure.
