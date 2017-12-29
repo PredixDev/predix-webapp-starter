@@ -209,11 +209,10 @@ Component will query for new data when tags or dates are changed.
             chartData.push(point);
           })
         });
-        // console.log('formatted chartData:', chartData);
-        // this.$.tsChart.notifyResize();  // force the chart to redraw
-        // this.tsSeriesConfig = {};
+        // console.log('formatted chartData:', chartData);        
+        this.$.tsChart.notifyResize();  // force the chart to redraw
         this.tsSeriesConfig = this._buildSeriesConfig(tags, this.tags);
-        this.tsChartData = chartData;
+        this.tsChartData = chartData;        
       },
 
       _tagsOrRangeChanged: function (newTags, newRange) {
@@ -228,6 +227,11 @@ Component will query for new data when tags or dates are changed.
       // [{key: "tag1", val: "Tag 1"}, {key: "tag2", val: "Tag 2", checked: true}]
       // {"from":"2016-01-01T00:00:00.000Z","to":"2016-07-01T11:00:00.000Z"}
       _fetchTimeseriesData: function (tags, range) {
+        // console.log('tags passed in to _fetchTimeseriesData:', tags);
+        if (!tags || tags.length < 1) {
+          console.log('Not fetching time series data.  no tags selected.');
+          return;
+        }
         var agg = [{
           "type": "avg",
           "sampling": {
@@ -241,7 +245,7 @@ Component will query for new data when tags or dates are changed.
           end: moment(range.to).valueOf(),
           tags: []
         };
-        this.selectedTags.forEach(function (t) {
+        tags.forEach(function (t) {
           query.tags.push({
             name: t,
             aggregations: agg

@@ -26,6 +26,7 @@ if(node_env === 'development') {
 	settings.websocketServerURL = devConfig.websocketServerURL;
 	settings.rmdDatasourceURL = devConfig.rmdDatasourceURL;
 	settings.rmdDocsURL = devConfig.rmdDocsURL;
+	settings.dataExchangeURL = devConfig.dataExchangeURL;
 
 } else {
 	// read VCAP_SERVICES
@@ -56,6 +57,7 @@ if(node_env === 'development') {
 	settings.websocketServerURL = process.env.websocketServerURL;
 	settings.rmdDatasourceURL = process.env.rmdDatasourceURL;
 	settings.rmdDocsURL = process.env.rmdDocsURL;
+	settings.dataExchangeURL = process.env.dataExchangeURL;
 }
 // console.log('config settings: ' + JSON.stringify(settings));
 
@@ -115,6 +117,11 @@ settings.isTimeSeriesConfigured = function() {
 	settings.timeseriesURL.indexOf('https') === 0 &&
 	settings.timeseriesZoneId &&
 	settings.timeseriesZoneId.indexOf('{') !== 0;
+}
+
+settings.isDataExchangeConfigured = function() {
+	return settings.dataExchangeURL && 
+	settings.dataExchangeURL.indexOf('https') === 0;
 }
 
 function getValueFromEncodedString(encoded, index) {

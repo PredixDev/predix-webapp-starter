@@ -4,12 +4,6 @@
 // then removes #splash div to reveal application UI in #app
 (function() {
 
-  // set some global variables for px-vis webworkers.
-  window.Px = window.Px || {};
-  window.Px.vis = window.Px.vis || {};
-  window.Px.vis.workerUrl = '../../bower_components/px-vis/px-vis-worker.js';
-  window.Px.vis.workerD3Url = '../../bower_components/pxd3/d3.min.js';
-
   // Wait for async loading of elements.html bundle
   var onWebComponentsLoaded = function() {
     var mainElementLink = document.querySelector('#main-element-import');

@@ -1,0 +1,78 @@
+{
+  "putFieldDataCriteria": [
+    {
+      "namespaces": [],
+      "fieldData": {
+        "field": [
+          {
+            "fieldIdentifier": {
+              "complexType": "FieldIdentifier",
+              "id": "/asset/assetTag/crank-frame-velocity/hiAlarmThreshold",
+              "source": "PREDIX_ASSET"
+            },
+            "parents": []
+          }
+        ],
+        "data": {
+          "complexType": "OsaData",
+          "dataEvent": {
+            "complexType": "DMReal",
+            "id": 0,
+            "numAlerts": [],
+            "value": 64.72
+          }
+        }
+      },
+      "filter": {
+        "complexType": "AssetFilter",
+        "uri": "/asset/compressor-2017"
+      }
+    },
+    {
+      "namespaces": [],
+      "fieldData": {
+        "field": [
+          {
+            "fieldIdentifier": {
+              "complexType": "FieldIdentifier",
+              "id": "/asset/assetTag/crank-frame-velocity/loAlarmThreshold",
+              "source": "PREDIX_ASSET"
+            },
+            "parents": []
+          }
+        ],
+        "data": {
+          "complexType": "OsaData",
+          "dataEvent": {
+            "complexType": "DMReal",
+            "id": 0,
+            "numAlerts": [],
+            "value": 2.97
+          }
+        }
+      },
+      "filter": {
+        "complexType": "AssetFilter",
+        "uri": "/asset/compressor-2017"
+      }
+    },
+    {
+      "namespaces": [],
+      "fieldData": {
+        "field": [
+          {
+            "fieldIdentifier": {
+              "complexType": "FieldIdentifier",
+              "source": "RABBITMQ_QUEUE"
+            },
+            "parents": []
+          }
+        ],
+        "data": {
+          "complexType": "PredixString",
+          "string": "{\n\t\"fieldChangedList\": {\n\t\t\"fieldChanged\": [{\n\t\t\t\"assetList\": {\n\t\t\t\t\"asset\": [{\n\t\t\t\t\t\"uri\": \"/asset/compressor-2017\",\n\t\t\t\t\t\"assetType\": \"asset\",\n\t\t\t\t\t\"fieldList\": {\n\t\t\t\t\t\t\"field\": [{\n\t\t\t\t\t\t\t\"fieldKey\": \"/asset/assetTag/crank-frame-velocity\",\n\t\t\t\t\t\t\t\"fieldValue\": \"\",\n\t\t\t\t\t\t\t\"fieldType\": \"assetTag\",\n\t\t\t\t\t\t\t\"timeChanged\": \"2017-07-11T07:16:13.000Z\"\n\t\t\t\t\t\t}]\n\t\t\t\t\t}\n\t\t\t\t}]\n\t\t\t},\n\t\t\t\"externalAttributeMap\": {\n\t\t\t\t\"entry\": [{\n\t\t\t\t\t\"key\": \"\",\n\t\t\t\t\t\"value\": \"\"\n\t\t\t\t}]\n\t\t\t}\n\t\t}]\n\t}\n}"
+        }
+      }
+    }
+  ]
+}

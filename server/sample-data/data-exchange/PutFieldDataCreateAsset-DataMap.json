@@ -1,0 +1,518 @@
+{
+	"putFieldDataCriteria": [{
+		"namespaces": [],
+		"fieldData": {
+			"field": [{
+				"fieldIdentifier": {
+					"complexType": "FieldIdentifier",
+					"id": "/asset/compressor-2017",
+					"source": "PREDIX_ASSET"
+				},
+				"parents": []
+			}],
+			"data": {
+				"complexType": "DataMap",
+				"map": [{
+					"complexType": "Asset",
+					"uri": "/asset/compressor-2017",
+					"classificationUri": "/classification/GE_COMPRESSOR_CYLINDER",
+					"assetId": "compressor-2017",
+					"description": "base for cloning",
+					"group": "/group/plant-richmond-refinery",
+					"assetTag": {
+						"crank-frame-compressionratio": {
+							"complexType": "AssetTag",
+							"label": "Compression Ratio",
+							"tagUri": "/tag/crank-frame-compressionratio",
+							"hiAlarmThreshold": 3,
+							"loAlarmThreshold": 2.5,
+							"isKpi": true,
+							"timeseriesDatasource": {
+								"complexType": "TimeseriesDatasource",
+								"tag": "Compressor-2017:CompressionRatio"
+							},
+							"edgeDatasource": {
+								"complexType": "EdgeDatasource",
+								"nodeName": "Compressor-2017:CompressionRatio",
+								"controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+							},
+							"alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-compressionratio"
+						},
+						"crank-frame-dischargepressure": {
+							"complexType": "AssetTag",
+							"label": "Discharge Pressure",
+							"tagUri": "/tag/crank-frame-dischargepressure",
+							"hiAlarmThreshold": 23,
+							"loAlarmThreshold": 0,
+							"isKpi": true,
+							"timeseriesDatasource": {
+								"complexType": "TimeseriesDatasource",
+								"tag": "Compressor-2017:DischargePressure"
+							},
+							"edgeDatasource": {
+								"complexType": "EdgeDatasource",
+								"nodeName": "Compressor-2017:DischargePressure",
+								"controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+							},
+							"alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure"
+						},
+						"crank-frame-suctionpressure": {
+							"complexType": "AssetTag",
+							"label": "Suction Pressure",
+							"tagUri": "/tag/crank-frame-suctionpressure",
+							"hiAlarmThreshold": 0.21,
+							"loAlarmThreshold": 0,
+							"timeseriesDatasource": {
+								"complexType": "TimeseriesDatasource",
+								"tag": "Compressor-2017:SuctionPressure"
+							},
+							"edgeDatasource": {
+								"complexType": "EdgeDatasource",
+								"nodeName": "Compressor-2017:SuctionPressure",
+								"controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+							},
+							"alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-suctionpressure"
+						},
+						"crank-frame-maxpressure": {
+							"complexType": "AssetTag",
+							"label": "Max Pressure",
+							"tagUri": "/tag/crank-frame-maxpressure",
+							"hiAlarmThreshold": 26,
+							"loAlarmThreshold": 22,
+							"timeseriesDatasource": {
+								"complexType": "TimeseriesDatasource",
+								"tag": "Compressor-2017:MaximumPressure"
+							},
+							"edgeDatasource": {
+								"complexType": "EdgeDatasource",
+								"nodeName": "Compressor-2017:MaximumPressure",
+								"controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+							},
+							"alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-maxpressure"
+						},
+						"crank-frame-velocity": {
+							"complexType": "AssetTag",
+							"label": "Velocity",
+							"tagUri": "/tag/crank-frame-velocity",
+							"hiAlarmThreshold": 0.07,
+							"loAlarmThreshold": 0,
+							"timeseriesDatasource": {
+								"complexType": "TimeseriesDatasource",
+								"tag": "Compressor-2017:Velocity"
+							},
+							"edgeDatasource": {
+								"complexType": "EdgeDatasource",
+								"nodeName": "Compressor-2017:Velocity",
+								"controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+							},
+							"alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-velocity"
+						},
+						"crank-frame-temperature": {
+							"complexType": "AssetTag",
+							"label": "Temperature",
+							"tagUri": "/tag/crank-frame-temperature",
+							"hiAlarmThreshold": 80,
+							"loAlarmThreshold": 65,
+							"timeseriesDatasource": {
+								"complexType": "TimeseriesDatasource",
+								"tag": "Compressor-2017:Temperature"
+							},
+							"edgeDatasource": {
+								"complexType": "EdgeDatasource",
+								"nodeName": "Compressor-2017:Temperature",
+								"controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+							},
+							"alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-temperature"
+						}
+					},
+					"attributes": {
+						"machineControllerId": {
+							"complexType": "Attribute",
+							"type": "string",
+							"enumeration": [],
+							"value": ["/asset/Bently.Nevada.3500.Rack1"]
+						},
+						"summaryTag": {
+							"complexType": "Attribute",
+							"type": "string",
+							"enumeration": [],
+							"value": ["crank-frame-velocity", "crank-frame-compressionratio"]
+						}
+					}
+				}, {
+					"complexType": "Asset",
+					"uri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure",
+					"classificationUri": "/classification/alert-status",
+					"assetId": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure",
+					"attributes": {
+						"alertStatus": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["false"]
+						},
+						"alertType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["Analytic"]
+						},
+						"alertLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertLevelValue": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertTime": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdColor": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdDirection": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThreshold": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"sourceType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["PredixTimeseries"]
+						},
+						"fieldSourceUri": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						}
+					}
+				}, {
+					"complexType": "Asset",
+					"uri": "/asset/compressor-2017.alert-status.crank-frame-compressionratio",
+					"classificationUri": "/classification/alert-status",
+					"assetId": "/asset/compressor-2017.alert-status.crank-frame-compressionratio",
+					"attributes": {
+						"alertStatus": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["false"]
+						},
+						"alertType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["Analytic"]
+						},
+						"alertLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertLevelValue": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertTime": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdColor": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdDirection": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThreshold": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"sourceType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["PredixTimeseries"]
+						},
+						"fieldSourceUri": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						}
+					}
+				}, {
+					"complexType": "Asset",
+					"uri": "/asset/compressor-2017.alert-status.crank-frame-suctionpressure",
+					"classificationUri": "/classification/alert-status",
+					"assetId": "/asset/compressor-2017.alert-status.crank-frame-suctionpressure",
+					"attributes": {
+						"alertStatus": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["false"]
+						},
+						"alertType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["Analytic"]
+						},
+						"alertLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertLevelValue": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertTime": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdColor": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdDirection": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThreshold": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"sourceType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["PredixTimeseries"]
+						},
+						"fieldSourceUri": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						}
+					}
+				}, {
+					"complexType": "Asset",
+					"uri": "/asset/compressor-2017.alert-status.crank-frame-maxpressure",
+					"classificationUri": "/classification/alert-status",
+					"assetId": "/asset/compressor-2017.alert-status.crank-frame-maxpressure",
+					"attributes": {
+						"alertStatus": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["false"]
+						},
+						"alertType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["Analytic"]
+						},
+						"alertLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertLevelValue": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertTime": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdColor": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdDirection": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThreshold": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"sourceType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["PredixTimeseries"]
+						},
+						"fieldSourceUri": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						}
+					}
+				}, {
+					"complexType": "Asset",
+					"uri": "/asset/compressor-2017.alert-status.crank-frame-velocity",
+					"classificationUri": "/classification/alert-status",
+					"assetId": "/asset/compressor-2017.alert-status.crank-frame-velocity",
+					"attributes": {
+						"alertStatus": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["false"]
+						},
+						"alertType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["Analytic"]
+						},
+						"alertLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertLevelValue": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertTime": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdColor": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdDirection": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThreshold": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"sourceType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["PredixTimeseries"]
+						},
+						"fieldSourceUri": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						}
+					}
+				}, {
+					"complexType": "Asset",
+					"uri": "/asset/compressor-2017.alert-status.crank-frame-temperature",
+					"classificationUri": "/classification/alert-status",
+					"assetId": "/asset/compressor-2017.alert-status.crank-frame-temperature",
+					"attributes": {
+						"alertStatus": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["false"]
+						},
+						"alertType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["Analytic"]
+						},
+						"alertLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertLevelValue": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"alertTime": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdColor": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdDirection": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThresholdLevel": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"deltaThreshold": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						},
+						"sourceType": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": ["PredixTimeseries"]
+						},
+						"fieldSourceUri": {
+							"complexType": "Attribute",
+							"enumeration": [],
+							"value": []
+						}
+					}
+				}]
+			}
+		}
+	}]
+}

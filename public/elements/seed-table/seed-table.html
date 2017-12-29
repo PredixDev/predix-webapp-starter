@@ -4,6 +4,9 @@
 <link rel="import" href="../../bower_components/px-card/px-card.html">
 <link rel="import" href="../../bower_components/px-icon-set/px-icon-set.html">
 <link rel="import" href="../../bower_components/px-icon-set/px-icon.html">
+<link rel="import" href="../../bower_components/px-chip/px-chip.html">
+<link rel="import" href="../../bower_components/px-modal/px-modal.html">
+<link rel="import" href="../../bower_components/px-alert-message/px-alert-message.html">
 <link rel="import" href="../../bower_components/px-theme/px-theme-styles.html">
 <link rel="import" href="../../bower_components/px-validation/px-validation.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
@@ -22,7 +25,7 @@
     <template>
       <style include="px-theme-styles" is="custom-style"></style>
       <style>
-        #cloneAssetForm {
+        .analyticsInputContainer {
           height: 35px;
           position: absolute;
           top: 16px;
@@ -30,11 +33,11 @@
           color: rgb(103, 126, 140);
           line-height: 25px;
           padding: 8px;
+          z-index: 200;
         }
 
         #cloneAssetNameInput {
           width: 180px;
-          margin-left: 15px;
           margin-right: 5px;
         }
 
@@ -49,41 +52,125 @@
           right: 27px;
           display: none;
         }
+
+        #seedTableAlert {
+          position: absolute;
+          top: 10px;
+          right: 20px;
+          z-index: 300;
+        }
+
+        .analytics-label {
+          padding-right: 15px
+        }
+
+        #informationLink {
+          display: none;
+          background-color: #1479c9;
+          height: 25px;
+          width: 25px;
+          border-radius: 12px;
+          margin-right: 10px;
+          cursor: pointer;
+        }
       </style>
       <px-card id="tableCard" header-text="Asset Status" icon="px-fea:asset" style="padding-bottom: 2rem; position: relative;">
-        <!-- <div id="cloneAssetForm">
+        <px-alert-message
+            id="seedTableAlert"
+            type="information"
+            message-title=""
+            message=""
+            visible="{{alertVisible}}"
+            auto-dismiss="3600000"
+            language="en"
+            disable-auto-show
+            hide-severity
+            hide-badge
+            on-px-alert-message-action-triggered="_onSeedTableActionTriggered">
+            <px-icon icon="px-utl:information" style="color:white;"></px-icon>
+        </px-alert-message>
+        <div id="cloneAssetForm" class="analyticsInputContainer" hidden$={{!showCloneButton}}>
           <px-validation id="assetNameValidationEl">
             <px-validator validation-method="isName" import="/elements/seed-table/asset-name-validator.html"></px-validator>
           </px-validation>
-          <label id="cloneAssetLabel" for="assetNameInput" >Clone This Asset:</label>
-          <input class="text-input" id="cloneAssetNameInput" type="text" placeholder="Type new asset name..." on-keyup="isValidAssetName">
+          <label id="cloneAssetLabel" class="analytics-label" for="assetNameInput" ><b>Experience Predix Analytics:</b> Clone this asset</label>
+          <input class="text-input" id="cloneAssetNameInput" type="text" placeholder="Enter clone name..." on-keyup="isValidAssetName">
           <px-icon id="copyIcon" icon="px-utl:copy" on-click="cloneThisAsset"></px-icon>
           <small id="validationWarning" class="caps form-field__help validation-error">{{errorMessage}}</small>
-        </div> -->
-        <px-data-table table-data="{{seedTableData}}" hide-pagination-control="[[!showPagination]]">
-          <px-data-table-column name="tag" type="html"></px-data-table-column>
-          <px-data-table-column name="alertStatus" label="Alert Status" type="html" hide="[[showAssetOnly]]"></px-data-table-column>
-          <px-data-table-column name="deltaThreshold" label="Delta to Threshold" type="html" hide="[[showAssetOnly]]"></px-data-table-column>
-          <px-data-table-column name="lastTagReading" label="Last Meter Reading" hide="[[showAssetOnly]]"></px-data-table-column>
-          <px-data-table-column name="currentValue" label="Current Value" hide="[[showAssetOnly]]"></px-data-table-column>
-          <px-data-table-column name="unit" label="Units" hide="[[showAssetOnly]]"></px-data-table-column>
-          <px-data-table-column name="thresholdMin" label="Threshold Min"></px-data-table-column>
-          <px-data-table-column name="thresholdMax" label="Threshold Max"></px-data-table-column>
-        </px-data-table>
+        </div>
+        <div id="thresholdSaveContainer" class="analyticsInputContainer" hidden$={{!isAClone}}>
+          <div id="informationLink" on-click="_launchAnalyticsArchitecturePage">
+            <px-icon icon="px-utl:information" style="color:white; line-height: 16px; margin-left: 5px; margin-top: -4px;"></px-icon>
+          </div>
+          <label class="analytics-label"><b>Experience Predix Analytics:</b> Change the Alarm Thresholds and click Save &gt;</label>
+          <px-chip content="Save Thresholds" icon="px-utl:save" on-tap="_onSaveThresholdsButtonClick" show-icon></px-chip>
+        </div>
+        <template is="dom-if" if="{{isAClone}}">
+          <px-data-table id="sensorTableClone"
+            table-data="{{seedTableData}}"
+            hide-pagination-control="[[!showPagination]]"
+            on-table-data-changed="_onSensorTableDataChanged">
+            <px-data-table-column name="tag" type="html"></px-data-table-column>
+            <px-data-table-column name="alertStatus" label="Alert Status" type="html" hide="[[showAssetOnly]]"></px-data-table-column>
+            <px-data-table-column name="deltaThreshold" label="Delta to Threshold" type="html" hide="[[showAssetOnly]]"></px-data-table-column>
+            <px-data-table-column name="lastTagReading" label="Last Meter Reading" hide="[[showAssetOnly]]"></px-data-table-column>
+            <px-data-table-column name="currentValue" label="Current Value" hide="[[showAssetOnly]]"></px-data-table-column>
+            <px-data-table-column name="unit" label="Units" hide="[[showAssetOnly]]"></px-data-table-column>
+            <px-data-table-column name="thresholdMin" label="Threshold Min" editable></px-data-table-column>
+            <px-data-table-column name="thresholdMax" label="Threshold Max" editable></px-data-table-column>
+          </px-data-table>
+        </template>
+        <template is="dom-if" if="{{!isAClone}}">
+          <px-data-table id="sensorTable"
+            table-data="{{seedTableData}}"
+            hide-pagination-control="[[!showPagination]]"
+            on-table-data-changed="_onSensorTableDataChanged">
+            <px-data-table-column name="tag" type="html"></px-data-table-column>
+            <px-data-table-column name="alertStatus" label="Alert Status" type="html" hide="[[showAssetOnly]]"></px-data-table-column>
+            <px-data-table-column name="deltaThreshold" label="Delta to Threshold" type="html" hide="[[showAssetOnly]]"></px-data-table-column>
+            <px-data-table-column name="lastTagReading" label="Last Meter Reading" hide="[[showAssetOnly]]"></px-data-table-column>
+            <px-data-table-column name="currentValue" label="Current Value" hide="[[showAssetOnly]]"></px-data-table-column>
+            <px-data-table-column name="unit" label="Units" hide="[[showAssetOnly]]"></px-data-table-column>
+            <px-data-table-column name="thresholdMin" label="Threshold Min"></px-data-table-column>
+            <px-data-table-column name="thresholdMax" label="Threshold Max"></px-data-table-column>
+          </px-data-table>
+        </template>
       </px-card>
+      <px-modal id="analyticsFrameworkModal" btn-modal-positive="OK" modal-heading="Learn More About Predix Analytics">
+        <div style="width: 500px; height: 180px; overflow-y: hidden;">
+          <p>View the architecture of the Predix Analytics Framework:</p>
+          <a style="text-decoration: none; color: #1479c9;" href="https://github.com/PredixDev/predix-rmd-analytics-ref-app#analytics-flow" target="_newTab"><b>Analytics Framework</b></a>
+          <br/>
+          <p>Learn about Digital Twins and get your own Digital Twin App:</p>
+          <a style="text-decoration: none; color: #1479c9;" href="https://www.predix.io/resources/tutorials/journey.html#1611" target="_newTab"><b>Digital Twin</b></a>
+        </div>
+      </px-modal>
       <iron-ajax
         id="assetCloneAjaxEl"
         url="/api/cloneasset"
         method="post"
         content-type="application/json"
         handle-as="json"
-        on-response="onAssetCloneResponse">
+        on-response="_onAssetCloneResponse"
+        on-error="_onAssetCloneError">
+      </iron-ajax>
+      <iron-ajax
+        id="thresholdAjaxEl"
+        url="/api/updateasset"
+        method="post"
+        content-type="application/json"
+        handle-as="json"
+        on-response="_onThresholdSaveResponse"
+        on-error="_onThresholdSaveError">
       </iron-ajax>
     </template>
     <script>
     Polymer({
       is: 'seed-table',
       properties: {
+        uri: {
+          type: String
+        },
         assetData: {
           type: Object,
           observer: '_formatAssetDataForTable'
@@ -106,6 +193,10 @@
           type: Boolean,
           value: false
         },
+        showCloneButton: {
+          type: Boolean,
+          value: false
+        },
         /**
          * String that displays the failedValidationErrorMessage
          *
@@ -119,26 +210,71 @@
         cloneAssetName: {
           type: String,
           value: ""
+        },
+        isAClone: {
+          type: Boolean,
+          value: false
+        },
+        alertVisible: {
+          type: Boolean,
+          value: false
+        },
+        cloneSaveAlertMessage: {
+          type: String,
+          value: "New thresholds successfully saved.  View the analytics architecture <a href='www.predix.io'>here</a>."
+        },
+        _seedOldTableData: {
+          type: Array,
+          value: []
+        },
+        _thresholdsDirty: {
+          type: Boolean,
+          value: false
+        },
+        experiencedAnalytics: {
+          type: Boolean,
+          value: false
         }
       },
 
+      ready: function() {
+        // workaround, to make sure the "OK" appears in the alert button.
+        this.$.seedTableAlert.action="acknowledge";
+      },
+
       _formatRmdDataForTable: function(rmdData) {
-        var rows = [], row, description, self = this;
+        var rows = [], row, description, deltaJSON, self = this;
+        if (this._seedOldTableData.length > 0) {
+          deltaJSON = this._getThresholdSaveJSON();
+          console.log('any edits?');
+          if (deltaJSON.putFieldDataCriteria.length > 0) {
+            console.log('yes');
+            console.log(deltaJSON);
+            console.log('not refreshing, as a result');
+            return;
+          }
+        }
+        console.log('no edits, so refreshing sensor table');
         rmdData.tableData.forEach(function(sensor) {
           row = {
             "tag": self._getMeterHtml(sensor),
+            "tagRaw": sensor.tag,
             "alertStatus": self._getAlertHtml(sensor),
+            "alertStatusRaw": sensor.alertStatus,
             "currentValue": (typeof sensor.currentValue === "number") ? parseFloat(sensor.currentValue).toFixed(3): '',
             "unit": sensor.unit,
             "lastTagReading": moment(sensor.lastTagReading).format('YYYY-MM-DD HH:mm:ss ZZ'),
             "thresholdMin": sensor.thresholdMin,
             "thresholdMax": sensor.thresholdMax,
-            "deltaThreshold": self._getDeltaHtml(sensor)
+            "deltaThreshold": self._getDeltaHtml(sensor),
+            "deltaThresholdRaw": (typeof sensor.deltaThreshold === "number") ? sensor.deltaThreshold.toFixed(2) + '%' : ''
           }
           rows.push(row);
         });
+
         this.showPagination = rows.length > 10;
         this.seedTableData = rows;
+        this._seedOldTableData = JSON.parse(JSON.stringify(rows)); // clones 'rows'
         this.headerText = "Asset Performance";
       },
 
@@ -189,38 +325,231 @@
       },
 
       isValidAssetName : function() {
-        var validator = Polymer.dom(this.root).querySelector("#assetNameValidationEl"),
-            inputValue = Polymer.dom(this.root).querySelector('#cloneAssetNameInput').value,
+        var validator = this.$.assetNameValidationEl,
+            inputValue = this.$.cloneAssetNameInput.value,
             error = validator.validate(inputValue);
         if(inputValue && !error.passedValidation) {
-          Polymer.dom(this.root).querySelector("#validationWarning").style.display = "block";
-          Polymer.dom(this.root).querySelector("#cloneAssetNameInput").classList.add("validation-error");
-          Polymer.dom(this.root).querySelector("#cloneAssetLabel").classList.add("validation-error");
+          this.$.validationWarning.style.display = "block";
+          this.$.cloneAssetNameInput.classList.add("validation-error");
+          this.$.cloneAssetLabel.classList.add("validation-error");
           this.cloneAssetName = "";
           this.set('errorMessage', error.failedValidationErrorMessage);
         }
         else {
-          Polymer.dom(this.root).querySelector("#validationWarning").style.display = "none";
-          Polymer.dom(this.root).querySelector("#cloneAssetNameInput").classList.remove("validation-error");
-          Polymer.dom(this.root).querySelector("#cloneAssetLabel").classList.remove("validation-error");
+          this.$.validationWarning.style.display = "none";
+          this.$.cloneAssetNameInput.classList.remove("validation-error");
+          this.$.cloneAssetLabel.classList.remove("validation-error");
           this.cloneAssetName = inputValue;
         }
       },
 
       cloneThisAsset: function() {
         if (this.cloneAssetName !== "") {
-          console.log('inside cloneThisAsset(): About to clone this asset with the name: "' + this.cloneAssetName + '"');
-          Polymer.dom(this.root).querySelector("#cloneAssetNameInput").setAttribute("disabled", "true");
+          this.$.cloneAssetNameInput.setAttribute("disabled", "true");
           this.$.assetCloneAjaxEl.body = '[{ "assetname" : "' + this.cloneAssetName + '"}]';
           this.$.assetCloneAjaxEl.generateRequest();
         }
       },
 
-      onAssetCloneResponse: function() {
-        console.log('inside onAssetCloneResponse(): TODO: implement response handling');
-        Polymer.dom(this.root).querySelector("#cloneAssetNameInput").removeAttribute("disabled");
-      }
+      _onAssetCloneResponse: function(event) {
+        this.set('showCloneButton', false);
+        localStorage.setItem('clonedAssetId', event.detail.response.clonedAssetId);
+        this.$.seedTableAlert.messageTitle = "Asset Cloned"
+        this.$.seedTableAlert.message = ""
+        this.$.seedTableAlert.expanded = true;
+        this.alertVisible = true;
+        // window.location.reload();
+        window.dispatchEvent(new Event('rmd-asset-cloned'));
+      },
 
+      _onAssetCloneError: function(event) {
+        this.$.cloneAssetNameInput.removeAttribute("disabled");
+        console.log(event);
+        console.log(event.detail.request.xhr.response);
+      },
+
+      _onThresholdSaveResponse: function(event) {
+        this._thresholdsDirty = false;
+        this.$.seedTableAlert.messageTitle = "Thresholds Saved."
+        this.$.seedTableAlert.message = "Analytics results will update shortly.  Click on the refresh button."
+        this.$.seedTableAlert.expanded = true;
+        this.alertVisible = true;
+        this.$.informationLink.style.display = "inline-block";
+        this._seedOldTableData = JSON.parse(JSON.stringify(this.seedTableData));
+      },
+
+      _onThresholdSaveError: function(event) {
+        this.$.seedTableAlert.type = 'important';
+        this.$.seedTableAlert.messageTitle = "Thresholds Not Saved"
+        this.$.seedTableAlert.message = "There was a problem saving the thresholds."
+        this.$.seedTableAlert.expanded = true;
+        this.alertVisible = true;
+      },
+
+      _onSaveThresholdsButtonClick: function(event) {
+        var thresholdSaveJSON = this._getThresholdSaveJSON();
+        if (thresholdSaveJSON.putFieldDataCriteria.length > 0) {
+          this.$.thresholdAjaxEl.body = JSON.stringify(thresholdSaveJSON);
+          this.$.thresholdAjaxEl.generateRequest();
+        }
+        else {
+          this.$.seedTableAlert.messageTitle = "No edits to save."
+          this.$.seedTableAlert.message = "";
+          this.$.seedTableAlert.expanded = true;
+          this.alertVisible = true;
+        }
+      },
+
+      _getThresholdSaveJSON: function() {
+        var newTableData = this.seedTableData;
+        var oldTableData = this._seedOldTableData;
+        var thresholdChange, queueEntry, id, uri, index, value, changedField, queueFieldList, queueEntry;
+        var newRow, oldRow, fieldChanged, atLeastOneFieldChanged = false, highAlarmThresholdStr = 'hiAlarmThreshold', lowAlarmThresholdStr = 'loAlarmThreshold';
+        var thresholdChangeTemplate = {
+          "namespaces": [],
+          "fieldData": {
+            "field": [ {
+              "fieldIdentifier": {
+                "complexType": "FieldIdentifier",
+                "id": "/asset/assetTag/[CHANGE_THIS_TO_TAG]/[CHANGE_THIS_TO_THRESHOLD_NAME]",
+                "source": "PREDIX_ASSET"
+              },
+              "parents": []
+            } ],
+            "data": {
+              "complexType": "OsaData",
+              "dataEvent": {
+                "complexType": "DMReal",
+                "id": "[CHANGE_THIS_TO_INDEX]",
+                "numAlerts": [],
+                "value": "[CHANGE_THIS_TO_THRESHOLD_VALUE]"
+              }
+            }
+          },
+          "filter": {
+            "complexType": "AssetFilter",
+            "uri": ""
+          }
+        };
+
+        var changedFieldTemplate = {
+          "assetList": {
+            "asset": [{
+              "uri": "[CHANGE]",
+              "assetType": "asset",
+              "fieldList": {
+                "field": [{
+                  "fieldKey": "[ASSET TAG URI]",
+                  "fieldValue": "",
+                  "fieldType": "assetTag",
+                  "timeChanged": ""
+                }]
+              }
+            }]
+          },
+          "externalAttributeMap": {
+            "entry": [{
+              "key": "",
+              "value": ""
+            }]
+          }
+        }
+
+        var queueEntryTemplate =
+        {
+          "namespaces": [],
+          "fieldData": {
+            "field": [
+              {
+                "fieldIdentifier": {
+                  "complexType": "FieldIdentifier",
+                  "source": "RABBITMQ_QUEUE"
+                },
+                "parents": []
+              }
+            ],
+            "data": {
+              "complexType": "PredixString",
+              "string": ""
+            }
+          }
+        };
+
+        var thresholdSaveJSON = {
+          "putFieldDataCriteria": [
+            // add a thresholdChangeTemplate here for each changed threshold
+            // then add 1 queryEntryTemplate containing the list of changed fields
+          ]
+        }
+
+        var dateNow = moment().toISOString();
+        queueFieldList = {
+          "fieldChangedList": {
+            "fieldChanged": []
+          }
+        };
+
+        for (var i=0, l = newTableData.length, c=0; i < l; i++) {
+          newRow = newTableData[i];
+          oldRow = oldTableData[i];
+          fieldChanged = false;
+          if (newRow.thresholdMax.toString() !== oldRow.thresholdMax.toString()) {
+            fieldChanged = true;
+            atLeastOneFieldChanged = true;
+            thresholdChange = JSON.parse(JSON.stringify(thresholdChangeTemplate));
+            id = thresholdChange.fieldData.field[0].fieldIdentifier.id;
+            thresholdChange.fieldData.field[0].fieldIdentifier.id = id.replace("[CHANGE_THIS_TO_TAG]", oldRow.tagRaw).replace("[CHANGE_THIS_TO_THRESHOLD_NAME]", highAlarmThresholdStr);
+            thresholdChange.filter.uri = this.uri;
+            thresholdChange.fieldData.data.dataEvent.id = c++;
+            thresholdChange.fieldData.data.dataEvent.value = newRow.thresholdMax;
+            thresholdSaveJSON.putFieldDataCriteria.push(thresholdChange);
+          }
+          if (newRow.thresholdMin.toString() !== oldRow.thresholdMin.toString()) {
+            fieldChanged = true;
+            atLeastOneFieldChanged = true;
+            thresholdChange = JSON.parse(JSON.stringify(thresholdChangeTemplate));
+            id = thresholdChange.fieldData.field[0].fieldIdentifier.id;
+            thresholdChange.fieldData.field[0].fieldIdentifier.id = id.replace("[CHANGE_THIS_TO_TAG]", oldRow.tagRaw).replace("[CHANGE_THIS_TO_THRESHOLD_NAME]", lowAlarmThresholdStr);
+            thresholdChange.filter.uri = this.uri;
+            thresholdChange.fieldData.data.dataEvent.id = c++;
+            thresholdChange.fieldData.data.dataEvent.value = newRow.thresholdMin;
+            thresholdSaveJSON.putFieldDataCriteria.push(thresholdChange);
+          }
+          if (fieldChanged) { // add fieldChanged object for Rabbit MQ
+            changedField = JSON.parse(JSON.stringify(changedFieldTemplate));
+            changedField.assetList.asset[0].uri = this.uri;
+            changedField.assetList.asset[0].fieldList.field[0].fieldKey = '/asset/assetTag/' + oldRow.tagRaw;
+            changedField.assetList.asset[0].fieldList.field[0].timeChanged = dateNow;
+
+            queueFieldList.fieldChangedList.fieldChanged.push(changedField);
+
+            console.log(queueFieldList.fieldChangedList.fieldChanged[0].assetList.asset[0].fieldList.field);
+          }
+        }
+        if (atLeastOneFieldChanged) {
+          queueEntry = JSON.parse(JSON.stringify(queueEntryTemplate));
+          queueEntry.fieldData.data.string = JSON.stringify(queueFieldList);
+          thresholdSaveJSON.putFieldDataCriteria.push(queueEntry);
+        }
+        console.log("***** In seed-table; Here is the JSON to send for threshold update: ");
+        console.log(thresholdSaveJSON);
+        return thresholdSaveJSON;
+      },
+
+      _onSeedTableActionTriggered: function(event) {
+        if (!this.isAClone) {
+          this.set('isAClone', true);
+        }
+      },
+
+      _onSensorTableDataChanged: function() {
+        this.set('_thresholdsDirty', true);
+        console.log('******* thresholds edited');
+      },
+
+      _launchAnalyticsArchitecturePage: function(){
+        this.$.analyticsFrameworkModal.modalButtonClicked();
+      }
     });
     </script>
 </dom-module>

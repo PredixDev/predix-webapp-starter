@@ -11,7 +11,7 @@
     <style include="rmd-view-styles"></style>
 
     <div>
-      <asset-browser id="assetBrowser" asset-model="{{rmdAssetModel}}" opened-asset="{{openedAsset}}" asset-query-url="/api/predix-asset/asset"
+      <asset-browser id="assetBrowser" asset-model="{{rmdAssetModel}}" opened-asset="{{openedAsset}}" asset-query-url="/api/predix-asset/asset/compressor-2017"
         asset-group-query-url="/api/predix-asset/group">
       </asset-browser>
     </div>
@@ -20,10 +20,10 @@
       <div><h1 class="delta u-pl++">Dashboard</h1></div>
       <div>
         <div class="flex flex--row flex--right">
-          <px-dropdown class="flex u-pr u-pt" id="refreshFrequencyDropdown" display-value="Refresh Frequency" 
+          <px-dropdown class="flex u-pr u-pt" id="refreshFrequencyDropdown" display-value="Refresh Frequency"
             items='[{"key":"0","val":"No Refresh"},{"key":"3","val":"Every 3 sec"},{"key":"15","val":"Every 15 sec"},{"key":"60","val":"Every 60 sec"}]'>
           </px-dropdown>
-          <px-icon class="u-pr u-pt" id="refreshTableBtn" icon="px-nav:reload"></px-icon>
+          <px-icon class="u-pr u-pt" id="refreshTableBtn" title="Refresh data now" icon="px-nav:reload"></px-icon>
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
     <!--<seed-table asset-data="{{openedAsset}}" show-asset-only="true"></seed-table>-->
 
     <!-- If RMD datasource is enabled, call that and pass data to the table. -->
-    <seed-table id="seedTable" rmd-data="{{rmdTableData}}"></seed-table>
+    <seed-table id="seedTable" rmd-data="{{rmdTableData}}" show-clone-button="{{showCloneButton}}" is-a-clone="{{assetIsAClone}}" uri="{{uri}}"></seed-table>
     <iron-ajax id="datatableAjaxEl"></iron-ajax>
 
     <timeseries-chart id="tsChart" ws-url="[[wsUrl]]" tags="{{displayTags}}" hidden$="{{!showTimeseriesChart}}"></timeseries-chart>
@@ -69,13 +69,35 @@
         wsUrl: {
           type: String
         },
+        dataExchangeEnabled: {
+          type: Boolean,
+          value: false
+        },
+        assetIsAClone: {
+          type: Boolean,
+          value: false
+        },
+        showCloneButton: {
+          type: Boolean,
+          value: false,
+          computed: '_computeShowCloneButton(dataExchangeEnabled, assetIsAClone)'
+        },
         kpiBarWrapperState: {
+          type: String
+        },
+        uri: {
           type: String
         }
       },
 
+      _computeShowCloneButton: function(dataExchangeEnabled, assetIsAClone) {
+        // show clone button if dx is enabled, and we're not looking at a clone.
+        // don't show clone button if there's already a clone.
+        return dataExchangeEnabled && !assetIsAClone && !localStorage.getItem('clonedAssetId');
+      },
+
       _formatTagsForDisplay: function (assetTag) {
-        var tags = []
+        var tags = [];
         Object.keys(assetTag).forEach(function (key) {
           var tag = {
             key: assetTag[key].timeseriesDatasource.tag,
@@ -95,8 +117,11 @@
       },
       _openedAssetChanged: function (newVal) {
         console.log('asset opened:', newVal);
+        this.set('uri', newVal.uri);
+        // console.log('********* in rmd-view, the value of uri is ' + this.uri);
         this.$.datatableAjaxEl.url = "/api/datagrid" + newVal.uri;
         this.$.kpiBarAjaxEl.url = this.$.datatableAjaxEl.url + '/summary';
+        this.assetIsAClone = (newVal.uri !== '/asset/compressor-2017');
         this.$.datatableAjaxEl.generateRequest();
         if (newVal.assetTag) {
           this.displayTags = this._formatTagsForDisplay(newVal.assetTag);
@@ -104,7 +129,7 @@
         this.showTimeseriesChart = newVal.uri.indexOf('asset') >= 0;
       },
       _assetModelChanged: function (newVal) {
-        console.log('asset model changed:', newVal);
+        // console.log('asset model changed:', newVal);
       },
 
       // We'll load the timeseries-chart asynchronously, since it's pretty heavy.
@@ -124,9 +149,10 @@
         // initialize refresh interval
         this.refreshTimerInterval = 0;
         this.wsUrl = document.querySelector('#view').elementData.wsUrl;
+        this.dataExchangeEnabled = document.querySelector('#view').elementData.dataExchangeEnabled;
 
         this.$.assetBrowser.addEventListener('px-app-asset-selected', function(evt) {
-          console.log('evt', evt);
+          // console.log('px-app-asset-selected', evt);
           this.openedAsset = evt.detail.item;
         }.bind(this));
 

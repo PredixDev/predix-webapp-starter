@@ -12,6 +12,7 @@
     "windServiceURL": "{URL of the microservice <your-name>-winddata-timeseries-service}, e.g.  https://your-name-winddata-timeseries-service.run.asw-usw02-pr.predix.io",
     "websocketServerURL": "/livestream",
     "rmdDatasourceURL": "{URL of your RMD datasource microservice}",
-    "rmdDocsURL": "https://raw.githubusercontent.com/PredixDev/predix-rmd-ref-app/master/README.md"
+    "rmdDocsURL": "https://raw.githubusercontent.com/PredixDev/predix-rmd-ref-app/master/README.md",
+    "dataExchangeURL": "{URL of your data exchange microservice}"
   }
 }
