@@ -7,7 +7,7 @@ module.exports = function() {
 
   // http://localhost:5000/mock-api/predix-asset/asset?filter=group=/group/plant-richmond-refinery
   const compressorJson = require(path.resolve(__dirname, '../sample-data/predix-asset/compressor-2017.json'));
-  routes["asset"] = compressorJson;
+  routes["asset/compressor-2017"] = compressorJson;
 
   // http://localhost:5000/mock-api/predix-asset/group?filter=parent=/group/enterprise-predix
   const groupsJson = require(path.resolve(__dirname, '../sample-data/predix-asset/groups.json'));
