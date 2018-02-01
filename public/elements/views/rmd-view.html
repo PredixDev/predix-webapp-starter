@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/px-dropdown/px-dropdown.html">
+<link rel="import" href="../../bower_components/px-icon-set/px-icon-set.html">
 <link rel="import" href="../asset-browser/asset-browser.html">
 <link rel="import" href="../seed-table/seed-table.html">
 <link rel="import" href="../kpi-bar/kpi-bar.html">
@@ -8,16 +9,18 @@
 
 <dom-module id="rmd-view">
   <template>
-    <style include="rmd-view-styles"></style>
-
+    <style include="rmd-view-styles">
+    </style>
     <div>
       <asset-browser id="assetBrowser" asset-model="{{rmdAssetModel}}" opened-asset="{{openedAsset}}" asset-query-url="/api/predix-asset/asset/compressor-2017"
         asset-group-query-url="/api/predix-asset/group">
       </asset-browser>
     </div>
-
     <div class="flex flex--row flex--justify">
-      <div><h1 class="delta u-pl++">Dashboard</h1></div>
+      <div>
+        <h1 class="delta u-pl++" style="display:inline;">Asset Health</h1>
+        <button id="exportBtn" class="btn btn--primary csv-export-btn" on-tap="_exportAssetDashboard" hidden><iron-icon icon="px-utl:download"></iron-icon>Download</button>
+      </div>
       <div>
         <div class="flex flex--row flex--right">
           <px-dropdown class="flex u-pr u-pt" id="refreshFrequencyDropdown" display-value="Refresh Frequency"
@@ -127,6 +130,8 @@
           this.displayTags = this._formatTagsForDisplay(newVal.assetTag);
         }
         this.showTimeseriesChart = newVal.uri.indexOf('asset') >= 0;
+        this.$.exportBtn.removeAttribute('hidden');
+        console.log('#### export button hidden state is ' + this.$.exportBtn.hidden);
       },
       _assetModelChanged: function (newVal) {
         // console.log('asset model changed:', newVal);
@@ -140,6 +145,10 @@
         Polymer.Base.importHref(fragmentPath, null, function () {
           console.log('failed to load:', fragmentPath);
         }, true);
+      },
+
+      _exportAssetDashboard: function() {
+        window.open('/downloads/zip/AssetModel.zip', '_self');
       },
 
       ready: function () {

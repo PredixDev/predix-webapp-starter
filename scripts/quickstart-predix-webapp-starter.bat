@@ -113,7 +113,7 @@ GOTO :eof
 
     CALL :GET_DEPENDENCIES
 
-    ECHO Calling setup-windows.bat !TOOLS_SWITCHES!
+    ECHO Calling setup-windows.bat
     CALL "setup-windows.bat" !TOOLS_SWITCHES!
     IF NOT !errorlevel! EQU 0 (
       ECHO.

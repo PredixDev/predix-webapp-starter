@@ -469,8 +469,7 @@
               }
             ],
             "data": {
-              "complexType": "PredixString",
-              "string": ""
+              "complexType": "DataMap"
             }
           }
         };
@@ -528,7 +527,7 @@
         }
         if (atLeastOneFieldChanged) {
           queueEntry = JSON.parse(JSON.stringify(queueEntryTemplate));
-          queueEntry.fieldData.data.string = JSON.stringify(queueFieldList);
+          queueEntry.fieldData.data.map = queueFieldList;
           thresholdSaveJSON.putFieldDataCriteria.push(queueEntry);
         }
         console.log("***** In seed-table; Here is the JSON to send for threshold update: ");

@@ -20,6 +20,7 @@ module.exports = function(gulp) {
       'public/bower_components/px-dark-theme',
       'public/bower_components/px-vis',
       'public/bower_components/pxd3',
+      'public/downloads',
 
       'public/elements/dev-guide'
     ];

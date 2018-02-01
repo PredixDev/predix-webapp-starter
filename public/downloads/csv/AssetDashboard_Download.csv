@@ -1,0 +1,2 @@
+deviceId,uri,userGroup,location,updateDate,expirationDate,deviceType,deviceName,deviceGroup,deviceAddress,createdDate,activationDate,airportId,currentDecibels,currentAbatementAlarm,amountSaved,industrialAsset
+WRIDPFA28,/device/WR-IDP-FA28,/userGroup/e621893c-8573-4fe7-8c77-585a48c8828e,,11/28/2017 07:27:11 PM,01/27/2018 07:27:11 PM,NUC,Hatch-PredixEdge-01,/deviceGroup/Predix,WR-IDP-FA28,11/28/2017 07:27:11 PM,11/28/2017 07:27:11 PM,SFO,75,FALSE,60,

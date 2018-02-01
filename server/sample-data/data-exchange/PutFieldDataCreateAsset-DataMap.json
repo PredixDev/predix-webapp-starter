@@ -11,7 +11,7 @@
 				"parents": []
 			}],
 			"data": {
-				"complexType": "DataMap",
+				"complexType": "DataMapList",
 				"map": [{
 					"complexType": "Asset",
 					"uri": "/asset/compressor-2017",

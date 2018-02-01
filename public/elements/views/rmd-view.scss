@@ -20,6 +20,21 @@
     cursor: pointer;
 }
 
+#exportBtn {
+  line-height: inherit;
+  color: #b6c3cc;
+  height: 25px;
+  vertical-align: middle;
+  background-color: #086e87;
+  cursor: pointer;
+  padding: 0;
+  margin: -12px 0 0 10px;
+  padding: 0 5px 0 0;
+  iron-icon {
+    height: 15px;
+  }
+}
+
 // Trumps
 $inuit-enable-paddings : true;
 $inuit-enable-paddings--huge : true;

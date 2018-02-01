@@ -65,9 +65,14 @@ The simplest way to push the Starter application to a cloud environment is by mo
 
 1. Update manifest.yml
 
-    Change the name field in your manifest.yml.  
+    Change the name field in your manifest.yml.  This is all you need to do!  Skip down to step 2, and you'll see the app running with mock data.
+    If you want to connect to real Predix services, you'll need to do the following:
     Uncomment the services section, and change the names to match your service instances.
     Uncomment the two base64ClientCredential environment variables and enter the correct values for your UAA clients.
+    The loginBase64ClientCredential should use authorization_code grant type to allow users to log in to your app. 
+    The base64ClientCredential should use client_credentials grant type to allow your app to access back end services. 
+    (app_client_id will have the scopes set up to access time series, asset, etc. login_client_id will not have any of those scopes.)
+
     ```
     ---
     applications:
