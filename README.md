@@ -105,7 +105,7 @@ The simplest way to push the Starter application to a cloud environment is by mo
     ```
     Showing health and status for app my-predix-starter in org my-org / space dev as developer@gmail.com...
     OK
-
+    
     requested state: started
     instances: 1/1
     usage: 128M x 1 instances
