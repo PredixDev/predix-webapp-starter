@@ -54,7 +54,6 @@ You will need to run this command every time before you deploy to the Cloud.
 gulp dist
 ```
 
-
 ## Push to the Cloud
 
 ### Pre-Requisites
