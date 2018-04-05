@@ -1,6 +1,6 @@
 {
   "name": "predix-webapp-starter",
-  "version": "2.0.39",
+  "version": "2.0.40",
   "private": true,
   "engines": {
     "node": ">=0.10.0"

@@ -128,7 +128,7 @@ This application also serves as the UI for the Predix RMD Reference App.  For mo
 - [predix-rmd-ref-app Github repo](https://github.com/predixdev/predix-rmd-ref-app)
 
 # Copyright
-Copyright &copy; 2015, 2016, 2017 GE Global Research. All rights reserved.
+Copyright &copy; 2015, 2016, 2017, 2018 GE Global Research. All rights reserved.
 
 The copyright to the computer software herein is the property of
 GE Global Research. The software may be used and/or copied only
