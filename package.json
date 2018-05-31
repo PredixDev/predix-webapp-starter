@@ -1,6 +1,6 @@
 {
   "name": "predix-webapp-starter",
-  "version": "2.0.41",
+  "version": "2.0.42",
   "private": true,
   "engines": {
     "node": ">=0.10.0"
@@ -39,7 +39,6 @@
     "polymer-cli": "^1.5.2",
     "postcss": "^5.0.21",
     "postcss-cli": "^2.5.2",
-    "request": "^2.58.0",
     "sass-import-modules": "^2.1.0",
     "sinon": "^1.17.7"
   },
@@ -57,6 +56,7 @@
     "passport-oauth2-middleware": "^1.0.2",
     "passport-predix-oauth": "^0.1.2",
     "predix-uaa-client": "^1.3.1",
+    "request": "^2.87.0",
     "ws": "^2.2.1"
   }
 }

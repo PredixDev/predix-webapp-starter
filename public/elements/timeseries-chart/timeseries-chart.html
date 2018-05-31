@@ -284,7 +284,7 @@ Component will query for new data when tags or dates are changed.
           this.socket = new WebSocket(wsUrl);
           self.intervalId = setInterval(function () {
             if (self.socket.readyState === WebSocket.OPEN) {
-              self.socket.send('ping'); // keep the connection alive
+              self.socket.send('{"ping":"ping"}'); // keep the connection alive
             }
           }, 20000);
 
@@ -303,10 +303,7 @@ Component will query for new data when tags or dates are changed.
           this.socket.onmessage = function (evt) {
             self.$.chartMessage.innerText = "";
             // console.log('message from WebSocket: ' + evt.data);
-            if (evt.data === 'SUCCESS') {
-              return; // ignore the response from the 'ping'.
-            }
-            var rawPoint = JSON.parse(evt.data).datapoints[0];
+            var rawPoint = self._parseLiveData(evt.data);
             if (self.tsChartData.length > 99) {
               self.shift('tsChartData');
             }
@@ -318,6 +315,16 @@ Component will query for new data when tags or dates are changed.
             console.log('websocket closed. code: ' + evt.code);
             // console.log('reason: ' + evt.reason);
           };
+        }
+      },
+
+      _parseLiveData: function(wsMessage) {
+        var raw = JSON.parse(wsMessage);
+        var selected = this.selectedTag.key || this.selectedTag;
+        for (i=0; i<raw.body.length; i++) {
+          if (selected === raw.body[i].name) {
+            return raw.body[i].datapoints[0];
+          }
         }
       },
 
