@@ -1,0 +1,68 @@
+[
+  {
+    "complexType": "Asset",
+    "uri": "/asset/compressor-2017",
+    "classificationUri": "/classification/GE_COMPRESSOR_CYLINDER",
+    "assetId": "compressor-2017",
+    "description": "Reciprocating Compressor",
+    "filter": "group=/group/plant-richmond-refinery",
+	"isMock": true,
+    "group": "/group/plant-richmond-refinery",
+    "assetTag": {
+      "crank-frame-compressionratio": {
+        "complexType": "AssetTag",
+        "label": "Compression Ratio",
+        "tagUri": "/tag/crank-frame-compressionratio",
+        "hiAlarmThreshold": 3,
+        "loAlarmThreshold": 2.5,
+        "isKpi": true,
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "My.App.DOUBLE1"
+        },
+        "edgeDatasource": {
+          "complexType": "EdgeDatasource",
+          "nodeName": "Compressor-2017:CompressionRatio",
+          "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+        }
+      },
+      "crank-frame-dischargepressure": {
+        "complexType": "AssetTag",
+        "label": "Discharge Pressure",
+        "tagUri": "/tag/crank-frame-dischargepressure",
+        "hiAlarmThreshold": 23,
+        "loAlarmThreshold": 0,
+        "isKpi": true,
+        "timeseriesDatasource": {
+          "complexType": "TimeseriesDatasource",
+          "tag": "My.App.DOUBLE2"
+        },
+        "edgeDatasource": {
+          "complexType": "EdgeDatasource",
+          "nodeName": "Compressor-2017:DischargePressure",
+          "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
+        },
+        "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure"
+      }
+    },
+    "attributes": {
+      "machineControllerId": {
+        "complexType": "Attribute",
+        "type": "string",
+        "enumeration": [],
+        "value": [
+          "/asset/Bently.Nevada.3500.Rack1"
+        ]
+      },
+      "summaryTag": {
+        "complexType": "Attribute",
+        "type": "string",
+        "enumeration": [],
+        "value": [
+          "crank-frame-velocity",
+          "crank-frame-compressionratio"
+        ]
+      }
+    }
+  }
+]

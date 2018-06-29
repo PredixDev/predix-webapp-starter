@@ -1,3 +1,4 @@
+
 {
   "development": {
     "note": "Out of the box, the predix-webapp-starter app uses mock data, so these values are not required.  Set these values for connecting to real Predix services.",
@@ -13,6 +14,7 @@
     "websocketServerURL": "/livestream",
     "rmdDatasourceURL": "{URL of your RMD datasource microservice}",
     "rmdDocsURL": "https://raw.githubusercontent.com/PredixDev/predix-rmd-ref-app/master/README.md",
-    "dataExchangeURL": "{URL of your data exchange microservice}"
+    "dataExchangeURL": "{URL of your data exchange microservice}",
+    "timeSeriesOnly": "false"
   }
 }

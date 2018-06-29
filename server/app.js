@@ -83,7 +83,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/docs', require('./routes/docs')(config));
 
-if (!config.isUaaConfigured()) { 
+if (!config.isUaaConfigured()) {
   // no restrictions
   app.use(express.static(path.join(__dirname, process.env['base-dir'] ? process.env['base-dir'] : '../public')));
 
@@ -134,15 +134,15 @@ if (!config.isUaaConfigured()) {
   // }
 
   if (config.rmdDatasourceURL && config.rmdDatasourceURL.indexOf('https') === 0) {
-    app.get('/api/datagrid/*', 
-        proxy.addClientTokenMiddleware, 
+    app.get('/api/datagrid/*',
+        proxy.addClientTokenMiddleware,
         proxy.customProxyMiddleware('/api/datagrid', config.rmdDatasourceURL, '/services/experience/datasource/datagrid'));
   }
 
   if (config.dataExchangeURL && config.dataExchangeURL.indexOf('https') === 0) {
     app.post('/api/cloneasset', proxy.addClientTokenMiddleware, dataExchange.cloneAsset);
 
-    app.post('/api/updateasset', proxy.addClientTokenMiddleware, 
+    app.post('/api/updateasset', proxy.addClientTokenMiddleware,
         proxy.customProxyMiddleware('/api/updateasset', config.dataExchangeURL, '/services/fdhrouter/fielddatahandler/putfielddata'));
   }
 
@@ -168,7 +168,7 @@ if (!config.isUaaConfigured()) {
 /*******************************************************
 SET UP MOCK API ROUTES
 *******************************************************/
-// NOTE: these routes are added after the real API routes. 
+// NOTE: these routes are added after the real API routes.
 //  So, if you have configured asset, the real asset API will be used, not the mock API.
 // Import route modules
 var mockAssetRoutes = require('./routes/mock-asset.js')();
@@ -201,7 +201,9 @@ app.get('/config', function(req, res) {
   if (config.isAssetConfigured()) {
     title = "RMD Reference App";
   }
-  res.send({wsUrl: config.websocketServerURL, appHeader: title, dataExchangeEnabled: config.isDataExchangeConfigured()});
+  console.log();
+  res.send({wsUrl: config.websocketServerURL, appHeader: title, dataExchangeEnabled: config.isDataExchangeConfigured(),
+      timeSeriesOnly: config.timeSeriesOnly == "true" ? true : false});
 });
 
 // Sample route middleware to ensure user is authenticated.

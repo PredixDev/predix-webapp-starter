@@ -124,7 +124,7 @@
         // console.log('ready. route: ', this.$.starterAppRoute.navRoute);
         this.$.configAjaxEl.addEventListener('response', function(evt) {
           // We're getting some global config from the server.
-          // console.log('config', evt.detail.response);
+          console.log('config', evt.detail.response);
           this.appHeader = evt.detail.response.appHeader;
           this.$.view.elementData = evt.detail.response;
         }.bind(this));

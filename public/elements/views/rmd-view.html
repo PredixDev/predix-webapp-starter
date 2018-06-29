@@ -16,7 +16,7 @@
         asset-group-query-url="/api/predix-asset/group">
       </asset-browser>
     </div>
-    <div class="flex flex--row flex--justify">
+    <div id="assetHealthId" class="flex flex--row flex--justify" hidden$={{timeSeriesOnly}}>
       <div>
         <h1 class="delta u-pl++" style="display:inline;">Asset Health</h1>
         <button id="exportBtn" class="btn btn--primary csv-export-btn" on-tap="_exportAssetDashboard" hidden><iron-icon icon="px-utl:download"></iron-icon>Download</button>
@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="u-pb">
+    <div class="u-pb" hidden$={{timeSeriesOnly}}>
       <kpi-bar datapoints="[[kpiDatapoints]]" overall-label="[[kpiOverallLabel]]" overall-value="[[kpiOverallValue]]" overall-max="[[kpiOverallMax]]"
         kpi-bar-wrapper-state="[[kpiBarWrapperState]]">
       </kpi-bar>
@@ -42,7 +42,7 @@
     <!--<seed-table asset-data="{{openedAsset}}" show-asset-only="true"></seed-table>-->
 
     <!-- If RMD datasource is enabled, call that and pass data to the table. -->
-    <seed-table id="seedTable" rmd-data="{{rmdTableData}}" show-clone-button="{{showCloneButton}}" is-a-clone="{{assetIsAClone}}" uri="{{uri}}"></seed-table>
+    <seed-table id="seedTable"  hidden$={{timeSeriesOnly}} rmd-data="{{rmdTableData}}" show-clone-button="{{showCloneButton}}" is-a-clone="{{assetIsAClone}}" uri="{{uri}}"></seed-table>
     <iron-ajax id="datatableAjaxEl"></iron-ajax>
 
     <timeseries-chart id="tsChart" ws-url="[[wsUrl]]" tags="{{displayTags}}" hidden$="{{!showTimeseriesChart}}"></timeseries-chart>
@@ -71,6 +71,9 @@
         },
         wsUrl: {
           type: String
+        },
+        timeSeriesOnly: {
+          type: Boolean
         },
         dataExchangeEnabled: {
           type: Boolean,
@@ -158,8 +161,8 @@
         // initialize refresh interval
         this.refreshTimerInterval = 0;
         this.wsUrl = document.querySelector('#view').elementData.wsUrl;
+        this.timeSeriesOnly = document.querySelector('#view').elementData.timeSeriesOnly;
         this.dataExchangeEnabled = document.querySelector('#view').elementData.dataExchangeEnabled;
-
         this.$.assetBrowser.addEventListener('px-app-asset-selected', function(evt) {
           // console.log('px-app-asset-selected', evt);
           this.openedAsset = evt.detail.item;
