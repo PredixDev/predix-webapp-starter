@@ -347,11 +347,13 @@ Component will query for new data when tags or dates are changed.
           this.socket.onmessage = function (evt) {
             self.$.chartMessage.innerText = "";
             // console.log('message from WebSocket: ' + evt.data);
-            var rawPoint = self._parseLiveData(evt.data);
-            if (self.tsChartData.length > 99) {
-              self.shift('tsChartData');
+            var rawPoint = JSON.parse(evt.data).datapoints[0];
+            if (rawPoint) {
+              if (self.tsChartData.length > 99) {
+                self.shift('tsChartData');
+              }
+              self.push('tsChartData', { "x0": rawPoint[0], "y0": rawPoint[1] });
             }
-            self.push('tsChartData', { "x0": rawPoint[0], "y0": rawPoint[1] });
           };
 
           this.socket.onclose = function (evt) {
@@ -359,16 +361,6 @@ Component will query for new data when tags or dates are changed.
             console.log('websocket closed. code: ' + evt.code);
             // console.log('reason: ' + evt.reason);
           };
-        }
-      },
-
-      _parseLiveData: function(wsMessage) {
-        var raw = JSON.parse(wsMessage);
-        var selected = this.selectedTag.key || this.selectedTag;
-        for (i=0; i<raw.body.length; i++) {
-          if (selected === raw.body[i].name) {
-            return raw.body[i].datapoints[0];
-          }
         }
       },
 
