@@ -18,6 +18,7 @@ env:
     #loginBase64ClientCredential: bG9naW5fY2xpZW50X2lkOnNlY3JldA==
     # Use a full wss:// URL for actual web socket server. use /livestream for mock data.
     websocketServerURL: /livestream
+    timeSeriesOnly: false
     #rmdDatasourceURL: {URL of your RMD datasource microservice}
     rmdDocsURL: "https://raw.githubusercontent.com/PredixDev/predix-rmd-ref-app/master/README.md"
     #dataExchangeURL: {URL of your data exchange microservice}
