@@ -38,11 +38,12 @@ Component will query for new data when tags or dates are changed.
           <div id="chartMessage" class="u-pt--" hidden$="{{!liveDataMode}}"></div>
         </div>
         <div hidden$={{!timeSeriesOnly}} class="flex flex--row flex--right">
-          <px-dropdown class="flex u-pr" id="refreshFrequencyDropdownTS" display-value="Refresh Frequency"
-            items='[{"key":"0","val":"No Refresh"},{"key":"3","val":"Every 3 sec"},{"key":"15","val":"Every 15 sec"},{"key":"60","val":"Every 60 sec"}]'>
+          <px-dropdown class="flex u-pr" id="refreshFrequencyDropdownTS"
+            display-value="Refresh Frequency"
+            items='[{"key":"0","val":"No Refresh"},{"key":"3","val":"Every 3 sec","selected":"true"},{"key":"15","val":"Every 15 sec"},{"key":"60","val":"Every 60 sec"}]'>
           </px-dropdown>
           <px-icon class="u-pr" id="refreshTableBtnTS" title="Refresh data now" icon="px-nav:reload"></px-icon>
-        </div>        
+        </div>
       </div>
       <div style="height:400px; padding-top:15px;">
         <h4 style="margin-bottom: -30px">[[_computeModeLabel(liveDataMode)]]</h4>
@@ -115,7 +116,15 @@ Component will query for new data when tags or dates are changed.
         // Set refresh  button behavior
         this.$.refreshTableBtnTS.addEventListener('click', function () {
           console.log('sending request for timeseries');
-          that.$.tsAjaxEl.generateRequest();
+          // If no refresh selected, clear any existing interval
+          // else set interval according to user selection
+
+            /*that.refreshTimerInterval = setInterval(function () {
+              console.log('sending request for timeseries');
+              //that.$.tsAjaxEl.generateRequest();
+              that._fetchTimeseriesData(that.selectedTags,that.selectedRange)
+            }, 5000);*/
+            that._fetchTimeseriesData(that.selectedTags,that.selectedRange)
         });
 
         // Set refresh dropdown behavior
@@ -142,7 +151,7 @@ Component will query for new data when tags or dates are changed.
           else {
             that.refreshTimerInterval = setInterval(function () {
               console.log('sending request for timeseries');
-              that.$.tsAjaxEl.generateRequest();
+              that._fetchTimeseriesData(that.selectedTags,that.selectedRange)
             }, interval);
           }
         });
@@ -283,10 +292,12 @@ Component will query for new data when tags or dates are changed.
             "value": "5"
           }
         }];
+        console.log("Before "+moment().subtract(1, 'day').valueOf());
+        console.log("Now "+moment().valueOf());
         var query = {
           "cache_time": 0,
-          start: moment(range.from).valueOf(),
-          end: moment(range.to).valueOf(),
+          start: moment().subtract(1, 'day').valueOf(),
+          end: moment().valueOf(),
           tags: []
         };
         tags.forEach(function (t) {
