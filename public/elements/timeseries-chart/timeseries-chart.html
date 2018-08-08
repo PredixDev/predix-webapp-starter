@@ -292,11 +292,11 @@ Component will query for new data when tags or dates are changed.
             "value": "5"
           }
         }];
-        console.log("Before "+moment().subtract(1, 'day').valueOf());
+        console.log("Before "+moment(range.from).valueOf());
         console.log("Now "+moment().valueOf());
         var query = {
           "cache_time": 0,
-          start: moment().subtract(1, 'day').valueOf(),
+          start: moment(range.from).valueOf(),
           end: moment().valueOf(),
           tags: []
         };

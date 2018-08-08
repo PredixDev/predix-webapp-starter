@@ -1,11 +1,11 @@
 {
   "name": "Predix WebApp Starter",
-  "version": "2.0.48",
+  "version": "2.0.49",
   "private": true,
   "dependencies": {
     "local-setup": "https://github.com/PredixDev/local-setup#1.0.99",
     "predix-scripts": "https://github.com/PredixDev/predix-scripts#1.1.149",
-    "predix-webapp-starter": "https://github.com/PredixDev/predix-webapp-starter.git#2.0.48"
+    "predix-webapp-starter": "https://github.com/PredixDev/predix-webapp-starter.git#2.0.49"
   },
   "author": "gedesigntech"
 }
