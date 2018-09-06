@@ -18,11 +18,11 @@
         "isKpi": true,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:CompressionRatio"
+          "tag": "Compressor-2018.CompressionRatio"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:CompressionRatio",
+          "nodeName": "Compressor-2018.CompressionRatio",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       },
@@ -35,11 +35,11 @@
         "isKpi": true,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:DischargePressure"
+          "tag": "Compressor-2018.DischargePressure"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:DischargePressure",
+          "nodeName": "Compressor-2018.DischargePressure",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         },
         "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure"
@@ -52,11 +52,11 @@
         "loAlarmThreshold": 0,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:SuctionPressure"
+          "tag": "Compressor-2018.SuctionPressure"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:SuctionPressure",
+          "nodeName": "Compressor-2018.SuctionPressure",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       },
@@ -68,11 +68,11 @@
         "loAlarmThreshold": 22,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:MaximumPressure"
+          "tag": "Compressor-2018.MaximumPressure"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:MaximumPressure",
+          "nodeName": "Compressor-2018.MaximumPressure",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       },
@@ -84,11 +84,11 @@
         "loAlarmThreshold": 0,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:Velocity"
+          "tag": "Compressor-2018.Velocity"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:Velocity",
+          "nodeName": "Compressor-2018.Velocity",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       },
@@ -100,11 +100,11 @@
         "loAlarmThreshold": 65,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:Temperature"
+          "tag": "Compressor-2018.Temperature"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:Temperature",
+          "nodeName": "Compressor-2018.Temperature",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       }
