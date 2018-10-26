@@ -5,10 +5,10 @@ module.exports = function() {
   const routes = {};
   const compressorJson = require(path.resolve(__dirname, '../sample-data/rmd-datasource/datagrid-compressor.json'));
   const summaryJson = require(path.resolve(__dirname, '../sample-data/rmd-datasource/summary-compressor.json'));
-  // http://localhost:5000/mock-api/datagrid/asset/compressor-2017
+  // http://localhost:5000/mock-api/datagrid/asset/Compressor-CMMS-Compressor-2018
   routes["asset/:id"] = compressorJson;
 
-  // http://localhost:5000/mock-api/datagrid/asset/compressor-2017/summary
+  // http://localhost:5000/mock-api/datagrid/asset/Compressor-CMMS-Compressor-2018/summary
   routes["summary"] = summaryJson;
   routes["asset/:id/summary"] = summaryJson;
 

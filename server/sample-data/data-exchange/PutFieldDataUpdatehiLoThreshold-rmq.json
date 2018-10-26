@@ -25,7 +25,7 @@
       },
       "filter": {
         "complexType": "AssetFilter",
-        "uri": "/asset/compressor-2017"
+        "uri": "/asset/Compressor-CMMS-Compressor-2018"
       }
     },
     {
@@ -53,7 +53,7 @@
       },
       "filter": {
         "complexType": "AssetFilter",
-        "uri": "/asset/compressor-2017"
+        "uri": "/asset/Compressor-CMMS-Compressor-2018"
       }
     },
     {
@@ -70,7 +70,7 @@
         ],
         "data": {
           "complexType": "PredixString",
-          "string": "{\n\t\"fieldChangedList\": {\n\t\t\"fieldChanged\": [{\n\t\t\t\"assetList\": {\n\t\t\t\t\"asset\": [{\n\t\t\t\t\t\"uri\": \"/asset/compressor-2017\",\n\t\t\t\t\t\"assetType\": \"asset\",\n\t\t\t\t\t\"fieldList\": {\n\t\t\t\t\t\t\"field\": [{\n\t\t\t\t\t\t\t\"fieldKey\": \"/asset/assetTag/crank-frame-velocity\",\n\t\t\t\t\t\t\t\"fieldValue\": \"\",\n\t\t\t\t\t\t\t\"fieldType\": \"assetTag\",\n\t\t\t\t\t\t\t\"timeChanged\": \"2017-07-11T07:16:13.000Z\"\n\t\t\t\t\t\t}]\n\t\t\t\t\t}\n\t\t\t\t}]\n\t\t\t},\n\t\t\t\"externalAttributeMap\": {\n\t\t\t\t\"entry\": [{\n\t\t\t\t\t\"key\": \"\",\n\t\t\t\t\t\"value\": \"\"\n\t\t\t\t}]\n\t\t\t}\n\t\t}]\n\t}\n}"
+          "string": "{\n\t\"fieldChangedList\": {\n\t\t\"fieldChanged\": [{\n\t\t\t\"assetList\": {\n\t\t\t\t\"asset\": [{\n\t\t\t\t\t\"uri\": \"/asset/Compressor-CMMS-Compressor-2018\",\n\t\t\t\t\t\"assetType\": \"asset\",\n\t\t\t\t\t\"fieldList\": {\n\t\t\t\t\t\t\"field\": [{\n\t\t\t\t\t\t\t\"fieldKey\": \"/asset/assetTag/crank-frame-velocity\",\n\t\t\t\t\t\t\t\"fieldValue\": \"\",\n\t\t\t\t\t\t\t\"fieldType\": \"assetTag\",\n\t\t\t\t\t\t\t\"timeChanged\": \"2017-07-11T07:16:13.000Z\"\n\t\t\t\t\t\t}]\n\t\t\t\t\t}\n\t\t\t\t}]\n\t\t\t},\n\t\t\t\"externalAttributeMap\": {\n\t\t\t\t\"entry\": [{\n\t\t\t\t\t\"key\": \"\",\n\t\t\t\t\t\"value\": \"\"\n\t\t\t\t}]\n\t\t\t}\n\t\t}]\n\t}\n}"
         }
       }
     }

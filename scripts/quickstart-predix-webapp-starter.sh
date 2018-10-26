@@ -87,16 +87,16 @@ function init() {
 
   #get the script that reads version.json
   eval "$(curl -s -L $IZON_SH)"
-  
+
   #download the script and cd
-  getUsingCurl $SCRIPT_LOC
-  chmod 755 $SCRIPT_NAME;
+  #getUsingCurl $SCRIPT_LOC
+  #chmod 755 $SCRIPT_NAME;
   if [[ ! $currentDir == *"$REPO_NAME" ]]; then
     mkdir -p $APP_DIR
     cd $APP_DIR
   fi
 
-  
+
   getVersionFile
   getLocalSetupFuncs $GITHUB_RAW
 }

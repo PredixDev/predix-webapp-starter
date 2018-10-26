@@ -254,9 +254,9 @@
   },
   {
     "complexType": "Asset",
-    "uri": "/asset/compressor-2017",
+    "uri": "/asset/Compressor-CMMS-Compressor-2018",
     "classificationUri": "/classification/GE_COMPRESSOR_CYLINDER",
-    "assetId": "compressor-2017",
+    "assetId": "Compressor-CMMS-Compressor-2018",
     "description": "Reciprocating Compressor",
     "group": "/group/plant-richmond-refinery",
     "assetTag": {
@@ -269,11 +269,11 @@
         "isKpi": true,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:CompressionRatio"
+          "tag": "Compressor-CMMS-Compressor-2018:CompressionRatio"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:CompressionRatio",
+          "nodeName": "Compressor-CMMS-Compressor-2018:CompressionRatio",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       },
@@ -286,14 +286,14 @@
         "isKpi": true,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:DischargePressure"
+          "tag": "Compressor-CMMS-Compressor-2018:DischargePressure"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:DischargePressure",
+          "nodeName": "Compressor-CMMS-Compressor-2018:DischargePressure",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         },
-        "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure"
+        "alertStatusUri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-discharge-pressure"
       },
       "crank-frame-suctionpressure": {
         "complexType": "AssetTag",
@@ -303,11 +303,11 @@
         "loAlarmThreshold": 0,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:SuctionPressure"
+          "tag": "Compressor-CMMS-Compressor-2018:SuctionPressure"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:SuctionPressure",
+          "nodeName": "Compressor-CMMS-Compressor-2018:SuctionPressure",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       },
@@ -319,11 +319,11 @@
         "loAlarmThreshold": 22,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:MaximumPressure"
+          "tag": "Compressor-CMMS-Compressor-2018:MaximumPressure"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:MaximumPressure",
+          "nodeName": "Compressor-CMMS-Compressor-2018:MaximumPressure",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       },
@@ -335,11 +335,11 @@
         "loAlarmThreshold": 0,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:Velocity"
+          "tag": "Compressor-CMMS-Compressor-2018:Velocity"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:Velocity",
+          "nodeName": "Compressor-CMMS-Compressor-2018:Velocity",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       },
@@ -351,11 +351,11 @@
         "loAlarmThreshold": 65,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:Temperature"
+          "tag": "Compressor-CMMS-Compressor-2018:Temperature"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:Temperature",
+          "nodeName": "Compressor-CMMS-Compressor-2018:Temperature",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       }
@@ -382,9 +382,9 @@
   },
   {
     "complexType": "Asset",
-    "uri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure",
+    "uri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-discharge-pressure",
     "classificationUri": "/classification/alert-status",
-    "assetId": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure",
+    "assetId": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-discharge-pressure",
     "attributes": {
       "alertStatus": {
         "complexType": "Attribute",
@@ -498,14 +498,14 @@
         "loAlarmThreshold": 0,
         "isKpi": true,
         "isManual": false,
-        "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure",
+        "alertStatusUri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-discharge-pressure",
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:DischargePressure"
+          "tag": "Compressor-CMMS-Compressor-2018:DischargePressure"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:DischargePressure",
+          "nodeName": "Compressor-CMMS-Compressor-2018:DischargePressure",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       },
@@ -519,7 +519,7 @@
         "isManual": false,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:summary-output"
+          "tag": "Compressor-CMMS-Compressor-2018:summary-output"
         }
       },
       "crank-frame-compressionratio": {
@@ -532,11 +532,11 @@
         "isManual": false,
         "timeseriesDatasource": {
           "complexType": "TimeseriesDatasource",
-          "tag": "Compressor-2017:CompressionRatio"
+          "tag": "Compressor-CMMS-Compressor-2018:CompressionRatio"
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:CompressionRatio",
+          "nodeName": "Compressor-CMMS-Compressor-2018:CompressionRatio",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       }

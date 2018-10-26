@@ -23,7 +23,7 @@ var app = express();
 var httpServer = http.createServer(app);
 var dataExchange = require('./routes/data-exchange');
 // var fs = require("fs");
-// var assettemplatefile = "sample-data/predix-asset/compressor-2017-clone.json";
+// var assettemplatefile = "sample-data/predix-asset/Compressor-CMMS-Compressor-2018-clone.json";
 
 /**********************************************************************
        SETTING UP EXRESS SERVER

@@ -1,6 +1,6 @@
 {
 	"tags": [{
-		"name": "Compressor-2017:CompressionRatio",
+		"name": "Compressor-CMMS-Compressor-2018:CompressionRatio",
 		"results": [{
 			"groups": [{
 				"name": "type",
@@ -1747,7 +1747,7 @@
 				[1485888720061, 2.74830025579935, 3]
 			],
 			"attributes": {
-				"assetId": ["compressor-2017"],
+				"assetId": ["Compressor-CMMS-Compressor-2018"],
 				"sourceTagId": ["CompressionRatio"]
 			}
 		}],

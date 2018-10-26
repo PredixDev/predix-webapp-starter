@@ -1,9 +1,9 @@
 [
     {
       "complexType": "Asset",
-      "uri": "/asset/compressor-2017",
+      "uri": "/asset/Compressor-CMMS-Compressor-2018",
       "classificationUri": "/classification/GE_COMPRESSOR_CYLINDER",
-      "assetId": "compressor-2017",
+      "assetId": "Compressor-CMMS-Compressor-2018",
       "description": "Reciprocating Compressor",
       "group": "/group/plant-richmond-refinery",
       "assetTag": {
@@ -16,14 +16,14 @@
           "isKpi": true,
           "timeseriesDatasource": {
             "complexType": "TimeseriesDatasource",
-            "tag": "Compressor-2017:CompressionRatio"
+            "tag": "Compressor-CMMS-Compressor-2018:CompressionRatio"
           },
           "edgeDatasource": {
             "complexType": "EdgeDatasource",
-            "nodeName": "Compressor-2017:CompressionRatio",
+            "nodeName": "Compressor-CMMS-Compressor-2018:CompressionRatio",
             "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
           },
-          "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-compressionratio"
+          "alertStatusUri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-compressionratio"
         },
         "crank-frame-dischargepressure": {
           "complexType": "AssetTag",
@@ -34,14 +34,14 @@
           "isKpi": true,
           "timeseriesDatasource": {
             "complexType": "TimeseriesDatasource",
-            "tag": "Compressor-2017:DischargePressure"
+            "tag": "Compressor-CMMS-Compressor-2018:DischargePressure"
           },
           "edgeDatasource": {
             "complexType": "EdgeDatasource",
-            "nodeName": "Compressor-2017:DischargePressure",
+            "nodeName": "Compressor-CMMS-Compressor-2018:DischargePressure",
             "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
           },
-          "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure"
+          "alertStatusUri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-discharge-pressure"
         },
         "crank-frame-suctionpressure": {
           "complexType": "AssetTag",
@@ -51,14 +51,14 @@
           "loAlarmThreshold": 0,
           "timeseriesDatasource": {
             "complexType": "TimeseriesDatasource",
-            "tag": "Compressor-2017:SuctionPressure"
+            "tag": "Compressor-CMMS-Compressor-2018:SuctionPressure"
           },
           "edgeDatasource": {
             "complexType": "EdgeDatasource",
-            "nodeName": "Compressor-2017:SuctionPressure",
+            "nodeName": "Compressor-CMMS-Compressor-2018:SuctionPressure",
             "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
           },
-          "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-suctionpressure"
+          "alertStatusUri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-suctionpressure"
         },
         "crank-frame-maxpressure": {
           "complexType": "AssetTag",
@@ -68,14 +68,14 @@
           "loAlarmThreshold": 22,
           "timeseriesDatasource": {
             "complexType": "TimeseriesDatasource",
-            "tag": "Compressor-2017:MaximumPressure"
+            "tag": "Compressor-CMMS-Compressor-2018:MaximumPressure"
           },
           "edgeDatasource": {
             "complexType": "EdgeDatasource",
-            "nodeName": "Compressor-2017:MaximumPressure",
+            "nodeName": "Compressor-CMMS-Compressor-2018:MaximumPressure",
             "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
           },
-          "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-maxpressure"
+          "alertStatusUri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-maxpressure"
         },
         "crank-frame-velocity": {
           "complexType": "AssetTag",
@@ -85,14 +85,14 @@
           "loAlarmThreshold": 0,
           "timeseriesDatasource": {
             "complexType": "TimeseriesDatasource",
-            "tag": "Compressor-2017:Velocity"
+            "tag": "Compressor-CMMS-Compressor-2018:Velocity"
           },
           "edgeDatasource": {
             "complexType": "EdgeDatasource",
-            "nodeName": "Compressor-2017:Velocity",
+            "nodeName": "Compressor-CMMS-Compressor-2018:Velocity",
             "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
           },
-          "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-velocity"
+          "alertStatusUri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-velocity"
         },
         "crank-frame-temperature": {
           "complexType": "AssetTag",
@@ -102,14 +102,14 @@
           "loAlarmThreshold": 65,
           "timeseriesDatasource": {
             "complexType": "TimeseriesDatasource",
-            "tag": "Compressor-2017:Temperature"
+            "tag": "Compressor-CMMS-Compressor-2018:Temperature"
           },
           "edgeDatasource": {
             "complexType": "EdgeDatasource",
-            "nodeName": "Compressor-2017:Temperature",
+            "nodeName": "Compressor-CMMS-Compressor-2018:Temperature",
             "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
           }
-          "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-temperature"
+          "alertStatusUri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-temperature"
         },
       },
       "attributes": {
@@ -134,9 +134,9 @@
     },
     {
       "complexType": "Asset",
-      "uri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure",
+      "uri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-discharge-pressure",
       "classificationUri": "/classification/alert-status",
-      "assetId": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure",
+      "assetId": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-discharge-pressure",
       "attributes": {
         "alertStatus": {
           "complexType": "Attribute",
@@ -203,9 +203,9 @@
     },
     {
       "complexType": "Asset",
-      "uri": "/asset/compressor-2017.alert-status.crank-frame-compressionratio",
+      "uri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-compressionratio",
       "classificationUri": "/classification/alert-status",
-      "assetId": "/asset/compressor-2017.alert-status.crank-frame-compressionratio",
+      "assetId": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-compressionratio",
       "attributes": {
         "alertStatus": {
           "complexType": "Attribute",
@@ -272,9 +272,9 @@
     },
     {
       "complexType": "Asset",
-      "uri": "/asset/compressor-2017.alert-status.crank-frame-suctionpressure",
+      "uri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-suctionpressure",
       "classificationUri": "/classification/alert-status",
-      "assetId": "/asset/compressor-2017.alert-status.crank-frame-suctionpressure",
+      "assetId": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-suctionpressure",
       "attributes": {
         "alertStatus": {
           "complexType": "Attribute",
@@ -341,9 +341,9 @@
     },
     {
       "complexType": "Asset",
-      "uri": "/asset/compressor-2017.alert-status.crank-frame-maxpressure",
+      "uri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-maxpressure",
       "classificationUri": "/classification/alert-status",
-      "assetId": "/asset/compressor-2017.alert-status.crank-frame-maxpressure",
+      "assetId": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-maxpressure",
       "attributes": {
         "alertStatus": {
           "complexType": "Attribute",
@@ -410,9 +410,9 @@
     },
     {
       "complexType": "Asset",
-      "uri": "/asset/compressor-2017.alert-status.crank-frame-velocity",
+      "uri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-velocity",
       "classificationUri": "/classification/alert-status",
-      "assetId": "/asset/compressor-2017.alert-status.crank-frame-velocity",
+      "assetId": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-velocity",
       "attributes": {
         "alertStatus": {
           "complexType": "Attribute",
@@ -479,9 +479,9 @@
     },
     {
       "complexType": "Asset",
-      "uri": "/asset/compressor-2017.alert-status.crank-frame-temperature",
+      "uri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-temperature",
       "classificationUri": "/classification/alert-status",
-      "assetId": "/asset/compressor-2017.alert-status.crank-frame-temperature",
+      "assetId": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-temperature",
       "attributes": {
         "alertStatus": {
           "complexType": "Attribute",

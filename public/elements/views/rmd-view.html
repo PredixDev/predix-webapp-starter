@@ -12,7 +12,7 @@
     <style include="rmd-view-styles">
     </style>
     <div>
-      <asset-browser id="assetBrowser" asset-model="{{rmdAssetModel}}" opened-asset="{{openedAsset}}" asset-query-url="/api/predix-asset/asset/compressor-2017"
+      <asset-browser id="assetBrowser" asset-model="{{rmdAssetModel}}" opened-asset="{{openedAsset}}" asset-query-url="/api/predix-asset/asset/Compressor-CMMS-Compressor-2018"
         asset-group-query-url="/api/predix-asset/group">
       </asset-browser>
     </div>
@@ -127,7 +127,7 @@
         // console.log('********* in rmd-view, the value of uri is ' + this.uri);
         this.$.datatableAjaxEl.url = "/api/datagrid" + newVal.uri;
         this.$.kpiBarAjaxEl.url = this.$.datatableAjaxEl.url + '/summary';
-        this.assetIsAClone = (newVal.uri !== '/asset/compressor-2017');
+        this.assetIsAClone = (newVal.uri !== '/asset/Compressor-CMMS-Compressor-2018');
         this.$.datatableAjaxEl.generateRequest();
         if (newVal.assetTag) {
           this.displayTags = this._formatTagsForDisplay(newVal.assetTag);

@@ -1,9 +1,9 @@
 [
   {
     "complexType": "Asset",
-    "uri": "/asset/compressor-2017",
+    "uri": "/asset/Compressor-CMMS-Compressor-2018",
     "classificationUri": "/classification/GE_COMPRESSOR_CYLINDER",
-    "assetId": "compressor-2017",
+    "assetId": "Compressor-CMMS-Compressor-2018",
     "description": "Reciprocating Compressor",
     "filter": "group=/group/plant-richmond-refinery",
 	"isMock": true,
@@ -22,7 +22,7 @@
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:CompressionRatio",
+          "nodeName": "Compressor-CMMS-Compressor-2018:CompressionRatio",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         }
       },
@@ -39,10 +39,10 @@
         },
         "edgeDatasource": {
           "complexType": "EdgeDatasource",
-          "nodeName": "Compressor-2017:DischargePressure",
+          "nodeName": "Compressor-CMMS-Compressor-2018:DischargePressure",
           "controllerUri": "/asset/Bently.Nevada.3500.Rack1"
         },
-        "alertStatusUri": "/asset/compressor-2017.alert-status.crank-frame-discharge-pressure"
+        "alertStatusUri": "/asset/Compressor-CMMS-Compressor-2018.alert-status.crank-frame-discharge-pressure"
       }
     },
     "attributes": {

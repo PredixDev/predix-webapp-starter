@@ -1,6 +1,6 @@
 {
 	"tags": [{
-		"name": "Compressor-2017:CompressionRatio",
+		"name": "Compressor-CMMS-Compressor-2018:CompressionRatio",
 		"results": [{
 			"groups": [{
 				"name": "type",
@@ -43,7 +43,7 @@
 				[1489616192167, 2.6546305729554245, 3]
 			],
 			"attributes": {
-				"assetId": ["compressor-2017"],
+				"assetId": ["Compressor-CMMS-Compressor-2018"],
 				"sourceTagId": ["CompressionRatio"]
 			}
 		}],
@@ -51,7 +51,7 @@
 			"rawCount": 326
 		}
 	}, {
-		"name": "Compressor-2017:DischargePressure",
+		"name": "Compressor-CMMS-Compressor-2018:DischargePressure",
 		"results": [{
 			"groups": [{
 				"name": "type",
@@ -94,7 +94,7 @@
 				[1489616192167, 10.735634597454709, 3]
 			],
 			"attributes": {
-				"assetId": ["compressor-2017"],
+				"assetId": ["Compressor-CMMS-Compressor-2018"],
 				"sourceTagId": ["DischargePressure"]
 			}
 		}],

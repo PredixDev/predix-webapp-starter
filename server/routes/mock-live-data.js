@@ -6,16 +6,16 @@ const ws = require('ws');
 
 // hardcode thresholds for demonstration:
 const thresholds = {
-    "Compressor-2017:CompressionRatio": [2.5, 3],
-    "Compressor-2017:DischargePressure": [0, 23],
-    "Compressor-2017:SuctionPressure": [0, 0.21],
-    "Compressor-2017:MaximumPressure": [22, 26],
-    "Compressor-2017:Velocity": [0, 0.07],
-    "Compressor-2017:Temperature": [65, 80]
+    "Compressor-CMMS-Compressor-2018:CompressionRatio": [2.5, 3],
+    "Compressor-CMMS-Compressor-2018:DischargePressure": [0, 23],
+    "Compressor-CMMS-Compressor-2018:SuctionPressure": [0, 0.21],
+    "Compressor-CMMS-Compressor-2018:MaximumPressure": [22, 26],
+    "Compressor-CMMS-Compressor-2018:Velocity": [0, 0.07],
+    "Compressor-CMMS-Compressor-2018:Temperature": [65, 80]
 };
 
 function getRandomData(tag) {
-    let threshold = thresholds[tag] || thresholds['Compressor-2017:CompressionRatio'];
+    let threshold = thresholds[tag] || thresholds['Compressor-CMMS-Compressor-2018:CompressionRatio'];
     let range = (threshold[1] - threshold[0]) * 1.2;
     let low = threshold[0] - ((threshold[1] - threshold[0]) * 0.1);
     let value = Math.random() * range + low;
@@ -29,7 +29,7 @@ function createWebSocketServer(httpServer) {
         console.log('connection opened: ', socket.upgradeReq.url);
         let path = socket.upgradeReq.url || "";
         if (path === "" || path === "/") {
-            path = "/Compressor-2017:CompressionRatio";
+            path = "/Compressor-CMMS-Compressor-2018:CompressionRatio";
         } 
         const tagName = path.substring(path.lastIndexOf("/") + 1);
         console.log('web socket opened for tag:', tagName);
