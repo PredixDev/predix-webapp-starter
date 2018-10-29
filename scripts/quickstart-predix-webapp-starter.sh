@@ -39,7 +39,7 @@ BRANCH="master"
 PRINT_USAGE=0
 SKIP_SETUP=false
 
-IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/1.1.0/izon2.sh"
+IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/1.2.0/izon2.sh"
 #ASSET_MODEL="-amrmd predix-ui-seed/server/sample-data/predix-asset/asset-model-metadata.json predix-ui-seed/server/sample-data/predix-asset/asset-model.json"
 SCRIPT="-script build-basic-app.sh -script-readargs build-basic-app-readargs.sh"
 QUICKSTART_ARGS="-ps $SCRIPT"
