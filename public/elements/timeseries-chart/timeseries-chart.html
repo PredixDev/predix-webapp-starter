@@ -303,6 +303,7 @@ Component will query for new data when tags or dates are changed.
         tags.forEach(function (t) {
           query.tags.push({
             name: t,
+            limit : 50,
             aggregations: agg
           });
         });
