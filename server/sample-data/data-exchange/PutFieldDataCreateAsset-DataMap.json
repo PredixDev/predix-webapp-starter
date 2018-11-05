@@ -5,7 +5,7 @@
 			"field": [{
 				"fieldIdentifier": {
 					"complexType": "FieldIdentifier",
-					"id": "/asset/Compressor-CMMS-Compressor-2018",
+					"id": "/asset/Compressor-Clone",
 					"source": "PREDIX_ASSET"
 				},
 				"parents": []
@@ -14,9 +14,9 @@
 				"complexType": "DataMapList",
 				"map": [{
 					"complexType": "Asset",
-					"uri": "/asset/Compressor-CMMS-Compressor-2018",
+					"uri": "/asset/Compressor-Clone",
 					"classificationUri": "/classification/GE_COMPRESSOR_CYLINDER",
-					"assetId": "Compressor-CMMS-Compressor-2018",
+					"assetId": "Compressor-Clone",
 					"description": "base for cloning",
 					"group": "/group/plant-richmond-refinery",
 					"assetTag": {
