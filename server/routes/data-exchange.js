@@ -12,7 +12,7 @@ const cloneAsset = function(req, res) {
   
   var rawClone = fs.readFileSync(path.join(__dirname, assettemplatefile), 'utf8');
   var uniqueRequestString = req.ip.replace(/:/g, '_') + '-' + now;
-  var result = rawClone.replace(/Compressor-CMMS-Compressor-2018/g, uniqueRequestString);
+  var result = rawClone.replace(/Compressor-Clone/g, uniqueRequestString);
   var putFieldDataRequest = JSON.parse(result);
   putFieldDataRequest.putFieldDataCriteria[0].fieldData.data.map[0].description = assetName;
   putFieldDataRequest.putFieldDataCriteria[0].fieldData.data.map[0].createdDate = now;

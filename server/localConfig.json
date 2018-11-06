@@ -1,20 +1,19 @@
-
 {
   "development": {
     "note": "Out of the box, the predix-webapp-starter app uses mock data, so these values are not required.  Set these values for connecting to real Predix services.",
-    "uaaURL": "https://875b5af3-4859-4cb8-bac2-793b6bea91d9.predix-uaa.run.aws-usw02-pr.ice.predix.io",
+    "uaaURL": " https://6689be5f-1bdf-4fc0-bbda-dcea2b371b77.predix-uaa.run.aws-usw02-pr.ice.predix.io",
     "base64ClientCredential": "YXBwX2NsaWVudF9pZDpzZWNyZXQ=",
     "loginBase64ClientCredential": "bG9naW5fY2xpZW50X2lkOnNlY3JldA==",
     "appURL": "http://localhost:5000",
     "timeseriesURL": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
-    "timeseriesZoneId": "7f949731-2a24-47ab-8e59-0a2a35617417",
+    "timeseriesZoneId": "85665ade-c0e7-4e27-920a-ae38a5b02347",
     "assetURL": "https://predix-asset.run.aws-usw02-pr.ice.predix.io",
-    "assetZoneId": "53bd080c-1017-4f7f-a454-31e06d60c1d5",
+    "assetZoneId": "6b6121b0-81e3-4297-8c35-007ebf74faef",
     "windServiceURL": "{URL of the microservice <your-name>-winddata-timeseries-service}, e.g.  https://your-name-winddata-timeseries-service.run.asw-usw02-pr.predix.io",
-    "websocketServerURL": "wss://swapna20181031-data-exchange.run.aws-usw02-pr.ice.predix.io",
-    "rmdDatasourceURL": "https://swapna20181031-rmd-datasource.run.aws-usw02-pr.ice.predix.io",
+    "websocketServerURL": "/livestream",
+    "rmdDatasourceURL": "{URL of your RMD datasource microservice}",
     "rmdDocsURL": "https://raw.githubusercontent.com/PredixDev/predix-rmd-ref-app/master/README.md",
-    "dataExchangeURL": "https://swapna20181031-data-exchange.run.aws-usw02-pr.ice.predix.io",
+    "dataExchangeURL": "{URL of your data exchange microservice}",
     "timeSeriesOnly": "false"
   }
 }
