@@ -35,6 +35,7 @@ Change directory into the new project you just cloned, then install dependencies
 npm install
 bower install
 ```
+
 ## Running the app locally
 The default gulp task will start a local web server.  Just run this command:
 ```
@@ -64,7 +65,7 @@ The simplest way to push the Starter application to a cloud environment is by mo
 
 1. Update manifest.yml
 
-    Change the name field in your manifest.yml.  This is all you need to do!  Skip down to step 2, and you'll see the app running with mock data.
+    Change the name field in your manifest.yml.  This is all you need to do!  Skip down to step 2, and you'll see the app    running with mock data.
     If you want to connect to real Predix services, you'll need to do the following:
     Uncomment the services section, and change the names to match your service instances.
     Uncomment the two base64ClientCredential environment variables and enter the correct values for your UAA clients.
@@ -136,5 +137,4 @@ with the written permission of GE Global Research or in accordance
 with the terms and conditions stipulated in the agreement/contract
 under which the software has been supplied.
 
-[![Analytics](https://ga-beacon.appspot.com/UA-82773213-1/predix-webapp-starter/readme?pixel)](https://github.com/PredixDev)
-
+[![Analytics](https://predix-beacon.appspot.com/UA-82773213-1/predix-webapp-starter/readme?pixel)](https://github.com/PredixDev)
