@@ -120,6 +120,5 @@ getCurrentRepo
 echo "quickstart_args=$QUICKSTART_ARGS"
 source $PREDIX_SCRIPTS/bash/quickstart.sh $QUICKSTART_ARGS
 
-
 __append_new_line_log "Successfully completed $APP_NAME installation!" "$quickstartLogDir"
 __append_new_line_log "" "$quickstartLogDir"
