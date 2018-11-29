@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/px-vis-timeseries/px-vis-timeseries.html">
 <link rel="import" href="../../bower_components/px-card/px-card.html">
 <link rel="import" href="../../bower_components/px-rangepicker/px-rangepicker.html">
+<link rel="import" href="../../bower_components/px-datetime-picker/px-datetime-picker.html">
 <!-- Since this is loading asynchronously, we're not loading px-dropdown here for now.
       it's already loaded by rmd-view. -->
 <link rel="import" href="timeseries-chart-styles.html">
@@ -26,23 +27,39 @@ Component will query for new data when tags or dates are changed.
     <px-card header-text="Sensor Data" icon="px-fea:analysis">
       <div class="flex flex--row flex--justify">
         <div class="u-1/4-desk u-1/1-palm">
-          <div class="u-pr">
-            <px-dropdown id="tagDropdown" multi="{{!liveDataMode}}" selected="{{selectedTag}}" selected-values='{{selectedTags}}' display-value="Select Tags"
-              items="{{tags}}" disable-clear>
-            </px-dropdown>
+          <div class="flex flex--row">
+            <div class="u-pr">
+              <px-dropdown id="tagDropdown" multi="{{!liveDataMode}}" selected="{{selectedTag}}" selected-values='{{selectedTags}}'
+                display-value="Select Tags" items="{{tags}}" disable-clear>
+              </px-dropdown>
+            </div>
+            <div class="u-pr">
+              <px-dropdown id="chartType" selected="{{selectedChart}}" items='[{"key":"3","val":"Live Data"},{"key":"1","val":"Historical Data"},{"key":"2","val":"Fresh Data"}]'
+                sort-mode="key" display-value="Chart Type" disable-clear>
+              </px-dropdown>
+            </div>
           </div>
         </div>
-        <div class="u-1/4-desk u-1/1-palm" hidden$={{timeSeriesOnly}}><button on-tap="_toggleMode" class="btn">Show [[_computeModeLabel(liveDataMode,'invert')]]</button></div>
-        <div class="u-1/2-desk u-1/1-palm">
+        <div class="u-1/4-desk u-1/1-palm" hidden$={{timeSeriesOnly}}>
+          <!-- <button on-tap="_toggleMode" class="btn">Show [[_computeModeLabel(liveDataMode,'invert')]]</button> -->
+        </div>
+        <div class="u-1/2-desk u-1/1-palm" hidden$="{{!historicalChartView}}">
           <px-rangepicker id="tsRangepicker" range="{{selectedRange}}" hidden$="{{liveDataMode}}"></px-rangepicker>
           <div id="chartMessage" class="u-pt--" hidden$="{{!liveDataMode}}"></div>
         </div>
-        <div hidden$={{!timeSeriesOnly}} class="flex flex--row flex--right">
-          <px-dropdown class="flex u-pr" id="refreshFrequencyDropdownTS"
-            display-value="Refresh Frequency"
-            items='[{"key":"0","val":"No Refresh"},{"key":"3","val":"Every 3 sec","selected":"true"},{"key":"15","val":"Every 15 sec"},{"key":"60","val":"Every 60 sec"}]'>
-          </px-dropdown>
-          <px-icon class="u-pr" id="refreshTableBtnTS" title="Refresh data now" icon="px-nav:reload"></px-icon>
+        <!-- <div hidden$={{!timeSeriesOnly}} class="flex flex--row flex--right"> -->
+        <div class="flex flex--row flex--right" hidden$="{{!freshChartView}}">
+          <div class="flex flex--row">
+            <div class="u-pr">
+              <px-datetime-picker moment-obj="{{selectedStartDate}}">
+              </px-datetime-picker>
+            </div>
+            <px-dropdown class=" flex
+          u-pr" id="refreshFrequencyDropdownTS" display-value="Refresh Frequency"
+              items='[{"key":"0","val":"No Refresh","selected":"true"},{"key":"3","val":"Every 3 sec"},{"key":"15","val":"Every 15 sec"},{"key":"60","val":"Every 60 sec"}]'>
+            </px-dropdown>
+            <px-icon class="u-pr" id="refreshTableBtnTS" title="Refresh data now" icon="px-nav:reload"></px-icon>
+          </div>
         </div>
       </div>
       <div style="height:400px; padding-top:15px;">
@@ -70,15 +87,39 @@ Component will query for new data when tags or dates are changed.
         tsChartData: {
           type: Array
         },
+        tsChartDataPrevious: {
+          type: Array
+        },
         tsSeriesConfig: {
           type: Object
         },
         selectedRange: {
+          type: Object,
+          observer: '_dateChanged'
+        },
+        selectedStartDate: {
           type: Object
         },
         selectedTag: { // used for live data
           type: String,
           observer: '_showLiveSeries'
+        },
+        selectedChart: {
+          type: String,
+          value: "1",
+          observer: '_changeChartType'
+        },
+        historicalChartView: {
+          type: Boolean,
+          value: false
+        },
+        freshChartView: {
+          type: Boolean,
+          value: false
+        },
+        liveChartView: {
+          type: Boolean,
+          value: false
         },
         selectedTags: { // used for historical data
           type: Array
@@ -105,10 +146,13 @@ Component will query for new data when tags or dates are changed.
 
       ready: function () {
         var that = this;
+        this.selectedChart = "1";
+        this.tsChartDataOld = [];
         this.timeSeriesOnly = document.querySelector('#view').elementData.timeSeriesOnly;
         this.$.tsAjaxEl.addEventListener('response', function (evt) {
           console.log('ts data', evt.detail.response);
           if (evt.detail.response.tags) {
+            console.log("Formatting Data", evt.detail.response.tags);
             this._formatDataForChart(evt.detail.response.tags);
           }
         }.bind(this));
@@ -119,12 +163,12 @@ Component will query for new data when tags or dates are changed.
           // If no refresh selected, clear any existing interval
           // else set interval according to user selection
 
-            /*that.refreshTimerInterval = setInterval(function () {
-              console.log('sending request for timeseries');
-              //that.$.tsAjaxEl.generateRequest();
-              that._fetchTimeseriesData(that.selectedTags,that.selectedRange)
-            }, 5000);*/
+          /*that.refreshTimerInterval = setInterval(function () {
+            console.log('sending request for timeseries');
+            //that.$.tsAjaxEl.generateRequest();
             that._fetchTimeseriesData(that.selectedTags,that.selectedRange)
+          }, 5000);*/
+          that._fetchTimeseriesData(that.selectedTags, that.selectedRange)
         });
 
         // Set refresh dropdown behavior
@@ -135,7 +179,7 @@ Component will query for new data when tags or dates are changed.
               interval = 3000;  // every 3 seconds
               break;
             case '15':
-              interval = 15000;  // every 3 seconds
+              interval = 1500;  // every 15 seconds
               break;
             case '60':
               interval = 60000;  // every 60 seconds
@@ -150,15 +194,16 @@ Component will query for new data when tags or dates are changed.
           // else set interval according to user selection
           else {
             that.refreshTimerInterval = setInterval(function () {
-              console.log('sending request for timeseries');
-              that._fetchTimeseriesData(that.selectedTags,that.selectedRange)
+              // Get new rnage based on last range
+              var newRange = { from: that.selectedRange.to, to: '' }
+              console.log('sending request for timeseries', interval, newRange);
+              that._fetchTimeseriesData(that.selectedTags, newRange);
             }, interval);
           }
         });
       },
-
       _setDefaultTag(newVal) {
-        // console.log('_setDefaultTag', newVal);
+        console.log('_setDefaultTag', newVal);
         var tagDropdown = this.$.tagDropdown;
         if (tagDropdown.selectedValues && tagDropdown.selectedValues.length < 1 && newVal && newVal.length > 0) {
           tagDropdown.selectedValues = [newVal[0].key]
@@ -181,7 +226,7 @@ Component will query for new data when tags or dates are changed.
         } else {
           this.closeWebSocket();
           if (this.selectedTag && !this.selectedTags) {
-            this.selectedTags = [ this.selectedTag ];
+            this.selectedTags = [this.selectedTag];
           }
           this.$.tagDropdown.displayValue = 'Select Tags'; //this.selectedTags[0];
           if (this.tags) { // we don't have tags until they come back from the asset service.
@@ -196,10 +241,10 @@ Component will query for new data when tags or dates are changed.
         }
       },
 
-      _toggleMode: function () {
-        this.liveDataMode = !this.liveDataMode;
-        console.log('_toggleMode. liveDataMode is now ', this.liveDataMode);
-      },
+      // _toggleMode: function () {
+      //   this.liveDataMode = !this.liveDataMode;
+      //   console.log('_toggleMode. liveDataMode is now ', this.liveDataMode);
+      // },
 
       _computeModeLabel: function (liveDataMode, inv) {
         if (inv === "invert") {
@@ -249,6 +294,7 @@ Component will query for new data when tags or dates are changed.
       },
 
       _formatDataForChart: function (tags) {
+        var oldChartData = this.tsChartDataOld;
         var chartData = [], seriesConfig = {};
         tags.forEach(function (tag, i) {
           var yKey = "y" + i;
@@ -262,10 +308,63 @@ Component will query for new data when tags or dates are changed.
             chartData.push(point);
           })
         });
-        // console.log('formatted chartData:', chartData);
-        this.$.tsChart.notifyResize();  // force the chart to redraw
-        this.tsSeriesConfig = this._buildSeriesConfig(tags, this.tags);
-        this.tsChartData = chartData;
+        console.log('formatted chartData:', chartData);
+        // console.log("check array same", this.refreshTimerInterval, oldChartData.length, chartData.length, this.tsChartDataOld);
+        if (this.refreshTimerInterval !== 0 && this.freshChartView) { // Check to see if we are in timeseries fresh mode
+          // if there is data in the chartData
+          if (chartData) {
+            // Comparing Function
+            function comparer(otherArray) {
+              return function (current) {
+                return otherArray.filter(function (other) {
+                  return other.y == current.y && other.x0 == current.x0
+                }).length == 0;
+              }
+            }
+            var onlyInOldChartData = oldChartData.filter(comparer(chartData));
+            var onlyInChartData = chartData.filter(comparer(oldChartData));
+            newDataPaoints = onlyInOldChartData.concat(onlyInChartData);
+            // console.log("res", newDataPaoints);
+            // If there is somehting in the newDataPaoints
+            // we add result to the oldChartData
+            // then we refresh the graph
+            if (newDataPaoints) {
+              chartData = oldChartData.concat(newDataPaoints);
+              this.$.tsChart.notifyResize();  // force the chart to redraw
+              this.tsSeriesConfig = this._buildSeriesConfig(tags, this.tags);
+              this.tsChartData = chartData;
+              this.tsChartDataOld = chartData;
+            }
+          }
+        } else {
+          this.$.tsChart.notifyResize();  // force the chart to redraw
+          this.tsSeriesConfig = this._buildSeriesConfig(tags, this.tags);
+          this.tsChartData = chartData;
+          this.tsChartDataOld = chartData;
+        }
+      },
+
+      _changeChartType: function (key) {
+        switch (key) {
+          case '1': // Historical View
+            this.historicalChartView = true;
+            this.liveChartView = false;
+            this.freshChartView = false;
+            this.liveDataMode = false;
+            break;
+          case '2': // fresh Data
+            this.freshChartView = true;
+            this.liveChartView = false;
+            this.historicalChartView = false;
+            this.liveDataMode = false;
+            break;
+          case '3': // Live data
+            this.liveChartView = true;
+            this.freshChartView = false;
+            this.historicalChartView = false;
+            this.liveDataMode = true;
+            break;
+        }
       },
 
       _tagsOrRangeChanged: function (newTags, newRange) {
@@ -274,6 +373,11 @@ Component will query for new data when tags or dates are changed.
             this._fetchTimeseriesData(newTags.base || newTags, newRange);
           }
         }, 100);
+      },
+
+      _dateChanged: function (newDate) {
+        console.log("Start date for fresh data", newDate);
+        this._tagsOrRangeChanged(this.selectedTags, newDate);
       },
 
       // Expects an array of objects from px-dropdown, and a range object from px-rangepicker
@@ -292,8 +396,8 @@ Component will query for new data when tags or dates are changed.
             "value": "5"
           }
         }];
-        console.log("Before "+moment(range.from).valueOf());
-        console.log("Now "+moment().valueOf());
+        console.log("Before " + moment(range.from).valueOf());
+        console.log("Now " + moment().valueOf());
         var query = {
           "cache_time": 0,
           start: moment(range.from).valueOf(),
@@ -303,14 +407,16 @@ Component will query for new data when tags or dates are changed.
         tags.forEach(function (t) {
           query.tags.push({
             name: t,
-            limit : 50,
+            limit: 50,
             aggregations: agg
           });
         });
         // {cache_time: 0, tags: [{name: "Compressor-2015:DischargePressure","aggregations":[{"type":"avg","sampling":{"unit":"s","value":"30"}}]}], start: 1489001400000, end:1489603772723}
-        console.log('fetching timeseries data', tags, range);
-        this.set('tsChartData', []);
-        this.set('tsSeriesConfig', {});
+        console.log('fetching timeseries data', tags, range, query);
+        if (this.refreshTimerInterval === 0) {
+          this.set('tsChartData', []);
+          this.set('tsSeriesConfig', {});
+        }
         this.$.tsAjaxEl.url = '/api/predix-timeseries/v1/datapoints';
         this.$.tsAjaxEl.method = 'POST';
         this.$.tsAjaxEl.body = query;
@@ -319,7 +425,7 @@ Component will query for new data when tags or dates are changed.
 
       _showLiveSeries: function (tag) {
         if (tag) {
-          this.debounce('showlive', function() {
+          this.debounce('showlive', function () {
             this.tsSeriesConfig = this._buildSeriesConfig([{ name: tag }], this.tags);
             this.tsChartData = [];
             this.$.tsChart.notifyResize();

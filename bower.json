@@ -47,7 +47,8 @@
     "px-layout-design": "^1.0.0",
     "px-headings-design": "^1.0.3",
     "px-meta-lists-design": "^1.0.1",
-    "px-forms-design": "^2.0.6"
+    "px-forms-design": "^2.0.6",
+    "px-datetime-picker": "1.2.0"
   },
   "resolutions": {
     "px-app-helpers": "^2.0.0",
