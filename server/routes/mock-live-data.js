@@ -25,9 +25,9 @@ function getRandomData(tag) {
 function createWebSocketServer(httpServer) {
     const wsServer = new ws.Server({server: httpServer});
 
-    wsServer.on('connection', function connection(socket) {
-        console.log('connection opened: ', socket.upgradeReq.url);
-        let path = socket.upgradeReq.url || "";
+    wsServer.on('connection', function connection(socket, req) {
+        console.log('connection opened: ', req.url);
+        let path = req.url || "";
         if (path === "" || path === "/") {
             path = "/Compressor-CMMS-Compressor-2018:CompressionRatio";
         } 

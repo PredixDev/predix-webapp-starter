@@ -34,7 +34,9 @@ Component will query for new data when tags or dates are changed.
               </px-dropdown>
             </div>
             <div class="u-pr">
-              <px-dropdown id="chartType" selected="{{selectedChart}}" items='[{"key":"3","val":"Live Data"},{"key":"1","val":"Historical Data"},{"key":"2","val":"Fresh Data"}]'
+              <px-dropdown id="chartType" selected="{{selectedChart}}" items='[{"key":"3","val":"Live Data"},
+              {"key":"1","val":"Historical Data"},
+              {"key":"2","val":"Fresh Data"}]'
                 sort-mode="key" display-value="Chart Type" disable-clear>
               </px-dropdown>
             </div>
@@ -54,9 +56,11 @@ Component will query for new data when tags or dates are changed.
               <px-datetime-picker moment-obj="{{selectedStartDate}}">
               </px-datetime-picker>
             </div>
-            <px-dropdown class=" flex
-          u-pr" id="refreshFrequencyDropdownTS" display-value="Refresh Frequency"
-              items='[{"key":"0","val":"No Refresh","selected":"true"},{"key":"3","val":"Every 3 sec"},{"key":"15","val":"Every 15 sec"},{"key":"60","val":"Every 60 sec"}]'>
+            <px-dropdown class=" flex u-pr" id="refreshFrequencyDropdownTS" display-value="Refresh Frequency" items='[{"key":"0","val":"No Refresh","selected":"true"},
+              {"key":"3","val":"Every 3 sec"},
+              {"key":"15","val":"Every 15 sec"},
+              {"key":"60","val":"Every 60 sec"}]'
+              selected="{{selectedRefreshRate}}">
             </px-dropdown>
             <px-icon class="u-pr" id="refreshTableBtnTS" title="Refresh data now" icon="px-nav:reload"></px-icon>
           </div>
@@ -108,6 +112,14 @@ Component will query for new data when tags or dates are changed.
           type: String,
           value: "1",
           observer: '_changeChartType'
+        },
+        selectedRefreshRate: {
+          type: String,
+          value: '0'
+        },
+        refreshInterval: {
+          type: Number,
+          value: 0
         },
         historicalChartView: {
           type: Boolean,
@@ -173,32 +185,37 @@ Component will query for new data when tags or dates are changed.
 
         // Set refresh dropdown behavior
         this.$.refreshFrequencyDropdownTS.addEventListener('px-dropdown-selection-changed', function (evt) {
-          var interval = 0;
-          switch (evt.detail.key) {
+          // var interval = 0;
+          switch (that.selectedRefreshRate) {
             case '3':
-              interval = 3000;  // every 3 seconds
+              that.refreshInterval = 3000;  // every 3 seconds
               break;
             case '15':
-              interval = 1500;  // every 15 seconds
+              that.refreshInterval = 1500;  // every 15 seconds
               break;
             case '60':
-              interval = 60000;  // every 60 seconds
+              that.refreshInterval = 60000;  // every 60 seconds
               break;
           }
           clearInterval(that.refreshTimerInterval);
 
           // If no refresh selected, clear any existing interval
-          if (interval === 0) {
+          if (that.refreshInterval === 0) {
             that.refreshTimerInterval = 0;
           }
           // else set interval according to user selection
           else {
             that.refreshTimerInterval = setInterval(function () {
-              // Get new rnage based on last range
-              var newRange = { from: that.selectedRange.to, to: '' }
-              console.log('sending request for timeseries', interval, newRange);
-              that._fetchTimeseriesData(that.selectedTags, newRange);
-            }, interval);
+              if (that.refreshInterval === 0) {
+                clearInterval(that.refreshTimerInterval);
+              }
+              else {
+                // Get new range based on last range
+                var newRange = { from: that.selectedRange.to, to: '' }
+                console.log('sending request for timeseries', that.refreshInterval, newRange);
+                that._fetchTimeseriesData(that.selectedTags, newRange);
+              }
+            }, that.refreshInterval);
           }
         });
       },
@@ -351,6 +368,8 @@ Component will query for new data when tags or dates are changed.
             this.liveChartView = false;
             this.freshChartView = false;
             this.liveDataMode = false;
+            this.selectedRefreshRate = 0;
+            this.refreshInterval = 0;
             break;
           case '2': // fresh Data
             this.freshChartView = true;
@@ -363,6 +382,8 @@ Component will query for new data when tags or dates are changed.
             this.freshChartView = false;
             this.historicalChartView = false;
             this.liveDataMode = true;
+            this.selectedRefreshRate = 0;
+            this.refreshInterval = 0;
             break;
         }
       },
