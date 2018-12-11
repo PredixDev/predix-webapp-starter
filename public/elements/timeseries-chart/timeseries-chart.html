@@ -56,11 +56,10 @@ Component will query for new data when tags or dates are changed.
               <px-datetime-picker moment-obj="{{selectedStartDate}}">
               </px-datetime-picker>
             </div>
-            <px-dropdown class=" flex u-pr" id="refreshFrequencyDropdownTS" display-value="Refresh Frequency" items='[{"key":"0","val":"No Refresh","selected":"true"},
-              {"key":"3","val":"Every 3 sec"},
+            <px-dropdown class=" flex u-pr" id="refreshFrequencyDropdownTS" display-value="Refresh Frequency" items='[{"key":"0","val":"No Refresh"},
+              {"key":"3","val":"Every 3 sec","selected":"true"},
               {"key":"15","val":"Every 15 sec"},
-              {"key":"60","val":"Every 60 sec"}]'
-              selected="{{selectedRefreshRate}}">
+              {"key":"60","val":"Every 60 sec"}]'>
             </px-dropdown>
             <px-icon class="u-pr" id="refreshTableBtnTS" title="Refresh data now" icon="px-nav:reload"></px-icon>
           </div>
@@ -113,13 +112,9 @@ Component will query for new data when tags or dates are changed.
           value: "1",
           observer: '_changeChartType'
         },
-        selectedRefreshRate: {
-          type: String,
-          value: '0'
-        },
         refreshInterval: {
           type: Number,
-          value: 0
+          value: 3
         },
         historicalChartView: {
           type: Boolean,
@@ -158,7 +153,7 @@ Component will query for new data when tags or dates are changed.
 
       ready: function () {
         var that = this;
-        this.selectedChart = "1";
+        this.selectedChart = "2";
         this.tsChartDataOld = [];
         this.timeSeriesOnly = document.querySelector('#view').elementData.timeSeriesOnly;
         this.$.tsAjaxEl.addEventListener('response', function (evt) {
@@ -185,37 +180,42 @@ Component will query for new data when tags or dates are changed.
 
         // Set refresh dropdown behavior
         this.$.refreshFrequencyDropdownTS.addEventListener('px-dropdown-selection-changed', function (evt) {
-          // var interval = 0;
-          switch (that.selectedRefreshRate) {
+          console.log('dropdown event listener', evt.detail.key, that.refreshInterval);
+          var interval = 0;
+          switch (evt.detail.key) {
             case '3':
-              that.refreshInterval = 3000;  // every 3 seconds
+              interval = 3000;  // every 3 seconds
+              that.refreshInterval = 3;
               break;
             case '15':
-              that.refreshInterval = 1500;  // every 15 seconds
+              interval = 1500;  // every 15 seconds
+              that.refreshInterval = 15;
               break;
             case '60':
-              that.refreshInterval = 60000;  // every 60 seconds
+              interval = 60000;  // every 60 seconds
+              that.refreshInterval = 60;
               break;
           }
           clearInterval(that.refreshTimerInterval);
 
           // If no refresh selected, clear any existing interval
-          if (that.refreshInterval === 0) {
+          if (interval === 0) {
             that.refreshTimerInterval = 0;
           }
           // else set interval according to user selection
           else {
             that.refreshTimerInterval = setInterval(function () {
               if (that.refreshInterval === 0) {
+                console.log("in end of refresh loop", that.refreshInterval);
                 clearInterval(that.refreshTimerInterval);
               }
               else {
                 // Get new range based on last range
                 var newRange = { from: that.selectedRange.to, to: '' }
-                console.log('sending request for timeseries', that.refreshInterval, newRange);
+                console.log('sending request for timeseries', that.refreshInterval, interval, newRange);
                 that._fetchTimeseriesData(that.selectedTags, newRange);
               }
-            }, that.refreshInterval);
+            }, interval);
           }
         });
       },
@@ -347,6 +347,9 @@ Component will query for new data when tags or dates are changed.
             // then we refresh the graph
             if (newDataPaoints) {
               chartData = oldChartData.concat(newDataPaoints);
+              chartData = chartData.sort(function(a, b) {
+                return parseFloat(a.x0) - parseFloat(b.x0);
+              });
               this.$.tsChart.notifyResize();  // force the chart to redraw
               this.tsSeriesConfig = this._buildSeriesConfig(tags, this.tags);
               this.tsChartData = chartData;
@@ -368,7 +371,6 @@ Component will query for new data when tags or dates are changed.
             this.liveChartView = false;
             this.freshChartView = false;
             this.liveDataMode = false;
-            this.selectedRefreshRate = 0;
             this.refreshInterval = 0;
             break;
           case '2': // fresh Data
@@ -382,7 +384,6 @@ Component will query for new data when tags or dates are changed.
             this.freshChartView = false;
             this.historicalChartView = false;
             this.liveDataMode = true;
-            this.selectedRefreshRate = 0;
             this.refreshInterval = 0;
             break;
         }
