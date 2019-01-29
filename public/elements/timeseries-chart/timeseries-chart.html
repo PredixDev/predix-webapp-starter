@@ -57,9 +57,9 @@ Component will query for new data when tags or dates are changed.
               </px-datetime-picker>
             </div>
             <px-dropdown class=" flex u-pr" id="refreshFrequencyDropdownTS" display-value="Refresh Frequency" items='[{"key":"0","val":"No Refresh"},
-              {"key":"3","val":"Every 3 sec","selected":"true"},
+              {"key":"3","val":"Every 3 sec"},
               {"key":"15","val":"Every 15 sec"},
-              {"key":"60","val":"Every 60 sec"}]'>
+              {"key":"60","val":"Every 60 sec","selected":"true"}]'>
             </px-dropdown>
             <px-icon class="u-pr" id="refreshTableBtnTS" title="Refresh data now" icon="px-nav:reload"></px-icon>
           </div>
@@ -101,7 +101,7 @@ Component will query for new data when tags or dates are changed.
           observer: '_dateChanged'
         },
         selectedStartDate: {
-          type: Object
+          type: Object,
         },
         selectedTag: { // used for live data
           type: String,
@@ -114,7 +114,7 @@ Component will query for new data when tags or dates are changed.
         },
         refreshInterval: {
           type: Number,
-          value: 3
+          value: 60
         },
         historicalChartView: {
           type: Boolean,
@@ -211,7 +211,9 @@ Component will query for new data when tags or dates are changed.
               }
               else {
                 // Get new range based on last range
-                var newRange = { from: that.selectedRange.to, to: '' }
+                  console.log("got new date before ending to rtimeseries", that.selectedStartDate, that.selectedStartDate._d);
+                console.log("got new date trying to format it", moment(that.selectedStartDate._d).valueOf());
+                  var newRange = { from: that.selectedStartDate._d , to: '' };
                 console.log('sending request for timeseries', that.refreshInterval, interval, newRange);
                 that._fetchTimeseriesData(that.selectedTags, newRange);
               }
@@ -401,12 +403,13 @@ Component will query for new data when tags or dates are changed.
         console.log("Start date for fresh data", newDate);
         this._tagsOrRangeChanged(this.selectedTags, newDate);
       },
-
       // Expects an array of objects from px-dropdown, and a range object from px-rangepicker
       // [{key: "tag1", val: "Tag 1"}, {key: "tag2", val: "Tag 2", checked: true}]
       // {"from":"2016-01-01T00:00:00.000Z","to":"2016-07-01T11:00:00.000Z"}
       _fetchTimeseriesData: function (tags, range) {
         // console.log('tags passed in to _fetchTimeseriesData:', tags);
+          let startTime = moment(range.from).valueOf();
+          let endTime = moment().valueOf();
         if (!tags || tags.length < 1) {
           console.log('Not fetching time series data.  no tags selected.');
           return;
@@ -418,12 +421,17 @@ Component will query for new data when tags or dates are changed.
             "value": "5"
           }
         }];
-        console.log("Before " + moment(range.from).valueOf());
-        console.log("Now " + moment().valueOf());
+          if (this.refreshTimerInterval !== 0 && this.freshChartView) {
+              // if we are in fresh mode we want to get current values
+              startTime = moment().valueOf() - 60000;
+              endTime = moment().valueOf();
+          }
+          console.log("Before " + startTime);
+          console.log("Now " + endTime);
         var query = {
           "cache_time": 0,
-          start: moment(range.from).valueOf(),
-          end: moment().valueOf(),
+          start: startTime,
+          end: endTime,
           tags: []
         };
         tags.forEach(function (t) {
