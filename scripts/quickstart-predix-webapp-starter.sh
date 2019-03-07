@@ -39,18 +39,20 @@ BRANCH="master"
 PRINT_USAGE=0
 SKIP_SETUP=false
 
-IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/1.2.0/izon2.sh"
+IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/1.5.0/izon2.sh"
 #ASSET_MODEL="-amrmd predix-ui-seed/server/sample-data/predix-asset/asset-model-metadata.json predix-ui-seed/server/sample-data/predix-asset/asset-model.json"
 SCRIPT="-script build-basic-app.sh -script-readargs build-basic-app-readargs.sh"
 QUICKSTART_ARGS="-ps $SCRIPT"
 VERSION_JSON="version.json"
+PREDIX_SCRIPTS_ORG="PredixDev"
 PREDIX_SCRIPTS=predix-scripts
 REPO_NAME=predix-webapp-starter
 VERSION_JSON="version.json"
 APP_DIR="webapp-starter"
 APP_NAME="Predix UI Polymer Starter"
 SCRIPT_NAME="quickstart-predix-webapp-starter.sh"
-GITHUB_RAW="https://raw.githubusercontent.com/PredixDev"
+GITHUB_RAW="https://raw.githubusercontent.com"
+GITHUB_ORG="adoption"
 TOOLS="Cloud Foundry CLI, Git, Node.js, Predix CLI"
 TOOLS_SWITCHES="--cf --git --nodejs --predixcli"
 
@@ -59,7 +61,7 @@ local_read_args $@
 
 #variables after processing switches
 SCRIPT_LOC="$GITHUB_RAW/$REPO_NAME/$BRANCH/scripts/$SCRIPT_NAME"
-VERSION_JSON_URL="$GITHUB_RAW/$REPO_NAME/$BRANCH/version.json"
+VERSION_JSON_URL="$GITHUB_RAW/$GITHUB_ORG/$REPO_NAME/$BRANCH/version.json"
 
 function check_internet() {
   set +e
@@ -98,7 +100,7 @@ function init() {
 
 
   getVersionFile
-  getLocalSetupFuncs $GITHUB_RAW
+  getLocalSetupFuncs $GITHUB_RAW $PREDIX_SCRIPTS_ORG
 }
 
 if [[ $PRINT_USAGE == 1 ]]; then
