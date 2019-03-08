@@ -1,6 +1,6 @@
 {
   "name": "predix-webapp-starter",
-  "version": "2.0.77",
+  "version": "2.0.78",
   "private": true,
   "engines": {
     "node": ">=0.10.0"
@@ -35,8 +35,7 @@
     "mocha": "^5.2.0",
     "node-sass": "^4.7.0",
     "node-sass-import-once": "^1.2.0",
-    "open": "0.0.5",
-    "polymer-cli": "^1.5.2",
+    "polymer-cli": "^1.9.7",
     "postcss": "^5.0.21",
     "postcss-cli": "^2.5.2",
     "sass-import-modules": "^2.1.0",
@@ -51,7 +50,7 @@
     "express-http-proxy": "^0.10.0",
     "express-session": "^1.14.1",
     "https-proxy-agent": "^2.2.1",
-    "json-server": "^0.8.10",
+    "json-server": "^0.8.23",
     "passport": "^0.3.2",
     "passport-oauth2-middleware": "^1.0.2",
     "passport-predix-oauth": "^0.1.2",

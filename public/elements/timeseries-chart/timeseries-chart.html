@@ -188,7 +188,7 @@ Component will query for new data when tags or dates are changed.
               that.refreshInterval = 3;
               break;
             case '15':
-              interval = 1500;  // every 15 seconds
+              interval = 15000;  // every 15 seconds
               that.refreshInterval = 15;
               break;
             case '60':
@@ -343,12 +343,14 @@ Component will query for new data when tags or dates are changed.
             var onlyInOldChartData = oldChartData.filter(comparer(chartData));
             var onlyInChartData = chartData.filter(comparer(oldChartData));
             newDataPaoints = onlyInOldChartData.concat(onlyInChartData);
-            // console.log("res", newDataPaoints);
+            console.log("res new data points", newDataPaoints);
             // If there is somehting in the newDataPaoints
             // we add result to the oldChartData
             // then we refresh the graph
-            if (newDataPaoints) {
-              chartData = oldChartData.concat(newDataPaoints);
+            if (newDataPaoints.length !== 0) {
+              // chartData = oldChartData.concat(newDataPaoints);
+              // console.log('new data points ', newDataPaoints);
+              chartData = newDataPaoints;
               chartData = chartData.sort(function(a, b) {
                 return parseFloat(a.x0) - parseFloat(b.x0);
               });
