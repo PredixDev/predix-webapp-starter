@@ -28,6 +28,7 @@ if(node_env === 'development') {
 	settings.rmdDocsURL = devConfig.rmdDocsURL;
 	settings.dataExchangeURL = devConfig.dataExchangeURL;
 	settings.timeSeriesOnly = devConfig.timeSeriesOnly;
+	settings.assetModel = devConfig.assetModel;
 } else {
 	// read VCAP_SERVICES
 	var vcapsServices = JSON.parse(process.env.VCAP_SERVICES);
@@ -59,6 +60,7 @@ if(node_env === 'development') {
 	settings.rmdDocsURL = process.env.rmdDocsURL;
 	settings.dataExchangeURL = process.env.dataExchangeURL;
 	settings.timeSeriesOnly = process.env.timeSeriesOnly;
+	settings.assetModel = process.env.assetModel;
 }
 // console.log('config settings: ' + JSON.stringify(settings));
 

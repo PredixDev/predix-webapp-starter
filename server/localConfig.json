@@ -14,6 +14,7 @@
     "rmdDatasourceURL": "{URL of your RMD datasource microservice}",
     "rmdDocsURL": "https://raw.githubusercontent.com/PredixDev/predix-rmd-ref-app/master/README.md",
     "dataExchangeURL": "{URL of your data exchange microservice}",
-    "timeSeriesOnly": "false"
+    "timeSeriesOnly": "false",
+    "assetModel": "sample-data/predix-asset/Compressor-CMMS-Compressor-2018.json"
   }
 }
